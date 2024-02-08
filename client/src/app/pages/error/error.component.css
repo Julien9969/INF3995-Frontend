@@ -1,0 +1,21 @@
+
+.no-mission-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.material-symbols-outlined {
+  font-size: 300px;
+  color: lightgray;
+}
+
+.no-mission-container h2 {
+  color: lightgray;
+}
+
+.no-mission-container p {
+  color: lightgray;
+}

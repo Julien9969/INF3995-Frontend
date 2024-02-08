@@ -1,0 +1,23 @@
+<mat-toolbar color="primary">
+  <button (click)="goBackHome()" mat-icon-button>
+    <mat-icon>home</mat-icon>
+  </button>
+  <span>LIMO3995™</span>
+  <span class="bar-spacer"></span>
+  <nav>
+    <button [routerLink]="['/mission']" class="uppercase" mat-button>
+      <mat-icon>explore</mat-icon>
+      Mission
+    </button>
+    <button [routerLink]="['/history']" class="uppercase" mat-button>
+      <mat-icon>history</mat-icon>
+      Historique
+    </button>
+    <button [routerLink]="['/ide']" class="uppercase" mat-button>
+      <mat-icon>code</mat-icon>
+      IDE
+    </button>
+  </nav>
+</mat-toolbar>
+
+<router-outlet/>

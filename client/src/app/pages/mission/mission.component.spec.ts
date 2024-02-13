@@ -1,17 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MissionComponent } from './mission.component';
-import { MatCard } from '@angular/material/card';
-import { Component } from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {MissionComponent} from './mission.component';
+import {MatCard} from '@angular/material/card';
+import {BrowserModule} from "@angular/platform-browser";
+import {HttpClientModule} from "@angular/common/http";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
-
-@Component({
-    selector: 'app-mission-controls',
-    template: '<div></div>',
-    standalone: true,
-})
-export class StubMissionControlsComponent {
-
-}
 
 
 describe('MissionsComponent', () => {
@@ -20,9 +14,9 @@ describe('MissionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-        imports: [MissionComponent, StubMissionControlsComponent, MatCard],
+      imports: [MissionComponent, MatCard, BrowserModule, HttpClientModule, HttpClientTestingModule, BrowserAnimationsModule],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(MissionComponent);
     component = fixture.componentInstance;

@@ -1,11 +1,23 @@
 <mat-toolbar color="primary">
-  <span>{{title}}</span>
+  <button (click)="goBackHome()" mat-icon-button>
+    <mat-icon>home</mat-icon>
+  </button>
+  <span>LIMO3995™</span>
   <span class="bar-spacer"></span>
   <nav>
-    <button mat-button [routerLink]="['/mission']">Mission</button>
-    <button mat-button [routerLink]="['/logs']">Historique</button>
-    <button mat-button [routerLink]="['/ide']">IDE</button>
+    <button [routerLink]="['/mission']" class="uppercase" mat-button>
+      <mat-icon>explore</mat-icon>
+      Mission
+    </button>
+    <button [routerLink]="['/history']" class="uppercase" mat-button>
+      <mat-icon>history</mat-icon>
+      Historique
+    </button>
+    <button [routerLink]="['/ide']" class="uppercase" mat-button>
+      <mat-icon>code</mat-icon>
+      IDE
+    </button>
   </nav>
 </mat-toolbar>
 
-<router-outlet />
+<router-outlet/>

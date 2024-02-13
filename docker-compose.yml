@@ -8,8 +8,13 @@ services:
     image: inf3995-frontend
     volumes:
       - ./client:/usr/src/app
-    network_mode: "host"
     stdin_open: true
     tty: true
     container_name: pj3-front
     command: ["npm", "run", "docker-dev"]
+    networks:
+      - fastapi-network
+
+networks:
+  fastapi-network:
+    external: true

@@ -45,10 +45,6 @@ export class MissionComponent implements OnInit {
               private router: Router) {
   }
 
-  identifyRobots() {
-    this.missionService.ping()
-  }
-
   ngOnInit() {
     this.healthService.isServerOk().catch(async () => this.router.navigate(['/error']));
   }

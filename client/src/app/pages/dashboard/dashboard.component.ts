@@ -1,20 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import {DataService} from "@app/services/data/data.service";
+import {Component} from '@angular/core';
+import {MatButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [
+    MatButton,
+    MatIcon
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent implements OnInit {
-  data: unknown;
+export class DashboardComponent {
 
-  constructor(private dataService: DataService) { }
-
-  ngOnInit() {
-    this.dataService.ping()
-      .subscribe({ complete: console.log, error: console.error, next: console.log});
-  }
 }

@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import {HttpClient} from "@angular/common/http";
 import {environmentExt} from "@environment-ext";
 
-const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
+const localUrl = (call: string) => `${environmentExt.apiUrl}/${call}`;
 
 @Injectable({
   providedIn: 'root'

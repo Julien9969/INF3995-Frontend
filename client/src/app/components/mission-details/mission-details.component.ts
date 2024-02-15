@@ -51,12 +51,4 @@ export class MissionDetailsComponent {
     {id: 1, last_update: 17777777, battery: 0.25, distance: 0.11},
     {id: 2, last_update: 17777777, battery: 0.25, distance: 0.0},
   ];
-
-  constructor(private readonly missionService: MissionService) {
-  }
-
-  identifyRobots(robotId: number) {
-    this.missionService.identify(robotId).subscribe(response => console.log(response))
-
-  }
 }

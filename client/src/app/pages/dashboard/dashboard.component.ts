@@ -1,4 +1,4 @@
-import { NgForOf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import {Component} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
@@ -18,6 +18,7 @@ import { MissionService } from '@app/services/mission/mission.service';
     MatCardTitle,
     MatIcon,
     NgForOf,
+    NgIf,
     MatCardActions,
     MatButton,
     MatIconButton,

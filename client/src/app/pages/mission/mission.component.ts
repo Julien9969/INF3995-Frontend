@@ -38,7 +38,7 @@ import {MissionDetailsComponent} from "@app/components/mission-details/mission-d
   templateUrl: './mission.component.html'
 })
 export class MissionComponent implements OnInit {
-  ongoingMission = true;
+  ongoingMission = false;
 
   constructor(private missionService: MissionService,
               private readonly healthService: HealthService,
@@ -51,6 +51,11 @@ export class MissionComponent implements OnInit {
 
   toggleMission() {
     this.ongoingMission = !this.ongoingMission;
+    if (this.ongoingMission){
+      this.missionService.startMission().subscribe(response => console.log(response));
+    } else{
+      this.missionService.stopMission().subscribe(response => console.log(response));
+    }
   }
 
 }

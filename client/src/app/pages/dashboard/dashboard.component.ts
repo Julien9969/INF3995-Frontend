@@ -18,7 +18,6 @@ import { MissionService } from '@app/services/mission/mission.service';
     MatCardTitle,
     MatIcon,
     NgForOf,
-    NgIf,
     MatCardActions,
     MatButton,
     MatIconButton,

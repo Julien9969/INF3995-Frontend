@@ -45,8 +45,6 @@ export class MissionComponent implements OnInit {
               private router: Router) {
   }
 
-  // TODO: retrieve robot info
-
   ngOnInit() {
     this.healthService.isServerOk().catch(async () => this.router.navigate(['/error']));
   }

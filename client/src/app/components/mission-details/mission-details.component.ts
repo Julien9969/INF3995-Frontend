@@ -56,6 +56,7 @@ export class MissionDetailsComponent {
   }
 
   identifyRobots(robotId: number) {
-    this.missionService.identify(robotId)
+    this.missionService.identify(robotId).subscribe(response => console.log(response))
+
   }
 }

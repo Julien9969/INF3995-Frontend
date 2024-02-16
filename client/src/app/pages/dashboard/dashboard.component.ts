@@ -1,10 +1,9 @@
-import { NgForOf, NgIf } from '@angular/common';
+import { NgForOf } from '@angular/common';
 import {Component} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import {MatIcon, MatIconModule} from "@angular/material/icon";
-import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { RobotData } from '@app/classes/robots';
+import { MatTable, MatTableModule } from '@angular/material/table';
 import { MissionService } from '@app/services/mission/mission.service';
 
 @Component({

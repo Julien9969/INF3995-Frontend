@@ -6,7 +6,6 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatTable, MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MissionData} from "@app/classes/mission-data";
 import {RobotData} from "@app/classes/robots";
-import {MissionService} from "@app/services/mission/mission.service";
 
 @Component({
   selector: 'app-mission-details',

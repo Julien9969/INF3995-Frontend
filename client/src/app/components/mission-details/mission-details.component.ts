@@ -6,7 +6,6 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatTable, MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MissionData} from "@app/classes/mission-data";
 import {RobotData} from "@app/classes/robots";
-import {MissionService} from "@app/services/mission/mission.service";
 
 @Component({
   selector: 'app-mission-details',
@@ -51,12 +50,4 @@ export class MissionDetailsComponent {
     {id: 1, last_update: 17777777, battery: 0.25, distance: 0.11},
     {id: 2, last_update: 17777777, battery: 0.25, distance: 0.0},
   ];
-
-  constructor(private readonly missionService: MissionService) {
-  }
-
-  identifyRobots(robotId: number) {
-    this.missionService.identify(robotId).subscribe(response => console.log(response))
-
-  }
 }

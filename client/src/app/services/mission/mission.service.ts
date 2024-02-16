@@ -19,7 +19,7 @@ export class MissionService {
         map(response => response.toString())
       );
   }
-  
+
   startMission(): Observable<string> {
     return this.http.post(localUrl(`mission/start`), { responseType: 'text' })
       .pipe(

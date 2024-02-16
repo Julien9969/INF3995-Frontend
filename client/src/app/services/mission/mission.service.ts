@@ -21,14 +21,14 @@ export class MissionService {
   }
   
   startMission(): Observable<string> {
-    return this.http.get(localUrl(`mission/start`), { responseType: 'text' })
+    return this.http.post(localUrl(`mission/start`), { responseType: 'text' })
       .pipe(
         map(response => response.toString())
       );
   }
 
   stopMission(): Observable<string> {
-    return this.http.get(localUrl(`mission/stop`), { responseType: 'text' })
+    return this.http.post(localUrl(`mission/stop`), { responseType: 'text' })
       .pipe(
         map(response => response.toString())
       );

@@ -34,8 +34,8 @@
       </table>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-icon-button>
-        <mat-icon>edit</mat-icon>
+      <button mat-button>
+        <mat-icon>edit</mat-icon>Modifier
       </button>
     </mat-card-actions>
   </mat-card>
@@ -73,10 +73,5 @@
         <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
       </table>
     </mat-card-content>
-    <mat-card-actions>
-      <button (click)="identify()" mat-icon-button>
-        <mat-icon>notifications_active</mat-icon>
-      </button>
-    </mat-card-actions>
   </mat-card>
 </div>

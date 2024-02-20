@@ -47,12 +47,7 @@ export class MissionDetailsComponent {
   robotDataSource: MatTableDataSource<RobotData> = new MatTableDataSource([this.robot]);
 
   robots = [
-    {id: 1337, last_update: 17777777, battery: 0.25, distance: 0.11},
-    {id: 1338, last_update: 17777777, battery: 0.25, distance: 0.0},
-    {id: 1339, last_update: 17777777, battery: 0.25, distance: 0.45},
+    {id: 1, last_update: 17777777, battery: 0.25, distance: 0.11},
+    {id: 2, last_update: 17777777, battery: 0.25, distance: 0.0},
   ];
-
-  identify() {
-
-  }
 }

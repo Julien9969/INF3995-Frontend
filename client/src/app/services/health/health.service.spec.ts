@@ -4,7 +4,7 @@ import {HealthService} from './health.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {environment} from '@environment';
 
-const LOCAL_URL = `${environment.serverUrl}status`;
+const LOCAL_URL = `${environment.serverUrl}api/ping`;
 
 describe('HealthService', () => {
   let service: HealthService;

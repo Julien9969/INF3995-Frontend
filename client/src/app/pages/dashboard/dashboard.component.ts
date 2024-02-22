@@ -4,7 +4,6 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import {MatIcon, MatIconModule} from "@angular/material/icon";
 import { MatTable, MatTableModule } from '@angular/material/table';
-import { MissionService } from '@app/services/mission/mission.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,10 +35,7 @@ export class DashboardComponent {
 
   idResponses = ["",""]
 
-  constructor(private readonly missionService: MissionService) {
+  constructor() {
   }
 
-  identifyRobots(robotId: number) {
-    this.missionService.identify(robotId).subscribe(response => this.idResponses[robotId - 1]= response);
-  }
 }

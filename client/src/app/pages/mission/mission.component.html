@@ -1,9 +1,9 @@
 <mat-toolbar class="sticky-toolbar">
-  <button (click)="toggleMission()" [disabled]="ongoingMission" class="toolbar-button" color="primary"
+  <button (click)="this.toggleMission()" [disabled]="this.ongoingMission" class="toolbar-button" color="primary"
           mat-raised-button>Démarrer la mission
     <mat-icon>play_arrow</mat-icon>
   </button>
-  <button (click)="toggleMission()" [disabled]="!ongoingMission" class="toolbar-button" color="accent"
+  <button (click)="this.toggleMission()" [disabled]="!this.ongoingMission" class="toolbar-button" color="accent"
           mat-raised-button>Arrêter la mission
     <mat-icon>stop</mat-icon>
   </button>
@@ -12,14 +12,14 @@
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button [disabled]="!ongoingMission" mat-menu-item>
+    <button [disabled]="!this.ongoingMission" mat-menu-item>
       <mat-icon>crisis_alert</mat-icon>
       <span>Ramener robots à la base</span>
     </button>
   </mat-menu>
 </mat-toolbar>
 
-<div *ngIf="ongoingMission" class="accordion-headers-align">
+<div *ngIf="this.ongoingMission" class="accordion-headers-align">
   <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -66,7 +66,7 @@
 </div>
 
 <!-- If there's no current mission -->
-<div *ngIf="!ongoingMission" class="no-mission-container">
+<div *ngIf="!this.ongoingMission" class="no-mission-container">
   <span class="material-symbols-outlined">
     rocket_launch
   </span>

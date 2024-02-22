@@ -38,9 +38,8 @@ import {MissionDetailsComponent} from "@app/components/mission-details/mission-d
   templateUrl: './mission.component.html'
 })
 export class MissionComponent implements OnInit {
-  ongoingMission = false;
 
-  constructor(private missionService: MissionService,
+  constructor(public missionService: MissionService,
               private readonly healthService: HealthService,
               private router: Router) {
   }
@@ -49,13 +48,12 @@ export class MissionComponent implements OnInit {
     this.healthService.isServerOk().catch(async () => this.router.navigate(['/error']));
   }
 
-  toggleMission() {
-    this.ongoingMission = !this.ongoingMission;
-    if (this.ongoingMission){
-      this.missionService.startMission().subscribe(response => console.log(response));
-    } else{
-      this.missionService.stopMission().subscribe(response => console.log(response));
-    }
+  toggleMission () {
+    this.missionService.toggleMission()
+  }
+
+  get ongoingMission() {
+    return this.missionService.ongoingMission
   }
 
 }

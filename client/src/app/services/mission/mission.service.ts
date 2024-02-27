@@ -3,7 +3,8 @@ import {Observable, Subject} from "rxjs";
 import { map } from 'rxjs/operators';
 import {HttpClient} from "@angular/common/http";
 import {environmentExt} from "@environment-ext";
-import { SocketService } from '../socket/socket.service';
+import { SocketService } from '@app/services/socket/socket.service';
+import {MissionEvents} from '@app/services/mission/mission-events';
 
 const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
 
@@ -14,7 +15,7 @@ export class MissionService {
   private _ongoingMission = false;
   constructor(private http: HttpClient, private readonly socketService: SocketService) {
     this.socketService.join("mission");
-    this.socketService.on("mission-start", () => {
+    this.socketService.on(MissionEvents.MISSION_START, () => {
       if(this._ongoingMission) {
         console.log("Mission has already started")
       } else {
@@ -22,12 +23,12 @@ export class MissionService {
         console.log("Starting mission now!")
       }
     })
-    this.socketService.on("mission-stop", () => {
+    this.socketService.on("event", (msg) => {
       if(this._ongoingMission) {
         this._ongoingMission = true;
-        console.log("Stopping mission now!")
+        console.log("Stopping mission now!", msg)
       } else {
-        console.log("Mission is not ongoing!")
+        console.log("Mission is not ongoing!", msg)
       }
     })
   }
@@ -44,10 +45,11 @@ export class MissionService {
   }
 
   toggleMission() {
-      if (this.ongoingMission){
-        this.socketService.send(`stop-mission`);
-      } else{
-        this.socketService.send(`start-mission`);
-      }
+      // if (this.ongoingMission){
+        console.log("toggling mission");
+        this.socketService.send(MissionEvents.TEST_EVENT, "message");
+      // } else{
+      //   this.socketService.send(``);
+      // }
   }
 }

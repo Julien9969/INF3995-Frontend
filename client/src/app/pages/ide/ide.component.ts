@@ -7,50 +7,65 @@ import {MatTreeModule, MatTreeNestedDataSource} from "@angular/material/tree";
 import { CommonModule } from '@angular/common';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { FormsModule } from '@angular/forms';
+import { FilesService } from '@app/services/files/files.service';
+import { FilesTree, FilesTreeNode } from '@app/interfaces/files-tree';
 
-
-/**
- * Food data with nested structure.
- * Each node has a name and an optional list of children.
- */
-interface FoodNode {
-    name: string;
-    children?: FoodNode[];
-}
   
-  const TREE_DATA: FoodNode[] = [
-    {
-      name: 'Fruit',
-      children: [{name: 'Apple'}, {name: 'Banana'}, {name: 'Fruit loops'}],
-    },
-    {
-      name: 'Vegetables',
-      children: [
+  const TREE_DATA: FilesTree =  [{
+    name: "INF3995",
+    children: [
         {
-          name: 'Green',
-          children: [{name: 'Broccoli'}, {name: 'Brussels sprouts'}],
+            name: "9781788478953-MASTERING_ROS_FOR_ROBOTICS_PROGRAMMING_SECOND_EDITION.pdf",
+            children: null
         },
         {
-          name: 'Orange',
-          children: [{name: 'Pumpkins'}, {name: 'Carrots'}],
+            name: "appel.pdf",
+            children: null
         },
-      ],
-    },
-    {
-        name: 'Vegetables',
-        children: [
-          {
-            name: 'Green',
-            children: [{name: 'Broccoli'}, {name: 'Brussels sprouts'}],
-          },
-          {
-            name: 'Orange',
-            children: [{name: 'Pumpkins'}, {name: 'Carrots', children: [{name: 'Pumpkins'}, {name: 'Carrots'}],}],
-          },
-        ],
-      },
-  ];
-
+        {
+            name: "Contratdéquipe_cible.doc",
+            children: null
+        },
+        {
+            name: "cours",
+            children: [
+                {
+                    name: "Contrats-INFO-LOG.ppsx",
+                    children: null
+                },
+                {
+                    name: "DirectionLeadershipINFO-LOG.pdf",
+                    children: null
+                },
+                {
+                    name: "DirectionLeadershipINFO-LOG.ppsx",
+                    children: null
+                },
+                {
+                    name: "exos",
+                    children: [
+                        {
+                            name: "DirectionProjetLeadership.pdf",
+                            children: null
+                        }
+                    ]
+                },
+                {
+                    name: "SuiviAvancementINFO-LOG.ppsx",
+                    children: null
+                },
+                {
+                    name: "vidéo",
+                    children: []
+                }
+            ]
+        },
+        {
+            name: "requis.pdf",
+            children: null
+        }
+    ]
+}];
 @Component({
   selector: 'app-ide',
   standalone: true,
@@ -68,9 +83,10 @@ interface FoodNode {
 })
 export class IdeComponent implements OnInit {
     title = 'ide';
-    treeControl = new NestedTreeControl<FoodNode>(node => node.children);
-    dataSource = new MatTreeNestedDataSource<FoodNode>();
-
+    treeControl = new NestedTreeControl<FilesTreeNode>(node => node.children);
+    dataSource = new MatTreeNestedDataSource<FilesTreeNode>();
+    filesTree: FilesTree = [];
+    
     codeMirrorOptions: any = {
         mode: "text/javascript",
         indentWithTabs: true,
@@ -82,7 +98,7 @@ export class IdeComponent implements OnInit {
         autoCloseBrackets: true,
         matchBrackets: true,
         lint: true
-      };
+    };
 
     query = `@Component({
         selector: 'app-root',
@@ -103,17 +119,25 @@ export class IdeComponent implements OnInit {
       }
       `;
 
-  constructor() {
+  constructor(private filesService: FilesService) {
     this.dataSource.data = TREE_DATA;
+
   }
 
     ngOnInit() {
         console.log(this.query);
+        try {
+            this.filesService.getFileTree().subscribe((response: FilesTree) => { this.filesTree = response; console.log(response); });
+            console.log(this.filesTree);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     setEditorContent(event: any) {
         console.log("event", event);
     }
-  hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
+    
+    hasChild = (_: number, node: FilesTreeNode) => !!node.children && node.children.length > 0;
 }
 

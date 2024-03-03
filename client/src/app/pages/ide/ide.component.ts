@@ -9,63 +9,8 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { FormsModule } from '@angular/forms';
 import { FilesService } from '@app/services/files/files.service';
 import { FilesTree, FilesTreeNode } from '@app/interfaces/files-tree';
+import { HttpResponse } from '@angular/common/http';
 
-  
-  const TREE_DATA: FilesTree =  [{
-    name: "INF3995",
-    children: [
-        {
-            name: "9781788478953-MASTERING_ROS_FOR_ROBOTICS_PROGRAMMING_SECOND_EDITION.pdf",
-            children: null
-        },
-        {
-            name: "appel.pdf",
-            children: null
-        },
-        {
-            name: "Contratdéquipe_cible.doc",
-            children: null
-        },
-        {
-            name: "cours",
-            children: [
-                {
-                    name: "Contrats-INFO-LOG.ppsx",
-                    children: null
-                },
-                {
-                    name: "DirectionLeadershipINFO-LOG.pdf",
-                    children: null
-                },
-                {
-                    name: "DirectionLeadershipINFO-LOG.ppsx",
-                    children: null
-                },
-                {
-                    name: "exos",
-                    children: [
-                        {
-                            name: "DirectionProjetLeadership.pdf",
-                            children: null
-                        }
-                    ]
-                },
-                {
-                    name: "SuiviAvancementINFO-LOG.ppsx",
-                    children: null
-                },
-                {
-                    name: "vidéo",
-                    children: []
-                }
-            ]
-        },
-        {
-            name: "requis.pdf",
-            children: null
-        }
-    ]
-}];
 @Component({
   selector: 'app-ide',
   standalone: true,
@@ -86,6 +31,8 @@ export class IdeComponent implements OnInit {
     treeControl = new NestedTreeControl<FilesTreeNode>(node => node.children);
     dataSource = new MatTreeNestedDataSource<FilesTreeNode>();
     filesTree: FilesTree = [];
+    hoveredName: string | null = null;
+    codeEditorContent: string = ""; 
     
     codeMirrorOptions: any = {
         mode: "text/javascript",
@@ -100,42 +47,40 @@ export class IdeComponent implements OnInit {
         lint: true
     };
 
-    query = `@Component({
-        selector: 'app-root',
-        standalone: true,
-        imports: [RouterOutlet, MatToolbar, RouterLink, MatButton, MatIcon, MatIconButton],
-        templateUrl: './app.component.html',
-        styleUrl: './app.component.scss'
-      })
-      export class AppComponent {
-        status: string = 'offline';
-      
-        constructor(private router: Router) {
-        }
-      
-        goBackHome() {
-          this.router.navigate(['/'])
-        }
-      }
-      `;
 
-  constructor(private filesService: FilesService) {
-    this.dataSource.data = TREE_DATA;
-
-  }
+  constructor(private filesService: FilesService) {}
 
     ngOnInit() {
-        console.log(this.query);
         try {
-            this.filesService.getFileTree().subscribe((response: FilesTree) => { this.filesTree = response; console.log(response); });
-            console.log(this.filesTree);
+            this.filesService.getFileTree().subscribe({
+                next: (response: HttpResponse<string>) => { 
+                    console.log("Response code:", response.status);
+                    this.filesTree = JSON.parse(response.body as string) as FilesTree; 
+                    this.dataSource.data = this.filesTree;
+                }, 
+                error: (error) => {
+                    console.error("Error:", error);
+                    console.log("TODO - show error message");
+                }
+            });
         } catch (error) {
             console.error(error);
         }
     }
 
-    setEditorContent(event: any) {
-        console.log("event", event);
+    saveFile() {
+        console.log(this.codeEditorContent);
+        this.filesService.saveFile("test.js", this.codeEditorContent).subscribe({
+            next: (response: HttpResponse<string>) => { 
+                console.log("Response code:", response.status);
+                console.log("Response body:", response.body);
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                console.log("TODO - show error message");
+            }
+        });
+        console.log("save");
     }
     
     hasChild = (_: number, node: FilesTreeNode) => !!node.children && node.children.length > 0;

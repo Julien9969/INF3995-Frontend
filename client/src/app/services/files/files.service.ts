@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import { map } from 'rxjs/operators';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environmentExt} from "@environment-ext";
-import { FilesTree } from '@app/interfaces/files-tree';
 
 const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
 
@@ -14,8 +13,8 @@ export class FilesService {
   constructor(private http: HttpClient) {
   }
 
-    getFileTree(): Observable<FilesTree> {
-        return this.http.get<FilesTree>(localUrl(`files/tree`), { responseType: 'json' });
+    getFileTree(): Observable<HttpResponse<string>> {
+        return this.http.get<string>(localUrl(`files/tree`), { observe: 'response', responseType: 'json' });
     }
 
     getFile(fileName: string): Observable<string> {
@@ -23,5 +22,10 @@ export class FilesService {
         .pipe(
             map(response => response.toString())
         );
+    }
+
+    saveFile(fileName: string, content: string): Observable<HttpResponse<string>> {
+        console.log("Saving file: ", content);
+        return this.http.post(localUrl(`files/save`),{ fileName: fileName, fileContent: content }, { observe: 'response', responseType: 'text' });
     }
 }

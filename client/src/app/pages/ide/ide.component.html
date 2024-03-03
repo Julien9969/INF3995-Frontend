@@ -13,7 +13,7 @@
                 <!-- There is inline padding applied to this node using styles.
                 This padding value depends on the mat-icon-button width. -->
                 <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
-                    <button class="button-node" [title]="node.name" mat-button>
+                    <button (click)="loadFile(node)" class="button-node" [title]="node.name" mat-button>
                         <mat-icon fontIcon=" insert_drive_file"></mat-icon>
                         {{ node.name.length < 25 ? node.name : node.name.substring(0, 20) + '..' + node.name.substring(node.name.length - 4) }}
                     </button>

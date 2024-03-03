@@ -9,6 +9,7 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { FormsModule } from '@angular/forms';
 import { FilesService } from '@app/services/files/files.service';
 import { FilesTree, FilesTreeNode } from '@app/interfaces/files-tree';
+import { File } from '@app/interfaces/file';
 import { HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -33,6 +34,7 @@ export class IdeComponent implements OnInit {
     filesTree: FilesTree = [];
     hoveredName: string | null = null;
     codeEditorContent: string = ""; 
+    currentFile: FilesTreeNode | null = null;
     
     codeMirrorOptions: any = {
         mode: "text/javascript",
@@ -81,6 +83,21 @@ export class IdeComponent implements OnInit {
             }
         });
         console.log("save");
+    }
+
+    loadFile(file: FilesTreeNode) {
+        console.log("Loading file:", file);
+        this.currentFile = file;
+        this.filesService.getFile(file).subscribe({
+            next: (response: HttpResponse<object>) => { 
+                console.log("Response:", response);
+                this.codeEditorContent = (response.body as File).content;
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                console.log("TODO - show error message");
+            }
+        });
     }
     
     hasChild = (_: number, node: FilesTreeNode) => !!node.children && node.children.length > 0;

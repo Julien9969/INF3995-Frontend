@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
-import { map } from 'rxjs/operators';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environmentExt} from "@environment-ext";
+import { FilesTreeNode } from '@app/interfaces/files-tree';
 
 const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
 
@@ -17,15 +17,17 @@ export class FilesService {
         return this.http.get<string>(localUrl(`files/tree`), { observe: 'response', responseType: 'json' });
     }
 
-    getFile(fileName: string): Observable<string> {
-        return this.http.post(localUrl(`files/file/${fileName}`), { responseType: 'text' })
-        .pipe(
-            map(response => response.toString())
-        );
+    getFile(file: FilesTreeNode): Observable<HttpResponse<object>> {
+        const params = { name: file.name, id: file.id }; // Construct query parameters
+        return this.http.get<object>(localUrl(`files/file`), {
+            params, // Include query parameters
+            observe: 'response',
+            responseType: 'json'
+        });
     }
 
     saveFile(fileName: string, content: string): Observable<HttpResponse<string>> {
         console.log("Saving file: ", content);
-        return this.http.post(localUrl(`files/save`),{ fileName: fileName, fileContent: content }, { observe: 'response', responseType: 'text' });
+        return this.http.post(localUrl(`files/save`),{ name: fileName, content: content }, { observe: 'response', responseType: 'text' });
     }
 }

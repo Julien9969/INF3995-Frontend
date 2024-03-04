@@ -14,23 +14,16 @@ const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
 export class MissionService {
   private _ongoingMission = false;
   constructor(private http: HttpClient, private readonly socketService: SocketService) {
-    this.socketService.join("mission");
+    this.socketService.on(MissionEvents.MISSION_STATUS, (isMissionOngoing) => {
+      this._ongoingMission = Boolean(isMissionOngoing);
+    })
     this.socketService.on(MissionEvents.MISSION_START, () => {
-      if(this._ongoingMission) {
-        console.log("Mission has already started")
-      } else {
-        this._ongoingMission = true;
-        console.log("Starting mission now!")
-      }
+      this._ongoingMission = true;
     })
-    this.socketService.on("event", (msg) => {
-      if(this._ongoingMission) {
-        this._ongoingMission = true;
-        console.log("Stopping mission now!", msg)
-      } else {
-        console.log("Mission is not ongoing!", msg)
-      }
+    this.socketService.on(MissionEvents.MISSION_END, () => {
+      this._ongoingMission = false;
     })
+    this.socketService.send(MissionEvents.MISSION_STATUS); // Retrieves status upon initialization of the service
   }
 
   identify(robotId: number): Observable<string> {
@@ -45,11 +38,10 @@ export class MissionService {
   }
 
   toggleMission() {
-      // if (this.ongoingMission){
-        console.log("toggling mission");
-        this.socketService.send(MissionEvents.TEST_EVENT, "message");
-      // } else{
-      //   this.socketService.send(``);
-      // }
+      if (this.ongoingMission){
+        this.socketService.send(MissionEvents.MISSION_END);
+      } else{
+         this.socketService.send(MissionEvents.MISSION_START);
+      }
   }
 }

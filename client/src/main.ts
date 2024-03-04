@@ -7,6 +7,7 @@ import 'codemirror/lib/codemirror';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/hint/sql-hint';
 import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/python/python';
   
 bootstrapApplication(AppComponent, appConfig)
 .then(ref => {

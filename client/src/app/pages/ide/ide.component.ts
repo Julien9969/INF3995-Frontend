@@ -11,6 +11,10 @@ import { FilesService } from '@app/services/files/files.service';
 import { FilesTree, FilesTreeNode } from '@app/interfaces/files-tree';
 import { File } from '@app/interfaces/file';
 import { HttpResponse } from '@angular/common/http';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-ide',
@@ -23,21 +27,31 @@ import { HttpResponse } from '@angular/common/http';
     CommonModule,
     FormsModule,
     CodemirrorModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatTooltipModule,
   ],
   templateUrl: './ide.component.html',
   styleUrl: './ide.component.scss'
 })
 export class IdeComponent implements OnInit {
-    title = 'ide';
     treeControl = new NestedTreeControl<FilesTreeNode>(node => node.children);
     dataSource = new MatTreeNestedDataSource<FilesTreeNode>();
     filesTree: FilesTree = [];
-    hoveredName: string | null = null;
     codeEditorContent: string = ""; 
     currentFile: FilesTreeNode | null = null;
+    selectedRobotId: number | null = null;
+    robotsList = [
+        {id: 1, name: "Robot 1"},
+        {id: 2, name: "Robot 2"},
+    ];
     
     codeMirrorOptions: any = {
-        mode: "text/javascript",
+        mode: { 
+            name: "python", 
+            version: 3, 
+            singleLineStringErrors: false
+        },
         indentWithTabs: true,
         smartIndent: true,
         lineNumbers: true,
@@ -46,23 +60,33 @@ export class IdeComponent implements OnInit {
         gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
         autoCloseBrackets: true,
         matchBrackets: true,
-        lint: true
+        lint: true,
     };
 
 
-  constructor(private filesService: FilesService) {}
+  constructor(private filesService: FilesService, private _snackBar: MatSnackBar) {}
 
     ngOnInit() {
+        console.log("IDE component initialized");
+    }
+
+    onRobotSelected() {
+        console.log("Selected robot:", this.selectedRobotId);
         try {
-            this.filesService.getFileTree().subscribe({
+            if (this.selectedRobotId === null) {
+                return;
+            }
+            this.filesService.getFileTree(this.selectedRobotId).subscribe({
                 next: (response: HttpResponse<string>) => { 
                     console.log("Response code:", response.status);
                     this.filesTree = JSON.parse(response.body as string) as FilesTree; 
                     this.dataSource.data = this.filesTree;
+
+                    this.openSnackBar(`Arbre de fichier du robot ${this.selectedRobotId} récupéré`);
                 }, 
                 error: (error) => {
                     console.error("Error:", error);
-                    console.log("TODO - show error message");
+                    this.openSnackBar(`Erreur lors de la récupération de l'arbre de fichier du robot ${this.selectedRobotId}`, true);
                 }
             });
         } catch (error) {
@@ -70,16 +94,22 @@ export class IdeComponent implements OnInit {
         }
     }
 
+
     saveFile() {
         console.log(this.codeEditorContent);
-        this.filesService.saveFile("test.js", this.codeEditorContent).subscribe({
+        if (this.selectedRobotId === null || this.currentFile == null) {
+            this.openSnackBar(`Pas de robot ou de fichier sélectionné`, true);
+            return;
+        }
+        this.filesService.saveFile(this.selectedRobotId, this.currentFile, this.codeEditorContent).subscribe({
             next: (response: HttpResponse<string>) => { 
                 console.log("Response code:", response.status);
                 console.log("Response body:", response.body);
+                this.openSnackBar(`Fichier sauvegardé`);
             },
             error: (error) => {
                 console.error("Error:", error);
-                console.log("TODO - show error message");
+                this.openSnackBar(`Erreur lors de la sauvegarde du fichier`, true);
             }
         });
         console.log("save");
@@ -88,18 +118,49 @@ export class IdeComponent implements OnInit {
     loadFile(file: FilesTreeNode) {
         console.log("Loading file:", file);
         this.currentFile = file;
-        this.filesService.getFile(file).subscribe({
+        if (this.selectedRobotId === null) return;
+        this.filesService.getFile(this.selectedRobotId, file).subscribe({
             next: (response: HttpResponse<object>) => { 
                 console.log("Response:", response);
                 this.codeEditorContent = (response.body as File).content;
+                this.openSnackBar(`Fichier ${file.name} chargé`);
             },
             error: (error) => {
                 console.error("Error:", error);
-                console.log("TODO - show error message");
+                this.openSnackBar(`Erreur lors du chargement du fichier ${file.name}`, true);
+            }
+        });
+    }
+
+    updateRobot() {
+        console.log("Updating robot:", this.selectedRobotId);
+        if (this.selectedRobotId === null || this.currentFile == null) {
+            this.openSnackBar(`Pas de robot ou de fichier sélectionné`, true);
+            return;
+        }
+        this.filesService.updateRobot(this.selectedRobotId).subscribe({
+            next: (response: HttpResponse<string>) => { 
+                console.log("Response:", response);
+                console.log("Response code:", response.status);
+                console.log("Response body:", response.body);
+                this.openSnackBar(`Robot ${this.selectedRobotId} mis à jour`);
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                this.openSnackBar(`Erreur lors de la mise à jours du Robot ${this.selectedRobotId}`, true);
             }
         });
     }
     
+    openSnackBar(message: string, error=false) {
+        this._snackBar.open(message, 'OK', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          duration: 2500,
+          panelClass: error ? ['error-message'] : ['success-message']
+        });
+      }
+
     hasChild = (_: number, node: FilesTreeNode) => !!node.children && node.children.length > 0;
 }
 

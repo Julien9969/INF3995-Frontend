@@ -20,9 +20,21 @@
     align-items: center;
 }
 
+.options-frame {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.robot-select {
+    width: 30%;
+    margin: 10px;
+}
+
 .control-buttons {
     margin-top: 15px;
     margin-bottom: 5px;
+    width: 70%;
 }
 
 .control-button {
@@ -57,6 +69,12 @@
 
 .example-tree-invisible {
     display: none;
+}
+.folder-node {
+    display: flex;
+    // align-items: center;
+    padding: 5px;
+    margin: 5px;
 }
 
 mat-tree-node {
@@ -93,3 +111,16 @@ padding-left: 20px;
 .example-tree div[role=group] > .mat-tree-node {
 padding-left: 8px;
 }
+
+::ng-deep .success-message {
+    --mdc-snackbar-container-color: #2dc653;
+    --mdc-snackbar-supporting-text-color: rgba(0, 0, 0, 0.87);
+    --mat-snack-bar-button-color: black;
+}
+
+::ng-deep .error-message {
+    --mdc-snackbar-container-color: #ff7866;
+    --mdc-snackbar-supporting-text-color: rgba(0, 0, 0, 0.87);
+    --mat-snack-bar-button-color: black;
+}
+

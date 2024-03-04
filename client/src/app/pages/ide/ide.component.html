@@ -1,7 +1,18 @@
 <div class="flex-column">
-    <div class="flex-center">
-        <div class="control-buttons">
-            <button class="control-button" mat-raised-button color="primary" (click)="saveFile()">Sauvegarder</button>
+    <div class="options-frame">
+        <div class="flex-center robot-select">
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Sélectionner le robot</mat-label>
+                <mat-select [(ngModel)]="selectedRobotId" (selectionChange)="onRobotSelected()" name="food">
+                @for (robot of robotsList ; track robot) {
+                    <mat-option [value]="robot.id">{{robot.name}}</mat-option>
+                }
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="flex-center control-buttons">
+            <button class="control-button" mat-raised-button color="primary" (click)="saveFile()"><mat-icon fontIcon="save"></mat-icon>Sauvegarder</button>
+            <button class="control-button" mat-raised-button color="primary" (click)="updateRobot()"><mat-icon fontIcon="system_update"></mat-icon>Mettre à jour le Robot</button>
             <!-- <button class="control-button" mat-raised-button color="primary" (click)="save()">save</button>
             <button class="control-button" mat-raised-button color="primary" (click)="save()">save</button> -->
         </div>
@@ -13,22 +24,24 @@
                 <!-- There is inline padding applied to this node using styles.
                 This padding value depends on the mat-icon-button width. -->
                 <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
-                    <button (click)="loadFile(node)" class="button-node" [title]="node.name" mat-button>
+                    <button (click)="loadFile(node)" class="button-node" matTooltip="node.name" [matTooltipShowDelay]="400" mat-button>
                         <mat-icon fontIcon=" insert_drive_file"></mat-icon>
                         {{ node.name.length < 25 ? node.name : node.name.substring(0, 20) + '..' + node.name.substring(node.name.length - 4) }}
                     </button>
                 </mat-tree-node>
                 <!-- This is the tree node template for expandable nodes -->
                 <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
-                    <div class="mat-tree-node" [title]="node.name">
+                    <div class="mat-tree-node">
                         <button mat-icon-button matTreeNodeToggle
                                 [attr.aria-label]="'Toggle ' + node.name">
                             <mat-icon class="mat-icon-rtl-mirror">
                             {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
                             </mat-icon>
                         </button>
-                        <mat-icon class="folder-icon" fontIcon="folder"></mat-icon>
-                        {{node.name}}
+                        <div class="folder-node" matTooltip="node.name" [matTooltipShowDelay]="400">
+                            <mat-icon class="folder-icon" fontIcon="folder"></mat-icon>
+                            {{node.name}}
+                        </div>
                     </div>
                     <!-- There is inline padding applied to this div using styles.
                         This padding value depends on the mat-icon-button width.  -->

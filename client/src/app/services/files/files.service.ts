@@ -13,21 +13,24 @@ export class FilesService {
   constructor(private http: HttpClient) {
   }
 
-    getFileTree(): Observable<HttpResponse<string>> {
-        return this.http.get<string>(localUrl(`files/tree`), { observe: 'response', responseType: 'json' });
+    getFileTree(robotId: number): Observable<HttpResponse<string>> {
+        return this.http.get<string>(localUrl(`files/tree/${robotId}`), { observe: 'response', responseType: 'json' });
     }
 
-    getFile(file: FilesTreeNode): Observable<HttpResponse<object>> {
-        const params = { name: file.name, id: file.id }; // Construct query parameters
+    getFile(robotId: number, file: FilesTreeNode): Observable<HttpResponse<object>> {
+        const params = { robot_id: robotId, name: file.name, id: file.id }; // Construct query parameters
         return this.http.get<object>(localUrl(`files/file`), {
-            params, // Include query parameters
+            params,
             observe: 'response',
             responseType: 'json'
         });
     }
 
-    saveFile(fileName: string, content: string): Observable<HttpResponse<string>> {
-        console.log("Saving file: ", content);
-        return this.http.post(localUrl(`files/save`),{ name: fileName, content: content }, { observe: 'response', responseType: 'text' });
+    saveFile(robotId: number, file: FilesTreeNode, content: string): Observable<HttpResponse<string>> {
+        return this.http.post(localUrl(`files/save/${robotId}`),{ name: file.name, id: file.id, content: content }, { observe: 'response', responseType: 'text' });
+    }
+
+    updateRobot(robotId: number): Observable<HttpResponse<string>> {
+        return this.http.patch(localUrl(`files/update/${robotId}`), null, { observe: 'response', responseType: 'text' });
     }
 }

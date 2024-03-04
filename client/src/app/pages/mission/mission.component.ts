@@ -38,6 +38,11 @@ import {MissionDetailsComponent} from "@app/components/mission-details/mission-d
   templateUrl: './mission.component.html'
 })
 export class MissionComponent implements OnInit {
+  // TODO: Will have to be retrieved from somewhere
+  robots = [
+    {id: 1, last_update: 17777777, battery: 0.25, distance: 0.11},
+    {id: 2, last_update: 17777777, battery: 0.25, distance: 0.0},
+  ];
 
   constructor(public missionService: MissionService,
               private readonly healthService: HealthService,
@@ -54,6 +59,10 @@ export class MissionComponent implements OnInit {
 
   get ongoingMission() {
     return this.missionService.ongoingMission
+  }
+
+  identifyRobots(robotId: number) {
+    this.missionService.identify(robotId).subscribe(response => console.log(response));
   }
 
 }

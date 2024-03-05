@@ -54,21 +54,22 @@
       <h3>À venir</h3>
     </ng-template>
   </mat-expansion-panel>
-  <mat-expansion-panel [expanded]="true">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Journaux des robots
-      </mat-panel-title>
-      <mat-panel-description>
-        Information brute renvoyée par les robots
-        <mat-icon>feed</mat-icon>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <ng-template matExpansionPanelContent>
-      <app-logs></app-logs>
-      <mat-paginator></mat-paginator>
-    </ng-template>
-  </mat-expansion-panel>
+  <div class="last-expansion-panel">
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Journaux des robots
+        </mat-panel-title>
+        <mat-panel-description>
+          Information brute renvoyée par les robots
+          <mat-icon>feed</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <app-logs></app-logs>
+      </ng-template>
+    </mat-expansion-panel>
+  </div>
 </div>
 
 <!-- If there's no current mission -->

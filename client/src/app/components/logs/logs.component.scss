@@ -11,9 +11,13 @@ table {
   width: 100%;
 }
 
-
 .mat-header-cell {
   font-size: large;
+}
+
+.mat-table-wrapper {
+  overflow-y: auto;
+  max-height: 400px;
 }
 
 .mat-mdc-cell.mat-column-message {

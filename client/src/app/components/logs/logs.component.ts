@@ -41,7 +41,7 @@ import { Subscription } from "rxjs"
 })
 export class LogsComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort | undefined;
-  displayedColumns: string[] = ['logId', 'robotId', 'message', 'timestamp']
+  displayedColumns: string[] = ['eventType', 'robotId', 'message', 'timestamp']
   dataSource = new MatTableDataSource()
   private logSubscription: Subscription | undefined;
   constructor(private readonly logsService: LogsService) {}
@@ -49,9 +49,7 @@ export class LogsComponent implements AfterViewInit, OnInit, OnDestroy {
   subscribeToLogs() {
     this.logSubscription = this.logsService.logs.subscribe(newLogs => {
       const currentLogs = this.dataSource.data;
-      console.log("Current logs number", currentLogs.length)
       this.dataSource.data = [...currentLogs, ...newLogs];
-      console.log("New logs number", this.dataSource.data.length)
     })
   }
 
@@ -63,13 +61,38 @@ export class LogsComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscribeToLogs()
-    this.logsService.add()
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      if (this.activeFilters.size === 0) {
+        return true;
+      }
+      return this.activeFilters.has(data.status);
+    };
   }
 
   ngAfterViewInit() {
     if (this.sort) {
       this.dataSource.sort = this.sort;
     }
+  }
+  availableFilters: string[] = ['log', 'senseurs', 'commandes'];
+  activeFilters: Set<string> = new Set();
+
+  removeFilter(filter: string) {
+    this.activeFilters.delete(filter);
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    this.dataSource.filter = '' + Math.random();
+  }
+
+  toggleFilter(filter: string): void {
+    if (this.activeFilters.has(filter)) {
+      this.activeFilters.delete(filter);
+    } else {
+      this.activeFilters.add(filter);
+    }
+    this.applyFilters();
   }
 
 }

@@ -1,5 +1,5 @@
 export interface Logs {
-  logId: number | unknown;
+  eventType: string;
   robotId: number;
   message: string;
   timestamp: number;

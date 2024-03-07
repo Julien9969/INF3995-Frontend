@@ -34,6 +34,14 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   templateUrl: './ide.component.html',
   styleUrl: './ide.component.scss'
 })
+
+
+
+
+
+// TODO read only on mission in progress
+// TODO add confirmation dialog for update robot (and close edited file ?) 
+
 export class IdeComponent implements OnInit {
     treeControl = new NestedTreeControl<FilesTreeNode>(node => node.children);
     dataSource = new MatTreeNestedDataSource<FilesTreeNode>();
@@ -122,6 +130,7 @@ export class IdeComponent implements OnInit {
         this.filesService.getFile(this.selectedRobotId, file).subscribe({
             next: (response: HttpResponse<object>) => { 
                 console.log("Response:", response);
+                console.log((response.body as File).content);
                 this.codeEditorContent = (response.body as File).content;
                 this.openSnackBar(`Fichier ${file.name} chargé`);
             },
@@ -143,7 +152,7 @@ export class IdeComponent implements OnInit {
                 console.log("Response:", response);
                 console.log("Response code:", response.status);
                 console.log("Response body:", response.body);
-                this.openSnackBar(`Robot ${this.selectedRobotId} mis à jour`);
+                this.openSnackBar(`Robot ${this.selectedRobotId} est en cour de mise à jours...`);
             },
             error: (error) => {
                 console.error("Error:", error);

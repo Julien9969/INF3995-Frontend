@@ -99,6 +99,7 @@ export class IdeComponent implements OnInit {
             });
         } catch (error) {
             console.error(error);
+            this.openSnackBar(`Erreur lors de la récupération de l'arbre de fichier du robot ${this.selectedRobotId}`, true);
         }
     }
 

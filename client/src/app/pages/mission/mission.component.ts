@@ -14,6 +14,8 @@ import {MatPaginator} from "@angular/material/paginator";
 import {Router} from '@angular/router';
 import {HealthService} from "@app/services/health/health.service";
 import {MissionDetailsComponent} from "@app/components/mission-details/mission-details.component";
+import { MissionState } from '@app/classes/mission-status';
+import { SocketService } from '@app/services/socket/socket.service';
 
 @Component({
   imports: [MatCardModule,
@@ -38,27 +40,27 @@ import {MissionDetailsComponent} from "@app/components/mission-details/mission-d
   templateUrl: './mission.component.html'
 })
 export class MissionComponent implements OnInit {
-  // TODO: Will have to be retrieved from somewhere
-  robots = [
-    {id: 1, last_update: 17777777, battery: 0.25, distance: 0.11},
-    {id: 2, last_update: 17777777, battery: 0.25, distance: 0.0},
-  ];
-
+  missionInitialized: boolean = false; // Should display the little banner of not
+  ongoingMission: boolean = false;
   constructor(public missionService: MissionService,
+              public socketService: SocketService,
               private readonly healthService: HealthService,
               private router: Router) {
   }
 
   ngOnInit() {
+    // Unreachable server
     this.healthService.isServerOk().catch(async () => this.router.navigate(['/error']));
+
+    this.missionService.status.subscribe((updatedStatus) => {
+      if(!this.missionInitialized && updatedStatus.missionState == MissionState.ONGOING) {
+        this.missionInitialized = true;
+      }
+    })
   }
 
   toggleMission () {
     this.missionService.toggleMission()
-  }
-
-  get ongoingMission() {
-    return this.missionService.ongoingMission
   }
 
   identifyRobots(robotId: number) {

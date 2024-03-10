@@ -52,13 +52,14 @@ export class MissionDetailsComponent {
       }
       this.missionDataSource.data = [newMissionData]
 
-      this.robotDataSource.data = []
+      this.robotDataSource.data = [];
       for (let i = 0; i < updatedStatus.count; i++) {
         const newRobotData: RobotData = {
           id: i,
           battery: updatedStatus.batteries[i],
           distance: updatedStatus.distances[i],
         }
+        this.robotDataSource.data.push(newRobotData)
       }
     })
   }

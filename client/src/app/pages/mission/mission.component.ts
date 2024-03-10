@@ -9,7 +9,7 @@ import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatMenuModule, MatMenuTrigger} from "@angular/material/menu";
 import {MatAccordion, MatExpansionModule, MatExpansionPanel, MatExpansionPanelTitle} from "@angular/material/expansion";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf } from "@angular/common";
 import {MatPaginator} from "@angular/material/paginator";
 import {Router} from '@angular/router';
 import {HealthService} from "@app/services/health/health.service";
@@ -67,4 +67,7 @@ export class MissionComponent implements OnInit {
     this.missionService.identify(robotId).subscribe(response => console.log(response));
   }
 
+  get batteries(): number[] {
+    return this.missionService.status.getValue().batteries;
+  }
 }

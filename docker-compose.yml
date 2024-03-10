@@ -1,27 +1,17 @@
 version: '3.8'
 
 services:
-#  pj3-front:
-#    build:
-#      context: ./client
-#      dockerfile: Dockerfile
-#    image: inf3995-frontend
-#    volumes:
-#      - ./client:/usr/src/app
-#    stdin_open: true
-#    tty: true
-#    container_name: inf3995-frontend
-#    command: ["npm", "run", "docker-dev"]
-#    networks:
-#     - fastapi-network
-
-  theia-ide:
-    image: theiaide/sadl:latest
+  pj3-front:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: inf3995-frontend
     volumes:
-     - ./client:/home/project
-    ports:
-     - "3000:3000"
-    container_name: theia-ide
+      - ./client:/usr/src/app
+    stdin_open: true
+    tty: true
+    container_name: inf3995-frontend
+    command: ["npm", "run", "docker-dev"]
     networks:
      - fastapi-network
 

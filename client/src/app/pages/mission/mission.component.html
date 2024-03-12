@@ -17,9 +17,9 @@
       <span>Ramener robots à la base</span>
     </button>
     <div *ngFor="let _ of batteries; let i = index">
-      <button (click)="identifyRobots(i)" mat-menu-item>
+      <button (click)="identifyRobots(i+1)" mat-menu-item>
         <mat-icon>notifications_active</mat-icon>
-        <span>Identifier le robot #{{i}}</span>
+        <span>Identifier le robot #{{i + 1}}</span>
       </button>
     </div>
   </mat-menu>

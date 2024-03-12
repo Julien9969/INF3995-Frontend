@@ -2,6 +2,12 @@
   <img alt="LIMO Robot" src="assets/limo.png"/>
   <h2>Bienvenue sur le tableau de bord de notre programme robotique d'exploration marsienne!</h2>
   <h4>Rendez-vous sur la barre de menu pour lancer une nouvelle mission</h4>
+  <div *ngIf="robotsConnected.length === 0">
+    <h4>Il n'y a pas de robots actuellement connecté, attendre quelques secondes ou rafraîchir</h4>
+  </div>
+  <div *ngIf="robotsConnected.length > 0">
+    <h4>Robot connecté : {{ robotsConnected }}</h4>
+  </div>
 </div>
 <div class="identify"> 
   <div *ngFor="let robot of robots" class="identify">

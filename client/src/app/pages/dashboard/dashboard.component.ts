@@ -40,6 +40,6 @@ export class DashboardComponent {
   }
 
   identifyRobots(robotId: number) {
-    this.missionService.identify(robotId).subscribe(response => this.idResponses[robotId - 1] = response);
+    this.missionService.identify(robotId).subscribe(response => this.idResponses[robotId - 1]= response);
   }
 }

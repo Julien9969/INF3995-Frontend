@@ -33,4 +33,9 @@ export class FilesService {
     updateRobot(robotId: number): Observable<HttpResponse<string>> {
         return this.http.patch(localUrl(`files/update/${robotId}`), null, { observe: 'response', responseType: 'text' });
     }
+
+    missionStatus(): Observable<HttpResponse<boolean>> {
+        return this.http.get<boolean>(localUrl(`mission/status`), { observe: 'response', responseType: 'json' });
+    }
+
 }

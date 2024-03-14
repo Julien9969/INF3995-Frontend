@@ -110,6 +110,9 @@ export class IdeComponent implements OnInit {
             this.openSnackBar(`Pas de robot ou de fichier sélectionné`, true);
             return;
         }
+       
+        if (this.missionStatus()) return;
+
         this.filesService.saveFile(this.selectedRobotId, this.currentFile, this.codeEditorContent).subscribe({
             next: (response: HttpResponse<string>) => { 
                 console.log("Response code:", response.status);
@@ -148,6 +151,9 @@ export class IdeComponent implements OnInit {
             this.openSnackBar(`Pas de robot ou de fichier sélectionné`, true);
             return;
         }
+
+        if (this.missionStatus()) return;
+
         this.filesService.updateRobot(this.selectedRobotId).subscribe({
             next: (response: HttpResponse<string>) => { 
                 console.log("Response:", response);
@@ -169,7 +175,26 @@ export class IdeComponent implements OnInit {
           duration: 2500,
           panelClass: error ? ['error-message'] : ['success-message']
         });
-      }
+    }
+
+    missionStatus() {
+        let missionStatus: boolean = false;
+        this.filesService.missionStatus().subscribe({
+            next: (response: HttpResponse<boolean>) => { 
+                console.log("Response code:", response.status);
+                missionStatus = response.body as boolean;
+                if (response.body === true) {
+                    this.openSnackBar(`Mission en cours, action interdite`, true);
+                    return;
+                }
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                this.openSnackBar(`Erreur lors de la récupération du status de la mission`, true);
+            }
+        });
+        return missionStatus;
+    }
 
     hasChild = (_: number, node: FilesTreeNode) => !!node.children && node.children.length > 0;
 }

@@ -14,8 +14,8 @@ import {MatPaginator} from "@angular/material/paginator";
 import {Router} from '@angular/router';
 import {HealthService} from "@app/services/health/health.service";
 import {MissionDetailsComponent} from "@app/components/mission-details/mission-details.component";
-import { MissionState } from '@app/classes/mission-status';
-import { SocketService } from '@app/services/socket/socket.service';
+import {MissionState} from '@app/classes/mission-status';
+import {SocketService} from '@app/services/socket/socket.service';
 
 @Component({
   imports: [MatCardModule,
@@ -53,8 +53,11 @@ export class MissionComponent implements OnInit {
     this.healthService.isServerOk().catch(async () => this.router.navigate(['/error']));
 
     this.missionService.status.subscribe((updatedStatus) => {
-      if(!this.missionInitialized && updatedStatus.missionState == MissionState.ONGOING) {
+      if(updatedStatus.missionState == MissionState.ONGOING) {
         this.missionInitialized = true;
+        this.ongoingMission = true;
+      } else if(updatedStatus.missionState == MissionState.ENDED) {
+        this.ongoingMission = false;
       }
     })
   }

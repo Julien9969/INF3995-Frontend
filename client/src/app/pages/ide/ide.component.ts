@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NestedTreeControl } from '@angular/cdk/tree';
-import {Component, OnInit} from '@angular/core';
+import {NestedTreeControl} from '@angular/cdk/tree';
+import {Component} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatTreeModule, MatTreeNestedDataSource} from "@angular/material/tree";
-import { CommonModule } from '@angular/common';
-import { CodemirrorModule } from '@ctrl/ngx-codemirror';
-import { FormsModule } from '@angular/forms';
-import { FilesService } from '@app/services/files/files.service';
-import { FilesTree, FilesTreeNode } from '@app/interfaces/files-tree';
-import { File } from '@app/interfaces/file';
-import { HttpResponse } from '@angular/common/http';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
+import {CommonModule} from '@angular/common';
+import {CodemirrorModule} from '@ctrl/ngx-codemirror';
+import {FormsModule} from '@angular/forms';
+import {FilesService} from '@app/services/files/files.service';
+import {FilesTree, FilesTreeNode} from '@app/interfaces/files-tree';
+import {File} from '@app/interfaces/file';
+import {HttpResponse} from '@angular/common/http';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
@@ -35,14 +35,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   styleUrl: './ide.component.scss'
 })
 
-
-
-
-
-// TODO read only on mission in progress
-// TODO add confirmation dialog for update robot (and close edited file ?) 
-
-export class IdeComponent implements OnInit {
+export class IdeComponent {
     treeControl = new NestedTreeControl<FilesTreeNode>(node => node.children);
     dataSource = new MatTreeNestedDataSource<FilesTreeNode>();
     filesTree: FilesTree = [];
@@ -71,12 +64,7 @@ export class IdeComponent implements OnInit {
         lint: true,
     };
 
-
-  constructor(private filesService: FilesService, private _snackBar: MatSnackBar) {}
-
-    ngOnInit() {
-        console.log("IDE component initialized");
-    }
+    constructor(private filesService: FilesService, private _snackBar: MatSnackBar) {}
 
     onRobotSelected() {
         console.log("Selected robot:", this.selectedRobotId);
@@ -124,7 +112,6 @@ export class IdeComponent implements OnInit {
                 this.openSnackBar(`Erreur lors de la sauvegarde du fichier`, true);
             }
         });
-        console.log("save");
     }
 
     loadFile(file: FilesTreeNode) {
@@ -156,7 +143,6 @@ export class IdeComponent implements OnInit {
 
         this.filesService.updateRobot(this.selectedRobotId).subscribe({
             next: (response: HttpResponse<string>) => { 
-                console.log("Response:", response);
                 console.log("Response code:", response.status);
                 console.log("Response body:", response.body);
                 this.openSnackBar(`Robot ${this.selectedRobotId} est en cour de mise à jours...`);

@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
-import { FilesService } from './files.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpResponse } from '@angular/common/http';
-import { FilesTreeNode } from '@app/interfaces/files-tree';
-import { environmentExt } from '@environment-ext';
+import {TestBed} from '@angular/core/testing';
+import {FilesService} from './files.service';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {HttpResponse} from '@angular/common/http';
+import {FilesTreeNode} from '@app/interfaces/files-tree';
+import {environmentExt} from '@environment-ext';
 
 describe('FilesService', () => {
   let service: FilesService;

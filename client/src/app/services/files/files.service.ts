@@ -10,8 +10,8 @@ const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
   providedIn: 'root'
 })
 export class FilesService {
-  constructor(private readonly http: HttpClient) {
-  }
+    
+    constructor(private readonly http: HttpClient) {}
 
     getFileTree(robotId: number): Observable<HttpResponse<string>> {
         return this.http.get<string>(localUrl(`files/tree/${robotId}`), { observe: 'response', responseType: 'json' });

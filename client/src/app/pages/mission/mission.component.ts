@@ -40,10 +40,11 @@ import {MissionDetailsComponent} from "@app/components/mission-details/mission-d
 export class MissionComponent implements OnInit {
   ongoingMission = false;
 
-  constructor(private missionService: MissionService,
-              private readonly healthService: HealthService,
-              private router: Router) {
-  }
+  constructor(
+    private missionService: MissionService,
+    private readonly healthService: HealthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.healthService.isServerOk().catch(async () => this.router.navigate(['/error']));

@@ -38,8 +38,8 @@ export class DashboardComponent implements OnInit {
 
   idResponses = ["",""]
 
-  constructor(private readonly missionService: MissionService) {
-  }
+  constructor(private readonly missionService: MissionService) {}
+  
   ngOnInit(): void {
     this.robotsConnected = []
 

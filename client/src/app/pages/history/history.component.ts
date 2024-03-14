@@ -2,9 +2,7 @@ import {Component} from '@angular/core';
 import {LogsComponent} from "@app/components/logs/logs.component";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatCard} from "@angular/material/card";
-import {
-  MatTableModule
-} from "@angular/material/table";
+import {MatTableModule} from "@angular/material/table";
 
 @Component({
   selector: 'app-history',

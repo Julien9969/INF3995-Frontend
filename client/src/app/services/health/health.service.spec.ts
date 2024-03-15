@@ -4,7 +4,7 @@ import {HealthService} from './health.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {environment} from '@environment';
 
-const LOCAL_URL = `${environment.serverUrl}api/ping`;
+const LOCAL_URL = `${environment.serverUrl}api/ping/`;
 
 describe('HealthService', () => {
   let service: HealthService;
@@ -15,7 +15,6 @@ describe('HealthService', () => {
     service = TestBed.inject(HealthService);
     httpMock = TestBed.inject(HttpTestingController);
   });
-
   it('should be created', () => {
     expect(service).toBeTruthy();
   });

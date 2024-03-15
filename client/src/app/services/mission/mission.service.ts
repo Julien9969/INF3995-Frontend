@@ -25,7 +25,7 @@ export class MissionService {
   private _status: BehaviorSubject<MissionStatus> = new BehaviorSubject(this.defaultStatus);
 
   constructor(private http: HttpClient, private readonly socketService: SocketService) {
-    // Every second there's an update from the
+    // Every second there's an update from the backend with the status
     this.socketService.on(WebsocketsEvents.MISSION_STATUS, (rawUpdate: string) => {
       const jsonUpdate = JSON.parse(rawUpdate);
       const update: MissionStatus = {

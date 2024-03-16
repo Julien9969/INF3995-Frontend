@@ -14,6 +14,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {Router} from '@angular/router';
 import {HealthService} from "@app/services/health/health.service";
 import {MissionDetailsComponent} from "@app/components/mission-details/mission-details.component";
+import {MapViewComponent} from "@app/components/map-view/map-view.component";
 
 @Component({
   imports: [MatCardModule,
@@ -31,6 +32,7 @@ import {MissionDetailsComponent} from "@app/components/mission-details/mission-d
     MatAccordion,
     MatExpansionModule,
     MatExpansionPanel,
+    MapViewComponent,
     MatExpansionPanelTitle, NgForOf, MatPaginator, NgIf, MissionDetailsComponent],
   selector: 'app-mission',
   standalone: true,

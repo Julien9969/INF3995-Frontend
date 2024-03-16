@@ -1,10 +1,11 @@
 import { CommonModule, NgForOf } from '@angular/common';
-import {Component, OnInit} from '@angular/core';
+import {OnInit, Component} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import {MatIcon, MatIconModule} from "@angular/material/icon";
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MissionService } from '@app/services/mission/mission.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -40,13 +41,20 @@ export class DashboardComponent implements OnInit {
 
   constructor(private readonly missionService: MissionService) {}
   
-  ngOnInit(): void {
+  async ngOnInit() {
     this.robotsConnected = []
 
-    this.missionService.checkConnection().subscribe(response => this.robotsConnected = response);
+    try {
+      const req = this.missionService.checkConnection();
+      this.robotsConnected = await lastValueFrom(req);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   identifyRobots(robotId: number) {
     this.missionService.identify(robotId).subscribe(response => this.idResponses[robotId - 1] = response);
   }
 }
+
+

@@ -21,10 +21,7 @@ export class MissionService {
   }
 
   checkConnection(): Observable<number[]> {
-    return this.http.get(localUrl(`identify/connected`), { responseType: 'text' })
-      .pipe(
-        map(response => {console.log(response); return response as unknown as number[];} )
-      );
+    return this.http.get<number[]>(localUrl('identify/connected'));
   }
 
   startMission(): Observable<string> {

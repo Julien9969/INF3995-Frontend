@@ -14,5 +14,8 @@ import {MatIcon} from "@angular/material/icon";
   styleUrl: './ide.component.scss'
 })
 export class IdeComponent {
-
+  redirect() {
+    // Check IDE Connection
+    window.location.href = "http://localhost:3000"
+  }
 }

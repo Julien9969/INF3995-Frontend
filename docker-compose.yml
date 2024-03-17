@@ -1,27 +1,19 @@
 version: '3.8'
 
 services:
-#  pj3-front:
-#    build:
-#      context: ./client
-#      dockerfile: Dockerfile
-#    image: inf3995-frontend
-#    volumes:
-#      - ./client:/usr/src/app
-#    stdin_open: true
-#    tty: true
-#    container_name: pj3-front
-#    command: ["npm", "run", "docker-dev"]
-#    networks:
-#      - fastapi-network
-
-  potree:
+  pj3-front:
     build:
-      context: ./potree
+      context: ./client
       dockerfile: Dockerfile
-    image: inf3995-potree
-    ports:
-      - "8080:8080"
+    image: inf3995-frontend
+    volumes:
+      - ./client:/usr/src/app
+    stdin_open: true
+    tty: true
+    container_name: inf3995-frontend
+    command: ["npm", "run", "docker-dev"]
+    networks:
+     - fastapi-network
 
 networks:
   fastapi-network:

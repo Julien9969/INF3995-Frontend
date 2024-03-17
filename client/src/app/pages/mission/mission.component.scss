@@ -1,7 +1,6 @@
 body {
   display: flex;
   flex-direction: column;
-  height: 100vh;
 }
 
 .bar-spacer {
@@ -10,6 +9,10 @@ body {
 
 .mat-expansion-panel {
   margin: 16px;
+}
+
+.last-expansion-panel {
+  margin-bottom: 32px;
 }
 
 mat-expansion-panel {

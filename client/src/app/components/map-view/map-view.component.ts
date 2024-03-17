@@ -11,7 +11,7 @@ import {MapService} from "@app/services/map/map.service";
 export class MapViewComponent implements AfterViewInit {
   @ViewChild('mapCanvas', { static: false }) private mapCanvas!: ElementRef<HTMLCanvasElement>;
 
-  constructor(readonly mapService: MapService) {
+  constructor(private mapService: MapService) {
   }
 
   get canvas(): HTMLCanvasElement {
@@ -27,7 +27,7 @@ export class MapViewComponent implements AfterViewInit {
   }
 
   updateCanvas() {
-    this.mapService.bitmapObservable.subscribe( (bitmap: HTMLImageElement) => {
+    this.mapService.image.subscribe( (bitmap: HTMLImageElement) => {
       this.context.drawImage(bitmap, 0, 0, this.canvas.width, this.canvas.height)
     });
   }

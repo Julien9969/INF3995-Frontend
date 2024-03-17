@@ -27,6 +27,8 @@ export class MapViewComponent implements AfterViewInit {
   }
 
   updateCanvas() {
+    const defaultImage = this.mapService.image.getValue();
+    this.context.drawImage(defaultImage, 0, 0, this.canvas.width, this.canvas.height)
     this.mapService.image.subscribe( (bitmap: HTMLImageElement) => {
       this.context.drawImage(bitmap, 0, 0, this.canvas.width, this.canvas.height)
     });

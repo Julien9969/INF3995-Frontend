@@ -51,10 +51,8 @@ export class MissionService {
   toggleMission() {
     if (this._status.getValue().missionState == MissionState.ONGOING) {
       this.socketService.send(WebsocketsEvents.MISSION_END);
-    } else if (this._status.getValue().missionState == MissionState.NOT_STARTED) {
+    } else if (this._status.getValue().missionState == MissionState.NOT_STARTED || this._status.getValue().missionState == MissionState.ENDED){
       this.socketService.send(WebsocketsEvents.MISSION_START);
-    } else {
-      this.socketService.send(WebsocketsEvents.MISSION_RESTART)
     }
   }
 

@@ -103,7 +103,10 @@
                 "src/styles"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "codeCoverageExclude": [
+              "src/app/classes/helpers/*"
+            ]
           }
         },
         "lint": {

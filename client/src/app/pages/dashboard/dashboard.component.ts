@@ -1,5 +1,5 @@
 import { CommonModule, NgForOf } from '@angular/common';
-import {OnInit, Component} from '@angular/core';
+import {Component, AfterContentInit} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import {MatIcon, MatIconModule} from "@angular/material/icon";
@@ -29,7 +29,7 @@ import { lastValueFrom } from 'rxjs';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements AfterContentInit {
   
   robotsConnected:number[] = [];
   robots = [
@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private readonly missionService: MissionService) {}
   
-  async ngOnInit() {
+  async ngAfterContentInit() {
     this.robotsConnected = []
 
     try {

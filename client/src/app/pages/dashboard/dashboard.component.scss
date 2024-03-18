@@ -4,13 +4,22 @@
   width: 100%;
   flex-direction: column;
   align-items: center;
-  height: 80%;
+  height: 70%;
   margin: 0px;
 }
 
 img {
-  width: 30%;
+  width: 20%;
   height: auto;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  width: 100%;
 }
 
 .identify{
@@ -28,7 +37,7 @@ img {
   // grid-auto-rows: 1fr;
   // grid-auto-flow: row;
   button{
-    min-width: 100%;
+    // min-width: 100%;
     font-size: large;
   }
 }

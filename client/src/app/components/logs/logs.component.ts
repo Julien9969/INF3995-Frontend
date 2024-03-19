@@ -85,7 +85,7 @@ export class LogsComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   applyFilters() {
-    this.dataSource.filter = '' + Math.random();
+    this.dataSource.filter = '' + Math.random(); // triggers new filtering
   }
 
   toggleFilter(filter: string): void {

@@ -10,6 +10,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {BehaviorSubject, Subject} from "rxjs";
 import {Logs} from "@app/classes/logs";
 import {Observable} from "rxjs/internal/Observable";
+import {LogsService} from "@app/services/logs/logs.service";
 
 describe('LogsComponent', () => {
   let component: LogsComponent;
@@ -18,15 +19,14 @@ describe('LogsComponent', () => {
   let logsObservable: Subject<Logs[]>;
 
   beforeEach(async () => {
-    logsObservable = new BehaviorSubject<Logs[]>([]);
-    logServiceSpyObj = jasmine.createSpyObj('LogsService', { logs: logsObservable.asObservable() });
+    logsObservable = new Subject<Logs[]>();
+    logServiceSpyObj = jasmine.createSpyObj('LogsService', [],{ logs: logsObservable.asObservable() });
     await TestBed.configureTestingModule({
       imports: [LogsComponent, MatDialogClose, MatTableModule, MatIcon, MatHeaderRowDef, MatRowDef, MatCellDef, MatHeaderCellDef, MatCard, BrowserAnimationsModule, HttpClientTestingModule],
       providers: [
-        { provide: LogsComponent, useValue: logServiceSpyObj}
+        { provide: LogsService, useValue: logServiceSpyObj}
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LogsComponent);
     component = fixture.componentInstance;
@@ -38,22 +38,23 @@ describe('LogsComponent', () => {
   });
 
   it('should remove filters', () => {
-    component.toggleFilter('test');
-    expect(component.availableFilters.length).toBe(1);
-    component.removeFilter('test');
-    expect(component.availableFilters.length).toBe(0);
+    component.toggleFilter('log');
+    expect(component['activeFilters'].size).toBe(1);
+    component.removeFilter('log');
+    expect(component['activeFilters'].size).toBe(0);
   });
 
   it('should toggle filters', () => {
-    component.toggleFilter('test');
-    expect(component.availableFilters.length).toBe(1);
-    component.toggleFilter('test');
-    expect(component.availableFilters.length).toBe(0);
+    component.toggleFilter('log');
+    expect(component['activeFilters'].size).toBe(1);
+    component.toggleFilter('log');
+    expect(component['activeFilters'].size).toBe(0);
   });
 
-  it("should subscribe to logs", () => {
+  it("should add log", () => {
     expect(component.dataSource.data.length).toBe(0);
-    logsObservable.next([{eventType: "test", robotId: 1, message: "test", timestamp: 1}])
+    const log = {eventType: "test", robotId: 1, message: "test", timestamp: 1};
+    logsObservable.next([log])
     expect(component.dataSource.data.length).toBe(1);
   });
 

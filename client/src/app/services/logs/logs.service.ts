@@ -11,10 +11,12 @@ import { Observable, Subject } from 'rxjs';
 export class LogsService {
   private _logs = new Subject<Logs[]>();
   constructor(private readonly socketService: SocketService) {
-    this.socketService.on(WebsocketsEvents.LOG_DATA, (newLog:string) => {
-      const parsedLog: Logs = JSON.parse(newLog)
-      this._logs.next([parsedLog]);
-    })
+    this.socketService.on(WebsocketsEvents.LOG_DATA, (newLog:string) => this.saveLog(newLog))
+  }
+
+  private saveLog(newLog: string){
+    const parsedLog: Logs = JSON.parse(newLog)
+    this._logs.next([parsedLog]);
   }
 
   get logs(): Observable<Logs[]> {

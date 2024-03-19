@@ -11,7 +11,7 @@ import {BehaviorSubject, Subject} from "rxjs";
 import {Logs} from "@app/classes/logs";
 import {Observable} from "rxjs/internal/Observable";
 
-fdescribe('LogsComponent', () => {
+describe('LogsComponent', () => {
   let component: LogsComponent;
   let fixture: ComponentFixture<LogsComponent>;
   let logServiceSpyObj: jasmine.SpyObj<LogsComponent>;

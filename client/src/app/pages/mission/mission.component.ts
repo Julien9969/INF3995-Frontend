@@ -16,7 +16,6 @@ import {HealthService} from "@app/services/health/health.service";
 import {MissionDetailsComponent} from "@app/components/mission-details/mission-details.component";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
 import {MissionState} from '@app/classes/mission-status';
-import {SocketService} from '@app/services/socket/socket.service';
 
 @Component({
   imports: [MatCardModule,
@@ -45,8 +44,7 @@ export class MissionComponent implements OnInit {
   missionInitialized: boolean = false; // Should display the little banner of not
   ongoingMission: boolean = false;
   constructor(public missionService: MissionService,
-              public socketService: SocketService,
-              private readonly healthService: HealthService,
+              private healthService: HealthService,
               private router: Router) {
   }
 

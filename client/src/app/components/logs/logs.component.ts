@@ -61,12 +61,14 @@ export class LogsComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscribeToLogs();
-    this.dataSource.filterPredicate = (data: any) => {
-      if (this.activeFilters.size === 0) {
-        return true;
-      }
-      return this.activeFilters.has(data.status);
-    };
+    this.dataSource.filterPredicate = (data: any) => this.predicate(data);
+  }
+
+  predicate(data: any){
+    if (this.activeFilters.size === 0) {
+      return true;
+    }
+    return this.activeFilters.has(data.status);
   }
 
   ngAfterViewInit() {

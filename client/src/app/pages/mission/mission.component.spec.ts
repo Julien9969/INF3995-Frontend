@@ -13,7 +13,7 @@ import {BehaviorSubject} from 'rxjs';
 import {MissionState, MissionStatus} from '@app/classes/mission-status';
 import {Observable} from "rxjs/internal/Observable";
 
-fdescribe('MissionsComponent', () => {
+describe('MissionsComponent', () => {
   let component: MissionComponent;
   let fixture: ComponentFixture<MissionComponent>;
   let healthServiceSpyObj: jasmine.SpyObj<HealthService>;

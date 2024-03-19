@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {map} from 'rxjs/operators';
 import {HttpClient} from "@angular/common/http";
 import {environmentExt} from "@environment-ext";
@@ -18,7 +18,7 @@ export class MissionService {
     missionState: MissionState.NOT_STARTED,
     startTimestamp: 0,
     elapsedTime: 0,
-    count: 2,
+    count: 0,
     batteries: [],
     distances: []
   }
@@ -26,19 +26,25 @@ export class MissionService {
 
   constructor(private http: HttpClient, private readonly socketService: SocketService) {
     // Every second there's an update from the backend with the status
-    this.socketService.on(WebsocketsEvents.MISSION_STATUS, (rawUpdate: string) => {
-      const jsonUpdate = JSON.parse(rawUpdate);
-      const update: MissionStatus = {
-        missionState: jsonUpdate.missionState as MissionState || MissionState.NOT_STARTED,
-        startTimestamp: jsonUpdate.startTimestamp || 0,
-        elapsedTime: jsonUpdate.elapsedTime || 0,
-        count: jsonUpdate.count || 0,
-        batteries: jsonUpdate.batteries || [],
-        distances: jsonUpdate.distances || []
-      }
-      this._status.next(update);
-    })
+    this.socketService.on(WebsocketsEvents.MISSION_STATUS, () => this.socketService.on(WebsocketsEvents.MISSION_STATUS, (update: string) => this.updateMission(update)));
     this.socketService.send(WebsocketsEvents.MISSION_STATUS); // Retrieves status upon initialization of the service
+  }
+
+  get status(): BehaviorSubject<MissionStatus> {
+    return this._status;
+  }
+
+  updateMission(rawUpdate: string) {
+    const jsonUpdate = JSON.parse(rawUpdate);
+    const update: MissionStatus = {
+      missionState: jsonUpdate.missionState as MissionState || MissionState.NOT_STARTED,
+      startTimestamp: jsonUpdate.startTimestamp || 0,
+      elapsedTime: jsonUpdate.elapsedTime || 0,
+      count: jsonUpdate.count || 0,
+      batteries: jsonUpdate.batteries || [],
+      distances: jsonUpdate.distances || []
+    }
+    this._status.next(update);
   }
 
   identify(robotId: number): Observable<string> {
@@ -49,14 +55,11 @@ export class MissionService {
   }
 
   toggleMission() {
-    if (this._status.getValue().missionState == MissionState.ONGOING) {
+    const state = this._status.getValue().missionState;
+    if (state == MissionState.ONGOING) {
       this.socketService.send(WebsocketsEvents.MISSION_END);
-    } else if (this._status.getValue().missionState == MissionState.NOT_STARTED || this._status.getValue().missionState == MissionState.ENDED){
+    } else {
       this.socketService.send(WebsocketsEvents.MISSION_START);
     }
-  }
-
-  get status(): BehaviorSubject<MissionStatus> {
-    return this._status;
   }
 }

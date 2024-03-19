@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { LogsService } from './logs.service';
 import {SocketService} from "@app/services/socket/socket.service";
+import {Logs} from "@app/classes/logs";
 
 describe('LogsService', () => {
   let service: LogsService;
@@ -25,9 +26,11 @@ describe('LogsService', () => {
   });
 
   it("should save logs", async () => {
+    const log: Logs = {eventType: 'log', robotId: 1, message: 'test', timestamp: 1};
+    const jsonLog = JSON.stringify(log);
     service.logs.subscribe((logs) => {
-      expect(logs.length).toBe(1);
+      expect(logs).toEqual([log]);
     });
-    service['saveLog']("test");
+    service['saveLog'](jsonLog);
   });
 });

@@ -67,7 +67,7 @@ export class MissionComponent implements OnInit {
   }
 
   identifyRobots(robotId: number) {
-    this.missionService.identify(robotId).subscribe(response => console.log(response));
+    this.missionService.identify(robotId).subscribe(response => console.log(response)); // TODO: put back the snack bar
   }
 
   get batteries(): number[] {

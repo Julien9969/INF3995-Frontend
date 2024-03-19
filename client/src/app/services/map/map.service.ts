@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {SocketService} from "@app/services/socket/socket.service";
 import {BehaviorSubject} from "rxjs";
+import {WebsocketsEvents} from "@app/classes/websockets-events";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class MapService {
     const image = new Image();
     image.src = this.defaultImage;
     this.imageSubject = new BehaviorSubject<HTMLImageElement>(image)
-    this.socket.on('map-data', (bitmapBase64: string) => this.loadImage(bitmapBase64))
+    this.socket.on(WebsocketsEvents.MAP_DATA, (bitmapBase64: string) => this.loadImage(bitmapBase64))
   }
 
   get image() {

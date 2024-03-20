@@ -9,11 +9,13 @@ import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatMenuModule, MatMenuTrigger} from "@angular/material/menu";
 import {MatAccordion, MatExpansionModule, MatExpansionPanel, MatExpansionPanelTitle} from "@angular/material/expansion";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf } from "@angular/common";
 import {MatPaginator} from "@angular/material/paginator";
 import {Router} from '@angular/router';
 import {HealthService} from "@app/services/health/health.service";
 import {MissionDetailsComponent} from "@app/components/mission-details/mission-details.component";
+import {MapViewComponent} from "@app/components/map-view/map-view.component";
+import {MissionState} from '@app/classes/mission-status';
 
 @Component({
   imports: [MatCardModule,
@@ -31,6 +33,7 @@ import {MissionDetailsComponent} from "@app/components/mission-details/mission-d
     MatAccordion,
     MatExpansionModule,
     MatExpansionPanel,
+    MapViewComponent,
     MatExpansionPanelTitle, NgForOf, MatPaginator, NgIf, MissionDetailsComponent],
   selector: 'app-mission',
   standalone: true,
@@ -38,25 +41,36 @@ import {MissionDetailsComponent} from "@app/components/mission-details/mission-d
   templateUrl: './mission.component.html'
 })
 export class MissionComponent implements OnInit {
-  ongoingMission = false;
-
-  constructor(
-    private missionService: MissionService,
-    private readonly healthService: HealthService,
-    private router: Router
-  ) {}
+  missionInitialized: boolean = false; // Should display the little banner of not
+  ongoingMission: boolean = false;
+  constructor(public missionService: MissionService,
+              private healthService: HealthService,
+              private router: Router) {
+  }
 
   ngOnInit() {
+    // Unreachable server
     this.healthService.isServerOk().catch(async () => this.router.navigate(['/error']));
+
+    this.missionService.status.subscribe((updatedStatus) => {
+      if(updatedStatus.missionState == MissionState.ONGOING) {
+        this.missionInitialized = true;
+        this.ongoingMission = true;
+      } else if(updatedStatus.missionState == MissionState.ENDED) {
+        this.ongoingMission = false;
+      }
+    })
   }
 
-  toggleMission() {
-    this.ongoingMission = !this.ongoingMission;
-    if (this.ongoingMission){
-      this.missionService.startMission().subscribe(response => console.log(response));
-    } else{
-      this.missionService.stopMission().subscribe(response => console.log(response));
-    }
+  toggleMission () {
+    this.missionService.toggleMission()
   }
 
+  identifyRobots(robotId: number) {
+    this.missionService.identify(robotId).subscribe(response => console.log(response)); // TODO: put back the snack bar
+  }
+
+  get batteries(): number[] {
+    return this.missionService.status.getValue().batteries;
+  }
 }

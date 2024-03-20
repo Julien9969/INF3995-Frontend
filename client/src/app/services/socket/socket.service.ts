@@ -12,10 +12,6 @@ export class SocketService {
     this.socketClient = io(environment.serverUrl, { transports: ['websocket'], upgrade: false });
   }
 
-  reset(): void {
-    this.socketClient.emit('exit');
-  }
-
   join(id: string): void {
     this.socketClient.emit('joinRoom', id);
   }

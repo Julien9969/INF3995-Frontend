@@ -6,11 +6,6 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatTable, MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MissionService} from '@app/services/mission/mission.service';
 
-interface MissionData {
-  name: string;
-  elapsedTime: number;
-}
-
 interface RobotData {
   id: number,
   distance: number;
@@ -39,19 +34,13 @@ interface RobotData {
   styleUrl: './mission-details.component.scss'
 })
 export class MissionDetailsComponent {
-  missionDisplayedColumns: string[] = ['name', 'elapsedTime'];
-  missionDataSource: MatTableDataSource<MissionData> = new MatTableDataSource();
   robotDisplayedColumns: string[] = ['id', 'distance', 'battery'];
   robotDataSource: MatTableDataSource<RobotData> = new MatTableDataSource();
+  elapsedTime: string = '0:00:00';
 
   constructor(public readonly missionService: MissionService) {
     this.missionService.status.subscribe((updatedStatus) => {
-      const newMissionData: MissionData = {
-        name: "Mission", // TODO: read actual value
-        elapsedTime: updatedStatus.elapsedTime
-      }
-      this.missionDataSource.data = [newMissionData]
-
+      this.elapsedTime = this.formatTime(updatedStatus.elapsedTime) // Unix timestamp
       this.robotDataSource.data = [];
       for (let i = 0; i < updatedStatus.count; i++) {
         const newRobotData: RobotData = {
@@ -62,5 +51,9 @@ export class MissionDetailsComponent {
         this.robotDataSource.data.push(newRobotData)
       }
     })
+  }
+
+  formatTime(timestamp: number): string {
+    return new DatePipe('en-US').transform(timestamp * 1000, 'HH:mm:ss') || '0:00:00'
   }
 }

@@ -16,12 +16,12 @@
       <mat-icon>crisis_alert</mat-icon>
       <span>Ramener robots à la base</span>
     </button>
-    <div *ngFor="let _ of batteries; let i = index">
+    <!-- <div *ngFor="let _ of batteries; let i = index">
       <button [disabled]="!this.ongoingMission" (click)="identifyRobots(i+1)" mat-menu-item>
         <mat-icon>notifications_active</mat-icon>
         <span>Identifier le robot #{{i + 1}}</span>
       </button>
-    </div>
+    </div> -->
   </mat-menu>
 </mat-toolbar>
 

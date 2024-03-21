@@ -48,10 +48,7 @@ export class MissionService {
   }
 
   identify(robotId: number): Observable<string> {
-    return this.http.get(localUrl(`identify/id/${robotId}`), {responseType: 'text'})
-      .pipe(
-        map(response => response.toString())
-      );
+    return this.http.get(localUrl(`identify/id/${robotId}`), {responseType: 'text'});
   }
 
   toggleMission() {

@@ -16,6 +16,7 @@ import {HealthService} from "@app/services/health/health.service";
 import {MissionDetailsComponent} from "@app/components/mission-details/mission-details.component";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
 import {MissionState} from '@app/classes/mission-status';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   imports: [MatCardModule,
@@ -45,7 +46,8 @@ export class MissionComponent implements OnInit {
   ongoingMission: boolean = false;
   constructor(public missionService: MissionService,
               private healthService: HealthService,
-              private router: Router) {
+              private router: Router,
+              private matSnackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -67,7 +69,11 @@ export class MissionComponent implements OnInit {
   }
 
   identifyRobots(robotId: number) {
-    this.missionService.identify(robotId).subscribe(response => console.log(response)); // TODO: put back the snack bar
+    this.missionService.identify(robotId).subscribe((response) => {
+      this.matSnackBar.open(`Robot ${robotId} s'est identifié!`, 'Close', {
+        duration: 2000,
+      });
+    });
   }
 
   get batteries(): number[] {

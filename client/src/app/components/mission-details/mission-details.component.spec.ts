@@ -4,6 +4,7 @@ import {MissionDetailsComponent} from './mission-details.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {MissionService} from "@app/services/mission/mission.service";
 import {Observable} from "rxjs/internal/Observable";
+import {DatePipe} from "@angular/common";
 
 describe('MissionDetailsComponent', () => {
   let component: MissionDetailsComponent;
@@ -15,7 +16,13 @@ describe('MissionDetailsComponent', () => {
       providers: [{
         provide: MissionService,
         useValue: jasmine.createSpyObj('MissionService', [], {status: new Observable()}),
-      }]
+      },
+        {
+          provide: DatePipe,
+          useValue: {
+            transform: (date: number) => '00:00:00'
+          },
+        }]
     })
       .compileComponents();
 
@@ -29,8 +36,9 @@ describe('MissionDetailsComponent', () => {
   });
 
   it('should format time', () => {
-    const timestamp = 0;
-    expect(component.formatTime(timestamp)).toBe('19:00:00');
+    const timestamp = 180;
+    const formattedTime = component.formatTime(timestamp)
+    expect(formattedTime).toBe('03:00');
   });
 
 });

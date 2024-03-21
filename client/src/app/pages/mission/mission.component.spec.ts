@@ -98,4 +98,9 @@ describe('MissionsComponent', () => {
     expect(component.missionService.identify).toHaveBeenCalledWith(1);
     expect(matSnackSpy['open']).toHaveBeenCalled();
   });
+
+  it('it should open snackbar', () => {
+    component.openSnackBar(1);
+    expect(matSnackSpy['open']).toHaveBeenCalled();
+  });
 });

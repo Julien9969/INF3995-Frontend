@@ -58,6 +58,6 @@ export class MissionDetailsComponent {
   }
 
   formatTime(timestamp: number): string {
-    return new DatePipe('en-US').transform(timestamp * 1000, 'HH:mm:ss') || '0:00:00'
+    return new DatePipe('en-US').transform(timestamp * 1000, 'mm:ss') || '00:00'
   }
 }

@@ -68,12 +68,14 @@ export class MissionComponent implements OnInit {
     this.missionService.toggleMission()
   }
 
-  identifyRobots(robotId: number) {
-    this.missionService.identify(robotId).subscribe((response) => {
-      this.matSnackBar.open(`Robot ${robotId} s'est identifié!`, 'Close', {
-        duration: 2000,
-      });
+  openSnackBar(robotId: number) {
+    this.matSnackBar.open(`Robot ${robotId} s'est identifié!`, 'Close', {
+      duration: 2000,
     });
+  }
+
+  identifyRobots(robotId: number) {
+    this.missionService.identify(robotId).subscribe(() => this.openSnackBar(robotId));
   }
 
   get batteries(): number[] {

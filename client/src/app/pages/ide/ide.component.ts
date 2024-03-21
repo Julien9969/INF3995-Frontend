@@ -15,6 +15,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { MissionService } from '@app/services/mission/mission.service';
+import { MissionState } from '@app/classes/mission-status';
 
 @Component({
   selector: 'app-ide',
@@ -64,7 +66,7 @@ export class IdeComponent {
         lint: true,
     };
 
-    constructor(private filesService: FilesService, private _snackBar: MatSnackBar) {}
+    constructor(private filesService: FilesService, private missionService: MissionService,private _snackBar: MatSnackBar) {}
 
     onRobotSelected() {
         console.log("Selected robot:", this.selectedRobotId);
@@ -99,7 +101,10 @@ export class IdeComponent {
             return;
         }
        
-        if (this.missionStatus()) return;
+        if (this.isMissionOnGoing()) {
+            this.openSnackBar(`Impossible de sauvegarder le fichier pendant une mission`, true);
+            return;
+        }
 
         this.filesService.saveFile(this.selectedRobotId, this.currentFile, this.codeEditorContent).subscribe({
             next: (response: HttpResponse<string>) => { 
@@ -139,7 +144,10 @@ export class IdeComponent {
             return;
         }
 
-        if (this.missionStatus()) return;
+        if (this.isMissionOnGoing()) {
+            this.openSnackBar(`Impossible de mettre à jours le robot ${this.selectedRobotId} pendant une mission`, true);
+            return;
+        }
 
         this.filesService.updateRobot(this.selectedRobotId).subscribe({
             next: (response: HttpResponse<string>) => { 
@@ -163,23 +171,8 @@ export class IdeComponent {
         });
     }
 
-    missionStatus() {
-        let missionStatus: boolean = false;
-        this.filesService.missionStatus().subscribe({
-            next: (response: HttpResponse<boolean>) => { 
-                console.log("Response code:", response.status);
-                missionStatus = response.body as boolean;
-                if (response.body === true) {
-                    this.openSnackBar(`Mission en cours, action interdite`, true);
-                    return;
-                }
-            },
-            error: (error) => {
-                console.error("Error:", error);
-                this.openSnackBar(`Erreur lors de la récupération du status de la mission`, true);
-            }
-        });
-        return missionStatus;
+    isMissionOnGoing() {
+        return this.missionService.status.getValue().missionState === MissionState.ONGOING;
     }
 
     hasChild = (_: number, node: FilesTreeNode) => !!node.children && node.children.length > 0;

@@ -8,6 +8,8 @@ import { HttpResponse } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FilesTree } from '@app/interfaces/files-tree';
+import { MissionService } from '@app/services/mission/mission.service';
+import { MissionState } from '@app/classes/mission-status';
 
 const fileTreeMock: FilesTree = [
     {
@@ -32,13 +34,18 @@ describe('IdeComponent', () => {
   let component: IdeComponent;
   let fixture: ComponentFixture<IdeComponent>;
   let filesServiceSpy: jasmine.SpyObj<FilesService>;
+  let missionServiceMock: jasmine.SpyObj<MissionService>;
   let mockResponse: HttpResponse<any>;
   let mockResponse2: HttpResponse<any>;
 
   beforeEach(async () => {
-    filesServiceSpy = jasmine.createSpyObj('FilesService', ['getFileTree', 'saveFile', 'getFile', 'updateRobot', 'missionStatus']);
+    filesServiceSpy = jasmine.createSpyObj('FilesService', ['getFileTree', 'saveFile', 'getFile', 'updateRobot']);
+    missionServiceMock = jasmine.createSpyObj('MissionService', ['status']);
+    missionServiceMock.status.getValue = jasmine.createSpy('getValue').and.returnValue({ missionState: MissionState.NOT_STARTED });
     mockResponse = new HttpResponse({ status: 200, body: { content: 'Test content'}});
     mockResponse2 = new HttpResponse({ status: 200, body: JSON.stringify(fileTreeMock)});
+
+
 
     filesServiceSpy.getFileTree.and.returnValue(of(mockResponse2));
     filesServiceSpy.saveFile.and.returnValue(of(mockResponse));
@@ -47,7 +54,7 @@ describe('IdeComponent', () => {
     
     await TestBed.configureTestingModule({
       imports: [IdeComponent, MatSnackBarModule, BrowserAnimationsModule, BrowserModule],
-      providers: [{ provide: FilesService, useValue: filesServiceSpy }]
+      providers: [{ provide: FilesService, useValue: filesServiceSpy }, { provide: MissionService, useValue: missionServiceMock }]
     }).compileComponents();
 
     fixture = TestBed.createComponent(IdeComponent);
@@ -106,7 +113,6 @@ describe('IdeComponent', () => {
     component.selectedRobotId = 1;
     component.currentFile = { id: 1, name: 'testFile.txt' };
     component.codeEditorContent = 'Test content';
-    spyOn(component, 'missionStatus').and.returnValue(false);
 
     component.saveFile();
 
@@ -122,6 +128,18 @@ describe('IdeComponent', () => {
     expect(filesServiceSpy.saveFile).not.toHaveBeenCalled();
   });
 
+  it('should not save file if mission is ongoing', () => {
+    component.selectedRobotId = 1;
+    component.currentFile = { id: 1, name: 'testFile.txt' };
+    missionServiceMock.status.getValue = jasmine.createSpy('getValue').and.returnValue({ missionState: MissionState.ONGOING });
+    spyOn(component, 'openSnackBar');
+
+    component.saveFile();
+
+    expect(filesServiceSpy.saveFile).not.toHaveBeenCalled();
+    expect(component.openSnackBar).toHaveBeenCalledWith(`Impossible de sauvegarder le fichier pendant une mission`, true);
+  });
+
   it('should handle error when saveFile fails', () => {
     const errorMessage = 'Test error message';
     component.selectedRobotId = 1;
@@ -129,7 +147,6 @@ describe('IdeComponent', () => {
 
     filesServiceSpy.saveFile.and.returnValue(throwError(() => errorMessage));
     spyOn(component, 'openSnackBar');
-    spyOn(component, 'missionStatus').and.returnValue(false);
 
     component.saveFile();
 
@@ -179,7 +196,6 @@ describe('IdeComponent', () => {
   it('should call updateRobot when updateRobot is called', () => {
     component.selectedRobotId = 1;
     component.currentFile = { id: 1, name: 'testFile.txt' };
-    spyOn(component, 'missionStatus').and.returnValue(false);
     component.updateRobot();
 
     expect(filesServiceSpy.updateRobot).toHaveBeenCalledWith(1);
@@ -191,13 +207,24 @@ describe('IdeComponent', () => {
     component.currentFile = { id: 1, name: 'testFile.txt' };
 
     filesServiceSpy.updateRobot.and.returnValue(throwError(() => errorMessage));
-    spyOn(component, 'missionStatus').and.returnValue(false);
     spyOn(component, 'openSnackBar');
 
     component.updateRobot();
 
     expect(filesServiceSpy.updateRobot).toHaveBeenCalled();
     expect(component.openSnackBar).toHaveBeenCalledWith(`Erreur lors de la mise à jours du Robot ${component.selectedRobotId}`, true);
+  });
+
+  it('should not update robot when mission is ongoing', () => {
+    component.selectedRobotId = 1;
+    component.currentFile = { id: 1, name: 'testFile.txt' };
+    missionServiceMock.status.getValue = jasmine.createSpy('getValue').and.returnValue({ missionState: MissionState.ONGOING });
+    spyOn(component, 'openSnackBar');
+
+    component.updateRobot();
+
+    expect(filesServiceSpy.updateRobot).not.toHaveBeenCalled();
+    expect(component.openSnackBar).toHaveBeenCalledWith(`Impossible de mettre à jours le robot ${component.selectedRobotId} pendant une mission`, true);
   });
 
   it('should open snackbar with provided message', () => {
@@ -231,30 +258,9 @@ describe('IdeComponent', () => {
     });
   });
 
-  it('should call missionStatus when missionStatus is called', () => {
-    filesServiceSpy.missionStatus.and.returnValue(of(mockResponse));
-    component.missionStatus();
+  it('should return true if mission ongoing', () => {
+    missionServiceMock.status.getValue = jasmine.createSpy('getValue').and.returnValue({ missionState: MissionState.ONGOING });
 
-    expect(filesServiceSpy.missionStatus).toHaveBeenCalled();
-  });
-
-  it('should return true when missionStatus returns true', () => {
-    filesServiceSpy.missionStatus.and.returnValue(of(new HttpResponse({ status: 200, body: true })));
-    expect(component.missionStatus()).toBeTrue();
-  });
-
-  it('should return false when missionStatus returns false', () => {
-    filesServiceSpy.missionStatus.and.returnValue(of(new HttpResponse({ status: 200, body: false })));
-    expect(component.missionStatus()).toBeFalse();
-  });
-
-  it('should handle error when missionStatus fails', () => {
-    const errorMessage = 'Test error message';
-    filesServiceSpy.missionStatus.and.returnValue(throwError(() => errorMessage));
-    spyOn(component, 'openSnackBar');
-
-    component.missionStatus();
-
-    expect(component.openSnackBar).toHaveBeenCalledWith(`Erreur lors de la récupération du status de la mission`, true);
+    expect(component.isMissionOnGoing()).toBeTrue();
   });
 });

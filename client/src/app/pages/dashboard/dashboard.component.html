@@ -13,9 +13,15 @@
   <div *ngFor="let robot of robotsConnected" class="identify">
   <div class="status">
       <h2>Status robot #{{robot}}</h2>
-      <div>État : TODO (en mision etc)</div>
+      <!-- <div>État : {{ missionStatus.missionState }}</div> -->
+      <div [ngSwitch]="missionStatus.missionState">
+        <div *ngSwitchCase="missionstate.ONGOING">État : En cours</div>
+        <div *ngSwitchCase="missionstate.ENDED">État : Terminé</div>
+        <div *ngSwitchCase="missionstate.NOT_STARTED">État : Non démarré</div>
+        <div *ngSwitchDefault>État : Inconnu</div>
+      </div>
       <div><mat-icon>battery</mat-icon>Batterie : xx%</div>
-      <button (click)="identifyRobots(robot)" mat-button>
+      <button [disabled]="missionStatus.missionState === 'ongoing'" (click)="identifyRobots(robot)" mat-button>
         <mat-icon>smart_toy</mat-icon>
         Robot #{{robot}}<mat-icon>notifications_active</mat-icon> Identifier
         <div>{{idResponses[robot-1]}}</div>

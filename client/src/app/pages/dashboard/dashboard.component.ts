@@ -4,6 +4,7 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import {MatIcon, MatIconModule} from "@angular/material/icon";
 import { MatTable, MatTableModule } from '@angular/material/table';
+import { MissionStatus, MissionState } from '@app/classes/mission-status';
 import { MissionService } from '@app/services/mission/mission.service';
 import { lastValueFrom } from 'rxjs';
 
@@ -30,7 +31,7 @@ import { lastValueFrom } from 'rxjs';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements AfterViewInit {
-  
+  missionStatus!: MissionStatus;
   robotsConnected:number[] = [];
   robots = [
     {id: 1, last_update: 17777777, battery: 0.25, distance: 0.11},
@@ -38,6 +39,7 @@ export class DashboardComponent implements AfterViewInit {
   ];
 
   idResponses = ["",""]
+  readonly missionstate = MissionState;
 
   constructor(private readonly missionService: MissionService) {}
   
@@ -50,6 +52,8 @@ export class DashboardComponent implements AfterViewInit {
     } catch (error) {
       console.error(error);
     }
+
+    this.missionStatus = this.missionService.status.getValue();
   }
 
   identifyRobots(robotId: number) {

@@ -4,8 +4,13 @@ import {MatIcon, MatIconModule} from "@angular/material/icon";
 import {DatePipe, NgForOf} from "@angular/common";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatTable, MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {MissionData} from "@app/classes/mission-data";
-import {RobotData} from "@app/classes/robots";
+import {MissionService} from '@app/services/mission/mission.service';
+
+interface RobotData {
+  id: number,
+  distance: number;
+  battery: number;
+}
 
 @Component({
   selector: 'app-mission-details',
@@ -29,25 +34,30 @@ import {RobotData} from "@app/classes/robots";
   styleUrl: './mission-details.component.scss'
 })
 export class MissionDetailsComponent {
-  robot: RobotData = {
-    distance: '120km',
-    status: 'Active',
-    battery: 85,
-    lastUpdate: '2023-01-31 15:00:00'
-  };
-  missionData: MissionData = {
-    name: 'Example Mission',
-    distance: '150km',
-    elapsedTime: '0:46:21',
-    status: 'Completed'
-  };
-  missionDisplayedColumns: string[] = ['name', 'distance', 'elapsedTime', 'status'];
-  missionDataSource: MatTableDataSource<MissionData> = new MatTableDataSource([this.missionData]);
-  robotDisplayedColumns: string[] = ['distance', 'status', 'battery', 'lastUpdate'];
-  robotDataSource: MatTableDataSource<RobotData> = new MatTableDataSource([this.robot]);
+  robotDisplayedColumns: string[] = ['id', 'distance', 'battery'];
+  robotDataSource: MatTableDataSource<RobotData> = new MatTableDataSource();
+  elapsedTime: string = '0:00:00';
+  missionStartedAt: number = 0;
 
-  robots = [
-    {id: 1, last_update: 17777777, battery: 0.25, distance: 0.11},
-    {id: 2, last_update: 17777777, battery: 0.25, distance: 0.0},
-  ];
+  constructor(public readonly missionService: MissionService) {
+    this.missionService.status.subscribe((updatedStatus) => {
+      this.elapsedTime = this.formatTime(updatedStatus.elapsedTime)
+      this.missionStartedAt = updatedStatus.startTimestamp * 1000
+      this.robotDataSource.data = [];
+      const newRobotLogs: RobotData[] = []
+      for (let i = 0; i < updatedStatus.batteries.length; i++) {
+        const newRobotData: RobotData = {
+          id: i + 1,
+          battery: Math.round(Math.random() * 100),
+          distance: Math.round(Math.random() * 100),
+        }
+        newRobotLogs.push(newRobotData)
+        this.robotDataSource.data = newRobotLogs
+      }
+    })
+  }
+
+  formatTime(timestamp: number): string {
+    return new DatePipe('en-US').transform(timestamp * 1000, 'mm:ss') || '00:00'
+  }
 }

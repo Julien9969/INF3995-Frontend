@@ -1,7 +1,6 @@
 body {
   display: flex;
   flex-direction: column;
-  height: 100vh;
 }
 
 .bar-spacer {
@@ -10,6 +9,10 @@ body {
 
 .mat-expansion-panel {
   margin: 16px;
+}
+
+.last-expansion-panel {
+  margin-bottom: 32px;
 }
 
 mat-expansion-panel {
@@ -66,4 +69,9 @@ mat-card-title > mat-icon {
   position: sticky;
   top: 0;
   z-index: 1000; /* Ensure the toolbar is above other content */
+}
+
+map-view {
+  height: 80%;
+  width: 80%;
 }

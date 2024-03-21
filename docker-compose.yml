@@ -10,11 +10,10 @@ services:
       - ./client:/usr/src/app
     stdin_open: true
     tty: true
-    container_name: pj3-front
+    container_name: inf3995-frontend
     command: ["npm", "run", "docker-dev"]
     networks:
-      - fastapi-network
+     - fastapi-network
 
 networks:
   fastapi-network:
-    external: true

@@ -1,8 +1,13 @@
-<div>
-  <table [dataSource]="sortedData" mat-table matSort>
-    <ng-container matColumnDef="id">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header> Log ID</th>
-      <td *matCellDef="let element" mat-cell> {{element.id}} </td>
+<div class="mat-table-wrapper">
+  <mat-chip-listbox>
+    <mat-chip-option *ngFor="let filter of availableFilters" [selected]="activeFilters.has(filter)" (click)="toggleFilter(filter)">
+      {{ filter }}
+    </mat-chip-option>
+  </mat-chip-listbox>
+  <table [dataSource]="dataSource" mat-table matSort>
+    <ng-container matColumnDef="eventType">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Event Type</th>
+      <td *matCellDef="let element" mat-cell> {{element.eventType}} </td>
     </ng-container>
 
     <ng-container matColumnDef="robotId">
@@ -17,7 +22,7 @@
 
     <ng-container matColumnDef="timestamp">
       <th *matHeaderCellDef mat-header-cell mat-sort-header> Timestamp</th>
-      <td *matCellDef="let element" mat-cell> {{element.timestamp}} </td>
+      <td *matCellDef="let element" mat-cell> {{element.timestamp * 1000 | date: 'medium'}} </td>
     </ng-container>
 
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>

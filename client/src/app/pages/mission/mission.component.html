@@ -1,9 +1,9 @@
 <mat-toolbar class="sticky-toolbar">
-  <button (click)="toggleMission()" [disabled]="ongoingMission" class="toolbar-button" color="primary"
+  <button (click)="this.toggleMission()" [disabled]="this.ongoingMission" class="toolbar-button" color="primary"
           mat-raised-button>Démarrer la mission
     <mat-icon>play_arrow</mat-icon>
   </button>
-  <button (click)="toggleMission()" [disabled]="!ongoingMission" class="toolbar-button" color="accent"
+  <button (click)="this.toggleMission()" [disabled]="!this.ongoingMission" class="toolbar-button" color="accent"
           mat-raised-button>Arrêter la mission
     <mat-icon>stop</mat-icon>
   </button>
@@ -12,14 +12,20 @@
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button [disabled]="!ongoingMission" mat-menu-item>
+    <button [disabled]="!this.missionInitialized" mat-menu-item>
       <mat-icon>crisis_alert</mat-icon>
       <span>Ramener robots à la base</span>
     </button>
+    <div *ngFor="let _ of batteries; let i = index">
+      <button [disabled]="!this.ongoingMission" (click)="identifyRobots(i+1)" mat-menu-item>
+        <mat-icon>notifications_active</mat-icon>
+        <span>Identifier le robot #{{i + 1}}</span>
+      </button>
+    </div>
   </mat-menu>
 </mat-toolbar>
 
-<div *ngIf="ongoingMission" class="accordion-headers-align">
+<div *ngIf="this.missionInitialized" class="accordion-headers-align">
   <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -27,7 +33,7 @@
       </mat-panel-title>
       <mat-panel-description>
         Informations sur les robots et la mission
-        <mat-icon>info</mat-icon>
+        <mat-icon>smart_toy</mat-icon>
       </mat-panel-description>
       <ng-template matExpansionPanelContent>
         <app-mission-details></app-mission-details>
@@ -45,28 +51,29 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <h3>À venir</h3>
+      <app-map-view></app-map-view>
     </ng-template>
   </mat-expansion-panel>
-  <mat-expansion-panel [expanded]="true">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Journaux des robots
-      </mat-panel-title>
-      <mat-panel-description>
-        Information brute renvoyée par les robots
-        <mat-icon>feed</mat-icon>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <ng-template matExpansionPanelContent>
-      <app-logs></app-logs>
-      <mat-paginator></mat-paginator>
-    </ng-template>
-  </mat-expansion-panel>
+  <div class="last-expansion-panel">
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Journaux des robots
+        </mat-panel-title>
+        <mat-panel-description>
+          Information brute renvoyée par les robots
+          <mat-icon>feed</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <app-logs></app-logs>
+      </ng-template>
+    </mat-expansion-panel>
+  </div>
 </div>
 
 <!-- If there's no current mission -->
-<div *ngIf="!ongoingMission" class="no-mission-container">
+<div *ngIf="!this.missionInitialized" class="no-mission-container">
   <span class="material-symbols-outlined">
     rocket_launch
   </span>

@@ -9,7 +9,7 @@
 
       <ng-container matColumnDef="distance">
         <th *matHeaderCellDef mat-header-cell> Distance parcourue</th>
-        <td *matCellDef="let element" mat-cell> {{element.distance}} </td>
+        <td *matCellDef="let element" mat-cell> {{element.distance}}m </td>
       </ng-container>
 
       <ng-container matColumnDef="battery">
@@ -18,7 +18,7 @@
       </ng-container>
 
       <ng-container matColumnDef="id">
-        <th *matHeaderCellDef mat-header-cell> Dernière connexion</th>
+        <th *matHeaderCellDef mat-header-cell> Robot ID</th>
         <td *matCellDef="let element" mat-cell> {{element.id}} </td>
       </ng-container>
 

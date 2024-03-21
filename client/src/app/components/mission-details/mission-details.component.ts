@@ -48,8 +48,8 @@ export class MissionDetailsComponent {
       for (let i = 0; i < updatedStatus.batteries.length; i++) {
         const newRobotData: RobotData = {
           id: i + 1,
-          battery: updatedStatus.batteries[i],
-          distance: updatedStatus.distances[i],
+          battery: Math.round(Math.random() * 100),
+          distance: Math.round(Math.random() * 100),
         }
         newRobotLogs.push(newRobotData)
         this.robotDataSource.data = newRobotLogs

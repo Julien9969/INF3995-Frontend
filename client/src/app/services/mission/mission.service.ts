@@ -61,6 +61,7 @@ export class MissionService {
       this.socketService.send(WebsocketsEvents.MISSION_END);
     } else {
       this.socketService.send(WebsocketsEvents.MISSION_START);
+      this.socketService.send(WebsocketsEvents.MISSION_MAP);
     }
   }
 }

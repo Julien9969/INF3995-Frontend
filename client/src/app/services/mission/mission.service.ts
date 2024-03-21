@@ -44,7 +44,6 @@ export class MissionService {
       batteries: jsonUpdate.batteries || [],
       distances: jsonUpdate.distances || []
     }
-    console.log(update)
     this._status.next(update);
   }
 

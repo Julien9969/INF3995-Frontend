@@ -1,6 +1,10 @@
 <div class="robot-detail-container">
   <div class="mission-detail">
-    <b>Temps écoulé: </b>{{elapsedTime}}
+    <ul>
+      <li><b>Temps écoulé: </b>{{elapsedTime}}<br></li>
+      <li><b>Mission commencée à: </b>{{missionStartedAt | date: 'HH:mm:ss'}}</li>
+    </ul>
+
     <table [dataSource]="robotDataSource" mat-table>
 
       <ng-container matColumnDef="distance">

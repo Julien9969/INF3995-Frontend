@@ -37,18 +37,22 @@ export class MissionDetailsComponent {
   robotDisplayedColumns: string[] = ['id', 'distance', 'battery'];
   robotDataSource: MatTableDataSource<RobotData> = new MatTableDataSource();
   elapsedTime: string = '0:00:00';
+  missionStartedAt: number = 0;
 
   constructor(public readonly missionService: MissionService) {
     this.missionService.status.subscribe((updatedStatus) => {
-      this.elapsedTime = this.formatTime(updatedStatus.elapsedTime) // Unix timestamp
+      this.elapsedTime = this.formatTime(updatedStatus.elapsedTime)
+      this.missionStartedAt = updatedStatus.startTimestamp * 1000
       this.robotDataSource.data = [];
-      for (let i = 0; i < updatedStatus.count; i++) {
+      const newRobotLogs: RobotData[] = []
+      for (let i = 0; i < updatedStatus.batteries.length; i++) {
         const newRobotData: RobotData = {
-          id: i,
+          id: i + 1,
           battery: updatedStatus.batteries[i],
           distance: updatedStatus.distances[i],
         }
-        this.robotDataSource.data.push(newRobotData)
+        newRobotLogs.push(newRobotData)
+        this.robotDataSource.data = newRobotLogs
       }
     })
   }

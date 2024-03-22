@@ -40,5 +40,4 @@ describe('MissionDetailsComponent', () => {
     const formattedTime = component.formatTime(timestamp)
     expect(formattedTime).toBe('03:00');
   });
-
 });

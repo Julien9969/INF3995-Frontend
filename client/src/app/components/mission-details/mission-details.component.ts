@@ -41,7 +41,7 @@ export class MissionDetailsComponent {
 
   constructor(public readonly missionService: MissionService) {
     this.missionService.status.subscribe((updatedStatus) => {
-      this.elapsedTime = this.formatTime(updatedStatus.elapsedTime)
+      this.elapsedTime = this.formatTime(updatedStatus.elapsedTime);
       this.missionStartedAt = updatedStatus.startTimestamp * 1000
       this.robotDataSource.data = [];
       const newRobotLogs: RobotData[] = []
@@ -58,6 +58,6 @@ export class MissionDetailsComponent {
   }
 
   formatTime(timestamp: number): string {
-    return new DatePipe('en-US').transform(timestamp * 1000, 'mm:ss') || '00:00'
+    return <string>new DatePipe('en-US').transform(timestamp * 1000, 'mm:ss')
   }
 }

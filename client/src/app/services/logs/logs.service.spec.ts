@@ -33,4 +33,22 @@ describe('LogsService', () => {
     });
     service['saveLog'](jsonLog);
   });
+
+  it("should save logs", async () => {
+    const log: Logs = {eventType: 'battery', robotId: 4, message: '99', timestamp: 1};
+    const jsonLog = JSON.stringify(log);
+    service['saveLog'](jsonLog);
+    const map = new Map<number, number>();
+    map.set(4, 99);
+    expect(service['_batteries'].getValue()).toEqual(map);
+  });
+
+  it("should return batteries", async () => {
+    const map = new Map<number, number>();
+    map.set(4, 99);
+    service['_batteries'].next(map);
+    service.batteries.subscribe((batteries) => {
+      expect(batteries).toEqual(map);
+    });
+  });
 });

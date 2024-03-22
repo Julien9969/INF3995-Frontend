@@ -5,6 +5,7 @@ import {DatePipe, NgForOf} from "@angular/common";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatTable, MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MissionService} from '@app/services/mission/mission.service';
+import {LogsService} from "@app/services/logs/logs.service";
 
 interface RobotData {
   id: number,
@@ -39,7 +40,7 @@ export class MissionDetailsComponent {
   elapsedTime: string = '0:00:00';
   missionStartedAt: number = 0;
 
-  constructor(public readonly missionService: MissionService) {
+  constructor(public readonly missionService: MissionService, public logsService: LogsService) {
     this.missionService.status.subscribe((updatedStatus) => {
       this.elapsedTime = this.formatTime(updatedStatus.elapsedTime);
       this.missionStartedAt = updatedStatus.startTimestamp * 1000
@@ -48,13 +49,22 @@ export class MissionDetailsComponent {
       for (let i = 0; i < updatedStatus.batteries.length; i++) {
         const newRobotData: RobotData = {
           id: i + 1,
-          battery: Math.round(Math.random() * 100),
+          battery: updatedStatus.batteries[i], // stick with original battery level
           distance: Math.round(Math.random() * 100),
         }
         newRobotLogs.push(newRobotData)
         this.robotDataSource.data = newRobotLogs
       }
     })
+
+    // Update battery levels
+    this.logsService.batteries.subscribe((battery) => {
+      const newRobotLogs: RobotData[] = this.robotDataSource.data;
+      for(let i = 0; i < newRobotLogs.length; i++) {
+        newRobotLogs[i].battery = <number>battery.get(i);
+      }
+      this.robotDataSource.data = newRobotLogs;
+    });
   }
 
   formatTime(timestamp: number): string {

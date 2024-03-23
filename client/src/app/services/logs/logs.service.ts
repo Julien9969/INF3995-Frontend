@@ -18,13 +18,14 @@ export class LogsService {
   private saveLog(newLog: string){
     const parsedLog: Logs = JSON.parse(newLog)
     // Parse battery logs differently
-    if(parsedLog.eventType == "battery") {
-      const batteryValue = parsedLog.message;
-      const robotId = parsedLog.robotId;
-      this._batteries.getValue().set(robotId, Number(batteryValue));
-    } else { // Info logs are transferred
+    // if(parsedLog.eventType == "battery") {
+    //   const batteryValue = parsedLog.message;
+    //   const robotId = parsedLog.robotId;
+    //   this._batteries.getValue().set(robotId, Number(batteryValue));
+    //   this._batteries.next(this._batteries.getValue());
+    // } else { // Info logs are transferred
       this._logs.next([parsedLog]);
-    }
+    // }
   }
 
   get logs(): Observable<Logs[]> {

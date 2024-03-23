@@ -58,13 +58,13 @@ export class MissionDetailsComponent {
     })
 
     // Update battery levels
-    this.logsService.batteries.subscribe((battery) => {
-      const newRobotLogs: RobotData[] = this.robotDataSource.data;
-      for(let i = 0; i < newRobotLogs.length; i++) {
-        newRobotLogs[i].battery = <number>battery.get(i);
-      }
-      this.robotDataSource.data = newRobotLogs;
-    });
+    // this.logsService.batteries.subscribe((batteries) => {
+    //   const newRobotLogs: RobotData[] = this.robotDataSource.data;
+    //   for(let i = 0; i < newRobotLogs.length; i++) {
+    //     newRobotLogs[i].battery = <number>batteries.get(i+1);
+    //   }
+    //   this.robotDataSource.data = newRobotLogs;
+    // });
   }
 
   formatTime(timestamp: number): string {

@@ -56,7 +56,7 @@ export class DashboardComponent implements AfterViewInit {
     this.missionStatus = this.missionService.status.getValue();
   }
 
-  identifyRobots(robotId: number) {
+identifyRobots(robotId: number) {
     this.missionService.identify(robotId).subscribe(response => this.idResponses[robotId - 1] = response);
   }
 }

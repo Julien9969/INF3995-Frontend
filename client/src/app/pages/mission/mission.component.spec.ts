@@ -9,9 +9,10 @@ import {HealthService} from '@app/services/health/health.service';
 import {Router} from '@angular/router';
 import {SocketService} from '@app/services/socket/socket.service';
 import {MissionService} from '@app/services/mission/mission.service';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {MissionState, MissionStatus} from '@app/classes/mission-status';
 import {Observable} from "rxjs/internal/Observable";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 describe('MissionsComponent', () => {
   let component: MissionComponent;
@@ -20,6 +21,8 @@ describe('MissionsComponent', () => {
   let socketServiceObj: jasmine.SpyObj<SocketService>;
   let missionStatusSubject: BehaviorSubject<MissionStatus>;
   let routerMock: { navigate: any; };
+  let matSnackSpy: jasmine.SpyObj<MatSnackBar>;
+  const identifyResponse = new Subject<string>();
 
   beforeEach(async () => {
     const missionStatus: MissionStatus = {
@@ -35,18 +38,19 @@ describe('MissionsComponent', () => {
     routerMock = {
       navigate: jasmine.createSpy('navigate'),
     };
-    const identifyResponse = new Observable<string>();
-    missionServiceObj.identify.and.returnValue(identifyResponse);
+    missionServiceObj.identify.and.returnValue(identifyResponse.asObservable());
     healthServiceSpyObj = jasmine.createSpyObj('HealthService', ['isServerOk']);
     healthServiceSpyObj.isServerOk.and.returnValue(Promise.reject());
     socketServiceObj = jasmine.createSpyObj('SocketService', {'on': missionStatus})
+    matSnackSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
     await TestBed.configureTestingModule({
       imports: [MissionComponent, MatCard, BrowserModule, HttpClientModule, HttpClientTestingModule, BrowserAnimationsModule],
       providers: [
         { provide: HealthService, useValue: healthServiceSpyObj},
         { provide: SocketService, useValue: socketServiceObj},
         { provide: Router, useValue: routerMock},
-        { provide: MissionService, useValue: missionServiceObj}
+        { provide: MissionService, useValue: missionServiceObj},
+        { provide: MatSnackBar, useValue: matSnackSpy}
       ]
     }).compileComponents();
 
@@ -90,6 +94,13 @@ describe('MissionsComponent', () => {
 
   it('it should identify robots', () => {
     component.identifyRobots(1);
+    identifyResponse.next('response');
     expect(component.missionService.identify).toHaveBeenCalledWith(1);
+    expect(matSnackSpy['open']).toHaveBeenCalled();
+  });
+
+  it('it should open snackbar', () => {
+    component.openSnackBar(1);
+    expect(matSnackSpy['open']).toHaveBeenCalled();
   });
 });

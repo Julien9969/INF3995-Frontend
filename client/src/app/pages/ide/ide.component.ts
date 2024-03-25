@@ -41,18 +41,18 @@ export class IdeComponent {
     treeControl = new NestedTreeControl<FilesTreeNode>(node => node.children);
     dataSource = new MatTreeNestedDataSource<FilesTreeNode>();
     filesTree: FilesTree = [];
-    codeEditorContent: string = ""; 
+    codeEditorContent: string = "";
     currentFile: FilesTreeNode | null = null;
     selectedRobotId: number | null = null;
     robotsList = [
         {id: 1, name: "Robot 1"},
         {id: 2, name: "Robot 2"},
     ];
-    
+
     codeMirrorOptions: any = {
-        mode: { 
-            name: "python", 
-            version: 3, 
+        mode: {
+            name: "python",
+            version: 3,
             singleLineStringErrors: false
         },
         indentWithTabs: true,
@@ -75,13 +75,13 @@ export class IdeComponent {
                 return;
             }
             this.filesService.getFileTree(this.selectedRobotId).subscribe({
-                next: (response: HttpResponse<string>) => { 
+                next: (response: HttpResponse<string>) => {
                     console.log("Response code:", response.status);
-                    this.filesTree = JSON.parse(response.body as string) as FilesTree; 
+                    this.filesTree = JSON.parse(response.body as string) as FilesTree;
                     this.dataSource.data = this.filesTree;
 
                     this.openSnackBar(`Arbre de fichier du robot ${this.selectedRobotId} récupéré`);
-                }, 
+                },
                 error: (error) => {
                     console.error("Error:", error);
                     this.openSnackBar(`Erreur lors de la récupération de l'arbre de fichier du robot ${this.selectedRobotId}`, true);
@@ -107,7 +107,7 @@ export class IdeComponent {
         }
 
         this.filesService.saveFile(this.selectedRobotId, this.currentFile, this.codeEditorContent).subscribe({
-            next: (response: HttpResponse<string>) => { 
+            next: (response: HttpResponse<string>) => {
                 console.log("Response code:", response.status);
                 console.log("Response body:", response.body);
                 this.openSnackBar(`Fichier sauvegardé`);
@@ -124,7 +124,7 @@ export class IdeComponent {
         this.currentFile = file;
         if (this.selectedRobotId === null) return;
         this.filesService.getFile(this.selectedRobotId, file).subscribe({
-            next: (response: HttpResponse<object>) => { 
+            next: (response: HttpResponse<object>) => {
                 console.log("Response:", response);
                 console.log((response.body as File).content);
                 this.codeEditorContent = (response.body as File).content;
@@ -161,7 +161,7 @@ export class IdeComponent {
             }
         });
     }
-    
+
     openSnackBar(message: string, error=false) {
         this._snackBar.open(message, 'OK', {
           horizontalPosition: 'center',
@@ -177,4 +177,3 @@ export class IdeComponent {
 
     hasChild = (_: number, node: FilesTreeNode) => !!node.children && node.children.length > 0;
 }
-

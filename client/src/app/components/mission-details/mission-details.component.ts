@@ -6,11 +6,6 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatTable, MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MissionService} from '@app/services/mission/mission.service';
 
-interface MissionData {
-  name: string;
-  elapsedTime: number;
-}
-
 interface RobotData {
   id: number,
   distance: number;
@@ -39,28 +34,30 @@ interface RobotData {
   styleUrl: './mission-details.component.scss'
 })
 export class MissionDetailsComponent {
-  missionDisplayedColumns: string[] = ['name', 'elapsedTime'];
-  missionDataSource: MatTableDataSource<MissionData> = new MatTableDataSource();
   robotDisplayedColumns: string[] = ['id', 'distance', 'battery'];
   robotDataSource: MatTableDataSource<RobotData> = new MatTableDataSource();
+  elapsedTime: string = '0:00:00';
+  missionStartedAt: number = 0;
 
   constructor(public readonly missionService: MissionService) {
     this.missionService.status.subscribe((updatedStatus) => {
-      const newMissionData: MissionData = {
-        name: "Mission", // TODO: read actual value
-        elapsedTime: updatedStatus.elapsedTime
-      }
-      this.missionDataSource.data = [newMissionData]
-
+      this.elapsedTime = this.formatTime(updatedStatus.elapsedTime)
+      this.missionStartedAt = updatedStatus.startTimestamp * 1000
       this.robotDataSource.data = [];
-      for (let i = 0; i < updatedStatus.count; i++) {
+      const newRobotLogs: RobotData[] = []
+      for (let i = 0; i < updatedStatus.batteries.length; i++) {
         const newRobotData: RobotData = {
-          id: i,
-          battery: updatedStatus.batteries[i],
-          distance: updatedStatus.distances[i],
+          id: i + 1,
+          battery: Math.round(Math.random() * 100),
+          distance: Math.round(Math.random() * 100),
         }
-        this.robotDataSource.data.push(newRobotData)
+        newRobotLogs.push(newRobotData)
+        this.robotDataSource.data = newRobotLogs
       }
     })
+  }
+
+  formatTime(timestamp: number): string {
+    return new DatePipe('en-US').transform(timestamp * 1000, 'mm:ss') || '00:00'
   }
 }

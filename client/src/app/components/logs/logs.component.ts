@@ -68,7 +68,7 @@ export class LogsComponent implements AfterViewInit, OnInit, OnDestroy {
     if (this.activeFilters.size === 0) {
       return true;
     }
-    return this.activeFilters.has(data.status);
+    return this.activeFilters.has(data.eventType);
   }
 
   ngAfterViewInit() {

@@ -6,10 +6,9 @@ import {HistoryComponent} from "@app/pages/history/history.component";
 import {ErrorComponent} from "@app/pages/error/error.component";
 
 export const routes: Routes = [
-  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: '', pathMatch: 'full', component: DashboardComponent},
   {path: 'mission', component: MissionComponent},
   {path: 'ide', component: IdeComponent},
   {path: 'history', component: HistoryComponent},
-  {path: 'home', component: DashboardComponent},
   {path: 'error', component: ErrorComponent}
 ];

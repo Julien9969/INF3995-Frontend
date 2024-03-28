@@ -1,52 +1,76 @@
 <mat-toolbar class="sticky-toolbar">
-  <button (click)="this.toggleMission()" [disabled]="this.ongoingMission" class="toolbar-button" color="primary"
-          mat-raised-button>Démarrer la mission
-    <mat-icon>play_arrow</mat-icon>
+  <button (click)="this.toggleMission()" [disabled]="missionState === MissionState.ONGOING" class="toolbar-button" color="primary"
+          mat-raised-button>{{missionState === MissionState.ENDED ? 'Redémarrer mission' : 'Lancer mission'}}
+    <mat-icon>{{this.missionState === MissionState.ENDED ? 'refresh' : 'play_arrow'}}</mat-icon>
   </button>
-  <button (click)="this.toggleMission()" [disabled]="!this.ongoingMission" class="toolbar-button" color="accent"
+  <button (click)="this.toggleMission()" [disabled]="missionState === MissionState.NOT_STARTED" class="toolbar-button" color="accent"
           mat-raised-button>Arrêter la mission
     <mat-icon>stop</mat-icon>
   </button>
   <span class="bar-spacer"></span>
-  <button [matMenuTriggerFor]="menu" mat-icon-button>
-    <mat-icon>more_vert</mat-icon>
+  <button [matTooltip]="identifyRobotTooltip" mat-icon-button>
+    <mat-icon>crisis_alert</mat-icon>
   </button>
-  <mat-menu #menu="matMenu">
-    <button [disabled]="!this.missionInitialized" mat-menu-item>
-      <mat-icon>crisis_alert</mat-icon>
-      <span>Ramener robots à la base</span>
-    </button>
-    <div *ngFor="let _ of batteries; let i = index">
-      <button [disabled]="!this.ongoingMission" (click)="identifyRobots(i+1)" mat-menu-item>
-        <mat-icon>notifications_active</mat-icon>
-        <span>Identifier le robot #{{i + 1}}</span>
-      </button>
-    </div>
-  </mat-menu>
 </mat-toolbar>
 
-<div *ngIf="this.missionInitialized" class="accordion-headers-align">
-  <mat-expansion-panel [expanded]="true">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Détails de la mission
-      </mat-panel-title>
-      <mat-panel-description>
-        Informations sur les robots et la mission
-        <mat-icon>smart_toy</mat-icon>
-      </mat-panel-description>
-      <ng-template matExpansionPanelContent>
-        <app-mission-details></app-mission-details>
-      </ng-template>
-    </mat-expansion-panel-header>
-  </mat-expansion-panel>
+<mat-card class="robot-detail-container">
+  <div class="mission-info">
+    <ul class="no-bullets">
+      <li>
+        <mat-icon>explore</mat-icon>
+        <b>Numéro de la mission: </b>{{missionId}}</li>
+      <li>
+        <mat-icon>timer</mat-icon>
+        <b>Temps écoulé: </b>{{elapsedTime}}<br></li>
+      <li>
+        <mat-icon>schedule</mat-icon>
+        <b>Temps du lancement: </b>{{missionStartedAt | date: 'HH:mm:ss'}}</li>
+    </ul>
+  </div>
+  <table [dataSource]="robotDataSource" mat-table>
+
+    <ng-container matColumnDef="id">
+      <th *matHeaderCellDef mat-header-cell> Robot ID</th>
+      <td *matCellDef="let element" mat-cell> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="state">
+      <th *matHeaderCellDef mat-header-cell> État du robot</th>
+      <td *matCellDef="let element" mat-cell> En déplacement</td>
+    </ng-container>
+
+    <ng-container matColumnDef="distance">
+      <th *matHeaderCellDef mat-header-cell> Distance parcourue</th>
+      <td *matCellDef="let element" mat-cell> {{element.distance}}m</td>
+    </ng-container>
+
+    <ng-container matColumnDef="battery">
+      <th *matHeaderCellDef mat-header-cell> Batterie</th>
+      <td *matCellDef="let element" mat-cell> {{element.battery}}%</td>
+    </ng-container>
+
+    <ng-container matColumnDef="identify">
+      <th *matHeaderCellDef mat-header-cell> Identifier</th>
+      <td *matCellDef="let element" mat-cell>
+        <button mat-icon-button [disabled]="this.missionState === MissionState.ONGOING" (click)="identifyRobots(element.id)" mat-icon-button>
+          <mat-icon>crisis_alert</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="robotDisplayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
+  </table>
+</mat-card>
+
+<div *ngIf="!(this.missionState === MissionState.NOT_STARTED)" class="accordion-headers-align">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
         Carte exploratoire en 3D
       </mat-panel-title>
       <mat-panel-description>
-        Carte en temps réel de la zone d'exploration
+        <span></span>
         <mat-icon>map</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
@@ -61,7 +85,7 @@
           Journaux des robots
         </mat-panel-title>
         <mat-panel-description>
-          Information brute renvoyée par les robots
+          <span></span>
           <mat-icon>feed</mat-icon>
         </mat-panel-description>
       </mat-expansion-panel-header>
@@ -72,14 +96,16 @@
   </div>
 </div>
 
+<div *ngIf="isLoading" class="spinner">
+  <mat-spinner></mat-spinner>
+</div>
+
 <!-- If there's no current mission -->
-<div *ngIf="!this.missionInitialized" class="no-mission-container">
+<div *ngIf="this.missionState === MissionState.NOT_STARTED" class="no-mission-container">
   <span class="material-symbols-outlined">
     rocket_launch
   </span>
   <h2><b>Aucune mission d'exploration en cours...</b></h2>
-  <p>Cliquez sur
-    <mat-icon>play_arrow</mat-icon>
-    pour lancer une nouvelle mission!
-  </p>
 </div>
+
+

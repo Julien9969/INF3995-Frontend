@@ -1,15 +1,19 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {MapService} from "@app/services/map/map.service";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-map-view',
   standalone: true,
-  imports: [],
+  imports: [
+    NgIf
+  ],
   templateUrl: './map-view.component.html',
   styleUrl: './map-view.component.css'
 })
 export class MapViewComponent implements AfterViewInit {
   @ViewChild('mapCanvas', { static: false }) private mapCanvas!: ElementRef<HTMLCanvasElement>;
+  mapInitialized: boolean = false;
 
   constructor(private mapService: MapService) {
   }

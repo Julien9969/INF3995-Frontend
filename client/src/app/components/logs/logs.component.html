@@ -1,4 +1,4 @@
-<div class="mat-table-wrapper">
+<div class="mat-table-wrapper"  *ngIf="this.dataSource.data.length > 0">
   <mat-chip-listbox>
     <mat-chip-option *ngFor="let filter of availableFilters" [selected]="activeFilters.has(filter)" (click)="toggleFilter(filter)">
       {{ filter }}
@@ -28,5 +28,12 @@
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
     <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   </table>
+</div>
+
+<div *ngIf="this.dataSource.data.length === 0" class="no-mission-container">
+  <span class="material-symbols-outlined">
+    rocket_launch
+  </span>
+  <h2>Aucun journal système n'est encore disponible</h2>
 </div>
 

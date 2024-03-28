@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
-import {map} from 'rxjs/operators';
 import {HttpClient} from "@angular/common/http";
 import {environmentExt} from "@environment-ext";
 import {SocketService} from '@app/services/socket/socket.service';

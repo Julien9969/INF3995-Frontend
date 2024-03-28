@@ -11,7 +11,7 @@ import {
 import {MatIcon} from "@angular/material/icon";
 import {MatCard} from "@angular/material/card";
 import {MatSort, MatSortHeader} from "@angular/material/sort";
-import {DatePipe, NgFor} from "@angular/common";
+import {DatePipe, NgFor, NgIf} from "@angular/common";
 import { LogsService } from '@app/services/logs/logs.service';
 import { MatChipsModule } from '@angular/material/chips'
 import { Subscription } from "rxjs"
@@ -35,6 +35,7 @@ import { Subscription } from "rxjs"
     DatePipe,
     NgFor,
     MatChipsModule,
+    NgIf,
   ],
   templateUrl: './logs.component.html',
   styleUrl: './logs.component.scss'

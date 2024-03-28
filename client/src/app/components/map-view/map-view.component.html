@@ -1,8 +1,15 @@
-<div class="map-container">
+<div *ngIf="this.mapInitialized" class="map-container">
   <canvas
     class="map-display"
     id="map-canvas"
     #mapCanvas
   ></canvas>
+</div>
+
+<div *ngIf="!this.mapInitialized" class="no-mission-container">
+  <span class="material-symbols-outlined">
+    route
+  </span>
+  <h2><b>La carte n'est pas encore disponible...</b></h2>
 </div>
 

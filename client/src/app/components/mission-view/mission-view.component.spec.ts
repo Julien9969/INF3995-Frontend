@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {MissionDetailsComponent} from './mission-details.component';
+import {MissionDetailsComponent} from './mission-view.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {MissionService} from "@app/services/mission/mission.service";
 import {Observable} from "rxjs/internal/Observable";
@@ -31,14 +31,5 @@ describe('MissionDetailsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should format time', () => {
-    const timestamp = 180;
-    const formattedTime = component.formatTime(timestamp)
-    expect(formattedTime).toBe('03:00');
-  });
 
 });

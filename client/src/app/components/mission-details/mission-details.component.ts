@@ -49,7 +49,7 @@ export class MissionDetailsComponent {
       for (let i = 0; i < updatedStatus.batteries.length; i++) {
         const newRobotData: RobotData = {
           id: i + 1,
-          battery: updatedStatus.batteries[i], // stick with original battery level
+          battery: updatedStatus.batteries[i],
           distance: Math.round(Math.random() * 100),
         }
         newRobotLogs.push(newRobotData)
@@ -57,14 +57,6 @@ export class MissionDetailsComponent {
       }
     })
 
-    // Update battery levels
-    // this.logsService.batteries.subscribe((batteries) => {
-    //   const newRobotLogs: RobotData[] = this.robotDataSource.data;
-    //   for(let i = 0; i < newRobotLogs.length; i++) {
-    //     newRobotLogs[i].battery = <number>batteries.get(i+1);
-    //   }
-    //   this.robotDataSource.data = newRobotLogs;
-    // });
   }
 
   formatTime(timestamp: number): string {

@@ -5,7 +5,7 @@
       <li><b>Mission commencée à: </b>{{missionStartedAt | date: 'HH:mm:ss'}}</li>
     </ul>
 
-    <table [dataSource]="robotDataSource.data" mat-table>
+    <table [dataSource]="robotDataSource" mat-table>
 
       <ng-container matColumnDef="distance">
         <th *matHeaderCellDef mat-header-cell> Distance parcourue</th>

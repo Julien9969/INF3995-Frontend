@@ -1,22 +1,23 @@
-<div class="flex-column">
-    <div class="options-frame">
-        <div class="flex-center robot-select">
-            <mat-form-field subscriptSizing="dynamic">
-                <mat-label>Sélectionner le robot</mat-label>
-                <mat-select [(ngModel)]="selectedRobotId" (selectionChange)="onRobotSelected()" name="food">
-                @for (robot of robotsList ; track robot) {
-                    <mat-option [value]="robot.id">{{robot.name}}</mat-option>
-                }
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="flex-center control-buttons">
-            <button class="control-button" mat-raised-button color="primary" (click)="saveFile()"><mat-icon fontIcon="save"></mat-icon>Sauvegarder</button>
-            <button class="control-button" mat-raised-button color="primary" (click)="updateRobot()"><mat-icon fontIcon="system_update"></mat-icon>Mettre à jour le Robot</button>
-            <!-- <button class="control-button" mat-raised-button color="primary" (click)="save()">save</button>
-            <button class="control-button" mat-raised-button color="primary" (click)="save()">save</button> -->
-        </div>
-    </div>
+<mat-toolbar>
+  Éditeur de code
+  <span class="bar-spacer"></span>
+  <button mat-icon-button (click)="refresh()"><mat-icon fontIcon="refresh"></mat-icon></button>
+  <button class="control-button" mat-raised-button color="primary" (click)="saveFile()"><mat-icon fontIcon="save"></mat-icon>Sauvegarder</button>
+  <button class="control-button" mat-raised-button color="primary" (click)="updateRobot()"><mat-icon fontIcon="system_update"></mat-icon>Mettre à jour le Robot</button>
+</mat-toolbar>
+
+<div *ngIf="!wasRobotChose" class="centered">
+  <mat-form-field subscriptSizing="dynamic">
+    <mat-label>Sélectionner le robot</mat-label>
+    <mat-select [(ngModel)]="selectedRobotId" (selectionChange)="onRobotSelected()" name="food">
+      @for (robot of robotsList ; track robot) {
+      <mat-option [value]="robot.id">{{robot.name}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div *ngIf="wasRobotChose" class="flex-column">
     <div class="flex-row">
         <div class="files-tree">
             <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
@@ -57,7 +58,6 @@
                 [options]="codeMirrorOptions"
                 [(ngModel)]="codeEditorContent"
                 >
-                <!-- (ngModelChange)="setEditorContent($event)" -->
             </ngx-codemirror>
         </div>
     </div>

@@ -14,12 +14,12 @@ export class HealthService {
   constructor(private readonly httpClient: HttpClient) {
     setInterval(async () => {
       this.isServerOk()
-    }, 2000);
+    }, 500);
   }
 
   isServerOk() {
     this.httpClient.get(LOCAL_URL, {responseType: 'text'}).subscribe((status) => {
-      this._healthObservable.next(status === 'pong');
+      this._healthObservable.next(status.includes('pong'));
     });
   }
 

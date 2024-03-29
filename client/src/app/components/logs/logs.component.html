@@ -6,7 +6,7 @@
   </mat-chip-listbox>
   <table [dataSource]="dataSource" mat-table matSort>
     <ng-container matColumnDef="eventType">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Event Type</th>
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Type</th>
       <td *matCellDef="let element" mat-cell> {{element.eventType}} </td>
     </ng-container>
 

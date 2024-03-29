@@ -20,12 +20,7 @@ describe('HealthService', () => {
   });
 
   it('should be ok', (done) => {
-    service
-      .isServerOk()
-      .then(() => done())
-      .catch((err) => {
-        done.fail(err);
-      });
+    service.check.subscribe((status) => {});
 
     const request = httpMock.expectOne(LOCAL_URL);
     expect(request.request.body).toBe(null);

@@ -33,4 +33,5 @@ export class MapService {
     image.src = bitmapBase64;
   }
 
+  // TODO: Display realtime location of the robots by drawing dots on the canvas
 }

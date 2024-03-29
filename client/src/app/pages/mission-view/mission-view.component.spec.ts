@@ -1,18 +1,18 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {MissionDetailsComponent} from './mission-view.component';
+import {MissionViewComponent} from './mission-view.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {MissionService} from "@app/services/mission/mission.service";
 import {Observable} from "rxjs/internal/Observable";
 import {DatePipe} from "@angular/common";
 
 describe('MissionDetailsComponent', () => {
-  let component: MissionDetailsComponent;
-  let fixture: ComponentFixture<MissionDetailsComponent>;
+  let component: MissionViewComponent;
+  let fixture: ComponentFixture<MissionViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MissionDetailsComponent],
+      imports: [MissionViewComponent],
       providers: [{
         provide: MissionService,
         useValue: jasmine.createSpyObj('MissionService', [], {status: new Observable()}),
@@ -26,7 +26,7 @@ describe('MissionDetailsComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(MissionDetailsComponent);
+    fixture = TestBed.createComponent(MissionViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

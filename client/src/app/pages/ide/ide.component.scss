@@ -31,18 +31,6 @@
     margin: 10px;
 }
 
-.control-buttons {
-    margin-top: 15px;
-    margin-bottom: 5px;
-    width: 70%;
-}
-
-.control-button {
-    margin-left: 15px;
-    margin-right: 15px;
-    padding: 1%;
-}
-
 .files-tree {
     width: 30%;
     height: 100%;
@@ -51,7 +39,7 @@
     padding: 5px;
     overflow-y: auto;
     --mat-tree-node-min-height: 15px;
-    
+
 }
 
 .text-editor {
@@ -122,5 +110,9 @@ padding-left: 8px;
     --mdc-snackbar-container-color: #ff7866;
     --mdc-snackbar-supporting-text-color: rgba(0, 0, 0, 0.87);
     --mat-snack-bar-button-color: black;
+}
+
+.bar-spacer {
+  flex: 1 1 auto;
 }
 

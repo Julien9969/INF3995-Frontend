@@ -10,18 +10,9 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {HealthService} from "@app/services/health/health.service";
 import {Router} from "@angular/router";
-import {HistoryService} from "@app/services/history/history.service";
-import {DatePipe} from "@angular/common";
-import {environmentExt} from "@environment-ext";
-
-const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
-
-interface HistoryData {
-  id: number,
-  startTimestamp: number,
-  duration: number,
-  nbRobots: number,
-}
+import {HistoryData, HistoryService} from "@app/services/history/history.service";
+import {DatePipe, NgIf} from "@angular/common";
+import {MatToolbar} from "@angular/material/toolbar";
 
 const initialData: HistoryData[] = [
   {id: 1, startTimestamp: 1620000000, duration: 3600, nbRobots: 1},
@@ -43,6 +34,8 @@ const initialData: HistoryData[] = [
     MatButton,
     MatIcon,
     DatePipe,
+    NgIf,
+    MatToolbar,
   ],
   templateUrl: './history.component.html',
   styleUrl: './history.component.css'
@@ -54,11 +47,7 @@ export class HistoryComponent {
   constructor(private healthCheck: HealthService,
               public router: Router,
               public historyService: HistoryService) {
-    this.healthCheck.check.subscribe((connected) => {
-      if(!connected) {
-        // this.router.navigate(['/error']);
-      }
-    });
+    this.dataSource.data = this.historyService.getMissions().getValue(); // Initialize with cached data
   }
 
   openMission(id: number) {

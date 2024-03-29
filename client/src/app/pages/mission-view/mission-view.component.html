@@ -13,55 +13,7 @@
   </button>
 </mat-toolbar>
 
-<mat-card class="robot-detail-container">
-  <div class="mission-info">
-    <ul class="no-bullets">
-      <li>
-        <mat-icon>explore</mat-icon>
-        <b>Numéro de la mission: </b>{{missionId}}</li>
-      <li>
-        <mat-icon>timer</mat-icon>
-        <b>Temps écoulé: </b>{{elapsedTime}}<br></li>
-      <li>
-        <mat-icon>schedule</mat-icon>
-        <b>Temps du lancement: </b>{{missionStartedAt | date: 'HH:mm:ss'}}</li>
-    </ul>
-  </div>
-  <table [dataSource]="robotDataSource" mat-table>
-
-    <ng-container matColumnDef="id">
-      <th *matHeaderCellDef mat-header-cell> Robot ID</th>
-      <td *matCellDef="let element" mat-cell> {{element.id}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="state">
-      <th *matHeaderCellDef mat-header-cell> État du robot</th>
-      <td *matCellDef="let element" mat-cell> En déplacement</td>
-    </ng-container>
-
-    <ng-container matColumnDef="distance">
-      <th *matHeaderCellDef mat-header-cell> Distance parcourue</th>
-      <td *matCellDef="let element" mat-cell> {{element.distance}}m</td>
-    </ng-container>
-
-    <ng-container matColumnDef="battery">
-      <th *matHeaderCellDef mat-header-cell> Batterie</th>
-      <td *matCellDef="let element" mat-cell> {{element.battery}}%</td>
-    </ng-container>
-
-    <ng-container matColumnDef="identify">
-      <th *matHeaderCellDef mat-header-cell> Identifier</th>
-      <td *matCellDef="let element" mat-cell>
-        <button mat-icon-button [disabled]="this.missionState === MissionState.ONGOING" (click)="identifyRobots(element.id)" mat-icon-button>
-          <mat-icon>crisis_alert</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <tr *matHeaderRowDef="robotDisplayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
-  </table>
-</mat-card>
+<app-mission [missionState]="missionState"></app-mission>
 
 <div *ngIf="!(this.missionState === MissionState.NOT_STARTED)" class="accordion-headers-align">
   <mat-expansion-panel>
@@ -75,7 +27,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <app-map-view></app-map-view>
+      <app-map-view [map]="map"></app-map-view>
     </ng-template>
   </mat-expansion-panel>
   <div class="last-expansion-panel">
@@ -90,7 +42,7 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <ng-template matExpansionPanelContent>
-        <app-logs></app-logs>
+        <app-logs [logs]="logs"></app-logs>
       </ng-template>
     </mat-expansion-panel>
   </div>

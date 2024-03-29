@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy} from '@angular/core';
 import {MatCard, MatCardContent, MatCardModule} from "@angular/material/card";
 import {MissionService} from "@app/services/mission/mission.service";
 import {MatDivider} from "@angular/material/divider";
@@ -11,8 +11,6 @@ import {MatMenuModule, MatMenuTrigger} from "@angular/material/menu";
 import {MatAccordion, MatExpansionModule, MatExpansionPanel} from "@angular/material/expansion";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {MatPaginator} from "@angular/material/paginator";
-import {Router} from '@angular/router';
-import {HealthService} from "@app/services/health/health.service";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
 import {MissionState} from '@app/classes/mission-status';
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -31,6 +29,7 @@ import {
   MatTableDataSource
 } from "@angular/material/table";
 import {formatCounter} from "@app/classes/utils";
+import {Subscription} from "rxjs";
 
 interface RobotData {
   id: number,
@@ -77,22 +76,18 @@ interface RobotData {
   styleUrl: './mission.component.scss',
   templateUrl: './mission.component.html'
 })
-export class MissionComponent implements OnInit {
-  missionState: MissionState = MissionState.NOT_STARTED;
-  previousMissionState: MissionState = MissionState.NOT_STARTED;
-  identifyRobotTooltip: string = 'Ramener les robots à la base';
+export class MissionComponent implements OnDestroy {
+  @Input() missionState: MissionState = MissionState.NOT_STARTED;
   robotDisplayedColumns: string[] = ['id', 'state', 'distance', 'battery', 'identify'];
   robotDataSource: MatTableDataSource<RobotData> = new MatTableDataSource();
   elapsedTime: string = '0:00:00';
   missionStartedAt: number = 0;
   missionId: number = 0;
   distance: number = 0;
-  isLoading: boolean = false;
   protected readonly MissionState = MissionState;
+  private healthCheck: Subscription = new Subscription();
 
   constructor(public missionService: MissionService,
-              private healthService: HealthService,
-              private router: Router,
               private matSnackBar: MatSnackBar) {
     this.missionService.status.subscribe((updatedStatus) => {
       this.elapsedTime = formatCounter(updatedStatus.elapsedTime)
@@ -116,24 +111,8 @@ export class MissionComponent implements OnInit {
     return this.missionService.status.getValue().batteries;
   }
 
-  ngOnInit() {
-    // Unreachable server
-    this.healthService.check.subscribe((connected) => {
-      if (connected) {
-        this.router.navigate(['/error'])
-      }
-    });
-
-    this.missionService.status.subscribe((updatedStatus) => {
-      this.missionState = updatedStatus.missionState;
-      this.isLoading = updatedStatus.missionState !== this.missionState;
-    });
-  }
-
-  toggleMission() {
-    this.missionService.toggleMission()
-    this.previousMissionState = this.missionState
-    this.isLoading = true
+  ngOnDestroy() {
+    this.healthCheck.unsubscribe();
   }
 
   openSnackBar(robotId: number) {

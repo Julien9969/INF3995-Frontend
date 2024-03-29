@@ -11,7 +11,6 @@ import {SocketService} from '@app/services/socket/socket.service';
 import {MissionService} from '@app/services/mission/mission.service';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {MissionState, MissionStatus} from '@app/classes/mission-status';
-import {Observable} from "rxjs/internal/Observable";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 describe('MissionsComponent', () => {
@@ -40,7 +39,6 @@ describe('MissionsComponent', () => {
     };
     missionServiceObj.identify.and.returnValue(identifyResponse.asObservable());
     healthServiceSpyObj = jasmine.createSpyObj('HealthService', ['isServerOk']);
-    healthServiceSpyObj.isServerOk.and.returnValue(Promise.reject());
     socketServiceObj = jasmine.createSpyObj('SocketService', {'on': missionStatus})
     matSnackSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
     await TestBed.configureTestingModule({
@@ -77,19 +75,19 @@ describe('MissionsComponent', () => {
   });
 
   it('it should start mission and change ongoing mission', () => {
-    component.ongoingMission = false;
+    component.missionState = MissionState.NOT_STARTED;
     component.toggleMission();
     expect(component.missionService.toggleMission).toHaveBeenCalled();
     missionStatusSubject.next({missionState: MissionState.ONGOING, startTimestamp: 0, elapsedTime: 0, batteries: [0,0], distances: [0,0], count: 2})
-    expect(component.ongoingMission).toBe(true);
+    expect(component.missionState).toBe(MissionState.ONGOING);
   });
 
   it('it should stop mission and change ongoing mission', () => {
-    component.ongoingMission = true;
+    component.missionState = MissionState.ONGOING;
     component.toggleMission();
     expect(component.missionService.toggleMission).toHaveBeenCalled();
     missionStatusSubject.next({missionState: MissionState.ENDED, startTimestamp: 0, elapsedTime: 0, batteries: [0,0], distances: [0,0], count: 2})
-    expect(component.ongoingMission).toBe(false);
+    expect(component.missionState).toBe(MissionState.ENDED);
   });
 
   it('it should identify robots', () => {

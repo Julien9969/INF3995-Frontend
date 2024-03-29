@@ -1,4 +1,7 @@
-<div>
+<mat-toolbar>
+  Historique des missions
+</mat-toolbar>
+<div *ngIf="this.dataSource.data.length > 0">
   <table [dataSource]="dataSource" mat-table>
     <ng-container matColumnDef="id">
       <th *matHeaderCellDef mat-header-cell> Mission </th>
@@ -28,4 +31,12 @@
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
     <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   </table>
+</div>
+
+<!-- If there's no current mission -->
+<div *ngIf="this.dataSource.data.length === 0" class="no-mission-container">
+  <span class="material-symbols-outlined">
+    history
+  </span>
+  <h2><b>L'historique des missions est vide...</b></h2>
 </div>

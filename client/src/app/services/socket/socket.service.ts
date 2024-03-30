@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import {environment} from "@environment";
+import {WebsocketsEvents} from "@app/classes/websockets-events";
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,9 @@ export class SocketService {
     } else {
       this.socketClient.emit(event);
     }
+  }
+
+  disconnect(): void {
+    this.socketClient.emit(WebsocketsEvents.ABORT_MISSION);
   }
 }

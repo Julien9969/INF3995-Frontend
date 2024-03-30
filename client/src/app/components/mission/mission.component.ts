@@ -1,6 +1,5 @@
-import {Component, Input, OnDestroy} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit} from '@angular/core';
 import {MatCard, MatCardContent, MatCardModule} from "@angular/material/card";
-import {MissionService} from "@app/services/mission/mission.service";
 import {MatDivider} from "@angular/material/divider";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
@@ -12,7 +11,7 @@ import {MatAccordion, MatExpansionModule, MatExpansionPanel} from "@angular/mate
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {MatPaginator} from "@angular/material/paginator";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
-import {MissionState} from '@app/classes/mission-status';
+import {MissionState, MissionStatus} from '@app/classes/mission-status';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -20,7 +19,7 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell,
+  MatHeaderCell, MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
   MatRow,
@@ -29,12 +28,22 @@ import {
   MatTableDataSource
 } from "@angular/material/table";
 import {formatCounter} from "@app/classes/utils";
-import {Subscription} from "rxjs";
+import {BehaviorSubject} from "rxjs";
+import {MissionService} from "@app/services/mission/mission.service";
 
 interface RobotData {
   id: number,
   distance: number;
   battery: number;
+  state: string;
+}
+
+interface MissionInfo {
+  missionId: number;
+  elapsedTime: string;
+  timestamp: number;
+  simulation: boolean;
+
 }
 
 @Component({
@@ -67,6 +76,7 @@ interface RobotData {
     MatHeaderCell,
     MatHeaderRow,
     MatHeaderRowDef,
+    MatHeaderCellDef,
     MatRow,
     MatRowDef,
     MatTable,
@@ -76,47 +86,55 @@ interface RobotData {
   styleUrl: './mission.component.scss',
   templateUrl: './mission.component.html'
 })
-export class MissionComponent implements OnDestroy {
+export class MissionComponent implements OnChanges {
   @Input() missionState: MissionState = MissionState.NOT_STARTED;
+  @Input() status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({} as MissionStatus);
   robotDisplayedColumns: string[] = ['id', 'state', 'distance', 'battery', 'identify'];
-  robotDataSource: MatTableDataSource<RobotData> = new MatTableDataSource();
+  robotDataSource = new MatTableDataSource();
   elapsedTime: string = '0:00:00';
   missionStartedAt: number = 0;
   missionId: number = 0;
   distance: number = 0;
   protected readonly MissionState = MissionState;
-  private healthCheck: Subscription = new Subscription();
+  isSimulation: boolean = false;
+  displayedColumns: string[] = ["missionId", "elapsedTime", "timestamp", "simulation"];
+  rowData: MissionInfo = {} as MissionInfo;
+  infoDataSource = new MatTableDataSource([this.rowData])
 
-  constructor(public missionService: MissionService,
-              private matSnackBar: MatSnackBar) {
-    this.missionService.status.subscribe((updatedStatus) => {
-      this.elapsedTime = formatCounter(updatedStatus.elapsedTime)
-      this.missionStartedAt = updatedStatus.startTimestamp * 1000
-      this.robotDataSource.data = [];
-      const newRobotLogs: RobotData[] = []
-      for (let i = 0; i < updatedStatus.batteries.length; i++) {
-        const newRobotData: RobotData = {
-          id: i + 1,
-          battery: Math.round(Math.random() * 100),
-          distance: this.distance,
+  constructor(private matSnackBar: MatSnackBar, private missionService: MissionService) {
+  }
+
+
+  ngOnChanges() {
+    this.status.subscribe((updatedStatus) => {
+      if(updatedStatus) {
+        this.elapsedTime = formatCounter(updatedStatus.elapsedTime)
+        this.missionStartedAt = updatedStatus.startTimestamp * 1000
+        const newRobotLogs: RobotData[] = []
+        for (let i = 0; i < updatedStatus.batteries.length; i++) {
+          const newRobotData: RobotData = {
+            id: i + 1,
+            battery: Math.round(Math.random() * 100),
+            distance: this.distance,
+            state: 'IDLE'
+          }
+          newRobotLogs.push(newRobotData)
         }
-        newRobotLogs.push(newRobotData)
         this.robotDataSource.data = newRobotLogs
+        this.rowData = {
+          missionId: this.missionId,
+          elapsedTime: this.elapsedTime,
+          timestamp: this.missionStartedAt,
+          simulation: this.isSimulation
+        }
+        this.infoDataSource.data = [this.rowData]
       }
     });
     this.distance = this.distance + 0.01;
   }
 
-  get batteries(): number[] {
-    return this.missionService.status.getValue().batteries;
-  }
-
-  ngOnDestroy() {
-    this.healthCheck.unsubscribe();
-  }
-
   openSnackBar(robotId: number) {
-    this.matSnackBar.open(`Robot ${robotId} s'est identifié!`, 'Close', {
+    this.matSnackBar.open(`Robot ${robotId} s'est identifié!`, 'Fermer', {
       duration: 2000,
     });
   }

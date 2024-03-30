@@ -26,7 +26,6 @@ export class MissionService {
   constructor(private http: HttpClient, private readonly socketService: SocketService) {
     // Every second there's an update from the backend with the status
     this.socketService.on(WebsocketsEvents.MISSION_STATUS, (update: string) => this.updateMission(update));
-    this.socketService.send(WebsocketsEvents.MISSION_STATUS); // Retrieves status upon initialization of the service
   }
 
   get status(): BehaviorSubject<MissionStatus> {
@@ -58,5 +57,9 @@ export class MissionService {
       this.socketService.send(WebsocketsEvents.MISSION_START);
       this.socketService.send(WebsocketsEvents.MISSION_MAP);
     }
+  }
+
+  disconnect() {
+    this.socketService.disconnect();
   }
 }

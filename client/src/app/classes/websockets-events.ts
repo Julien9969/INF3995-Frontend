@@ -4,5 +4,6 @@ export enum WebsocketsEvents {
   MISSION_STATUS = "mission-status",
   LOG_DATA = "log-data",
   MAP_DATA = "map-data",
-  MISSION_MAP = "mission-map"
+  MISSION_MAP = "mission-map",
+  ABORT_MISSION = "abort-mission",
 }

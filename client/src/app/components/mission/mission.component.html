@@ -1,49 +1,60 @@
-<mat-card class="robot-detail-container">
-  <div class="mission-info">
-    <ul class="no-bullets">
-      <li>
-        <mat-icon>explore</mat-icon>
-        <b>Numéro de la mission: </b>{{missionId}}</li>
-      <li>
-        <mat-icon>timer</mat-icon>
-        <b>Temps écoulé: </b>{{elapsedTime}}<br></li>
-      <li>
-        <mat-icon>schedule</mat-icon>
-        <b>Temps du lancement: </b>{{missionStartedAt | date: 'HH:mm:ss'}}</li>
-    </ul>
-  </div>
-  <table [dataSource]="robotDataSource" mat-table>
-
-    <ng-container matColumnDef="id">
-      <th *matHeaderCellDef mat-header-cell> Robot ID</th>
-      <td *matCellDef="let element" mat-cell> {{element.id}} </td>
+<div class="mission-info">
+  <table [dataSource]="infoDataSource" mat-table>
+    <ng-container matColumnDef="missionId">
+      <th *matHeaderCellDef mat-header-cell> <mat-icon>explore</mat-icon>Numéro de la mission</th>
+      <td *matCellDef="let element" mat-cell> {{element.missionId}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="state">
-      <th *matHeaderCellDef mat-header-cell> État du robot</th>
-      <td *matCellDef="let element" mat-cell> En déplacement</td>
+    <ng-container matColumnDef="elapsedTime">
+      <th *matHeaderCellDef mat-header-cell><mat-icon>timer</mat-icon>Temps écoulé</th>
+      <td *matCellDef="let element" mat-cell> {{element.elapsedTime}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="distance">
-      <th *matHeaderCellDef mat-header-cell> Distance parcourue</th>
-      <td *matCellDef="let element" mat-cell> {{element.distance}}m</td>
+    <ng-container matColumnDef="timestamp">
+      <th *matHeaderCellDef mat-header-cell><mat-icon>schedule</mat-icon>Temps du lancement</th>
+      <td *matCellDef="let element" mat-cell>{{element.missionStartedAt | date: 'HH:mm:ss'}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="battery">
-      <th *matHeaderCellDef mat-header-cell> Batterie</th>
-      <td *matCellDef="let element" mat-cell> {{element.battery}}%</td>
+    <ng-container matColumnDef="simulation">
+      <th *matHeaderCellDef mat-header-cell><mat-icon>science</mat-icon>Simulation</th>
+      <td *matCellDef="let element" mat-cell>{{element.isSimulation ? 'Oui' : 'Non'}}</td>
     </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+</div>
+
+<table [dataSource]="robotDataSource" mat-table>
+  <ng-container matColumnDef="id">
+    <th *matHeaderCellDef mat-header-cell> Robot ID</th>
+    <td *matCellDef="let element" mat-cell> {{element.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="state">
+    <th *matHeaderCellDef mat-header-cell> État du robot</th>
+    <td *matCellDef="let element" mat-cell> {{element.state}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="distance">
+    <th *matHeaderCellDef mat-header-cell> Distance parcourue</th>
+    <td *matCellDef="let element" mat-cell> {{element.distance}}m</td>
+  </ng-container>
+
+  <ng-container matColumnDef="battery">
+    <th *matHeaderCellDef mat-header-cell> Batterie</th>
+    <td *matCellDef="let element" mat-cell> {{element.battery}}%</td>
+  </ng-container>
 
     <ng-container matColumnDef="identify">
       <th *matHeaderCellDef mat-header-cell> Identifier</th>
       <td *matCellDef="let element" mat-cell>
-        <button mat-icon-button [disabled]="this.missionState === MissionState.ONGOING" (click)="identifyRobots(element.id)" mat-icon-button>
-          <mat-icon>crisis_alert</mat-icon>
+        <button mat-icon-button [disabled]="this.missionState === MissionState.NOT_STARTED" (click)="identifyRobots(element.id)" mat-icon-button>
+          <mat-icon>my_location</mat-icon>
         </button>
       </td>
     </ng-container>
 
-    <tr *matHeaderRowDef="robotDisplayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
-  </table>
-</mat-card>
+  <tr *matHeaderRowDef="robotDisplayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
+</table>

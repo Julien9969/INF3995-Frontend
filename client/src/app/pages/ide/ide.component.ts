@@ -79,12 +79,10 @@ export class IdeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.health = this.healthService.check.subscribe((status) => {
-      if (!status) {
-        this.router.navigate(['/error']).then(() => {
-        });
-      }
-    })
+    if (this.healthService.check.getValue()) {
+      this.router.navigate(['/error']).then(() => {
+      });
+    }
   }
 
   ngOnDestroy() {
@@ -92,7 +90,6 @@ export class IdeComponent implements OnInit, OnDestroy {
   }
 
   onRobotSelected() {
-    console.log("Selected robot:", this.selectedRobotId);
     this.wasRobotChose = true;
     try {
       if (this.selectedRobotId === null) {

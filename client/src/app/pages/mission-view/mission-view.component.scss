@@ -11,10 +11,6 @@ body {
   margin: 16px;
 }
 
-.last-expansion-panel {
-  margin-bottom: 32px;
-}
-
 mat-expansion-panel {
   margin-right: 32px;
   margin-left: 32px;
@@ -48,7 +44,6 @@ mat-card-title > mat-icon {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
 }
 
 .material-symbols-outlined {

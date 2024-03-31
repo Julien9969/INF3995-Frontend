@@ -15,7 +15,7 @@ import {MatSort, MatSortHeader} from "@angular/material/sort";
 import {DatePipe, NgFor, NgIf} from "@angular/common";
 import {MatChipsModule} from '@angular/material/chips'
 import {BehaviorSubject, Subscription} from "rxjs"
-import {Logs} from "@app/classes/logs";
+import {Logs} from "@common";
 
 
 @Component({

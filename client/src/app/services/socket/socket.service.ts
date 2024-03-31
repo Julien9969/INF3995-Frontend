@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import {environment} from "@environment";
-import {WebsocketsEvents} from "@app/classes/websockets-events";
+import {WebsocketsEvents} from "@common";
 
 @Injectable({
   providedIn: 'root'

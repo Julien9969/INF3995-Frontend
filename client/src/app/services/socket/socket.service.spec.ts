@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { SocketService } from './socket.service';
 import {Socket} from "socket.io-client";
-import {SocketMock} from "@app/classes/helpers/socket-mock-helper";
+import {SocketMock} from "@app/helpers/socket-mock-helper";
 
 describe('SocketService', () => {
   let service: SocketService;

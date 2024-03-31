@@ -11,7 +11,7 @@ import {MatAccordion, MatExpansionModule, MatExpansionPanel} from "@angular/mate
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {MatPaginator} from "@angular/material/paginator";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
-import {MissionState, MissionStatus} from '@app/classes/mission-status';
+import {MissionState, MissionStatus} from '@common';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -27,25 +27,17 @@ import {
   MatTable,
   MatTableDataSource
 } from "@angular/material/table";
-import {formatCounter} from "@app/classes/utils";
+import {formatCounter} from "@app/helpers/utils";
 import {BehaviorSubject} from "rxjs";
 import {MissionService} from "@app/services/mission/mission.service";
 import {MatDialogTitle} from "@angular/material/dialog";
-import {RobotInformation} from "@app/services/robots/robots.service";
-
-interface RobotData {
-  id: number,
-  distance: number;
-  battery: number;
-  state: string;
-}
+import {RobotInformation} from "@common";
 
 interface MissionInfo {
   missionId: number;
   elapsedTime: string;
   timestamp: number;
   simulation: boolean;
-
 }
 
 @Component({
@@ -124,28 +116,19 @@ export class MissionComponent implements OnChanges {
       }
     });
 
-    this.robots.subscribe((updatedRobots) => {
-      const newRobotLogs: RobotData[] = []
-      for (let i = 0; i < updatedRobots.length; i++) {
-        const newRobotData: RobotData = {
-          id: i + 1,
-          battery: Math.round(Math.random() * 100),
-          distance: this.distance,
-          state: 'IDLE'
-        }
-        newRobotLogs.push(newRobotData)
-      }
-      this.robotDataSource.data = newRobotLogs
+    this.robots.subscribe((updatedRobots: RobotInformation[]) => {
+      this.robotDataSource.data = updatedRobots
     });
   }
 
-  openSnackBar(robotId: number) {
-    this.matSnackBar.open(`Robot ${robotId} s'est identifié!`, 'Fermer', {
+  openSnackBar(message: string) {
+    this.matSnackBar.open(message, 'Fermer', {
       duration: 2000,
     });
   }
 
   identifyRobots(robotId: number) {
-    this.missionService.identify(robotId).subscribe(() => this.openSnackBar(robotId));
+    this.openSnackBar(`Requête d'identification envoyée au robot ${robotId}!`)
+    this.missionService.identify(robotId).subscribe(() => this.openSnackBar(`Robot ${robotId} s'est identifié!`));
   }
 }

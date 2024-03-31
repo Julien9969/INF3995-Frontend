@@ -1,28 +1,16 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {environmentExt} from "@environment-ext";
 import {SocketService} from '@app/services/socket/socket.service';
-import {WebsocketsEvents} from '@app/classes/websockets-events';
-import {MissionState, MissionStatus} from '@app/classes/mission-status';
-
-const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
+import {MissionState, MissionStatus, WebsocketsEvents} from '@common';
+import {localUrl} from "@app/helpers/utils";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class MissionService {
-  private defaultStatus: MissionStatus = {
-    missionState: MissionState.NOT_STARTED,
-    missionId: 0,
-    startTimestamp: 0,
-    elapsedTime: 0,
-    count: 0,
-    batteries: [],
-    distances: []
-  }
-  private _status: BehaviorSubject<MissionStatus> = new BehaviorSubject(this.defaultStatus);
+  private _status: BehaviorSubject<MissionStatus> = new BehaviorSubject({} as MissionStatus);
 
   constructor(private http: HttpClient, private readonly socketService: SocketService) {
     // Every second there's an update from the backend with the status
@@ -41,8 +29,8 @@ export class MissionService {
       startTimestamp: jsonUpdate.startTimestamp || 0,
       elapsedTime: jsonUpdate.elapsedTime || 0,
       count: jsonUpdate.count || 0,
-      batteries: jsonUpdate.batteries || [],
-      distances: jsonUpdate.distances || []
+      isSimulation: jsonUpdate.isSimulation || false,
+      isHistorical: false, // if historical, there's no update anyway
     }
     this._status.next(update);
   }

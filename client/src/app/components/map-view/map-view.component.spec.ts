@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MapViewComponent } from './map-view.component';
-import {MissionState} from "@app/classes/mission-status";
+import {MissionState} from "../../../common/backend-interfaces";
 
 describe('MapViewComponent', () => {
   let component: MapViewComponent;

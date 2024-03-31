@@ -10,8 +10,8 @@
   <mat-form-field subscriptSizing="dynamic">
     <mat-label>Sélectionner le robot</mat-label>
     <mat-select [(ngModel)]="selectedRobotId" (selectionChange)="onRobotSelected()" name="food">
-      @for (robot of robotsList ; track robot) {
-      <mat-option [value]="robot.id">{{robot.name}}</mat-option>
+      @for (robot of robots ; track robot) {
+      <mat-option [value]="robot.id">{{robot.id}}</mat-option>
       }
     </mat-select>
   </mat-form-field>

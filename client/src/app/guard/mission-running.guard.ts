@@ -1,6 +1,6 @@
 import {MissionService} from "@app/services/mission/mission.service";
 import {inject} from "@angular/core";
-import {MissionState} from "@app/classes/mission-status";
+import {MissionState} from "../../common/backend-interfaces";
 import {MissionViewComponent} from "@app/pages/mission-view/mission-view.component";
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router";
 

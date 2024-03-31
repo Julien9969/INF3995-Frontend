@@ -50,11 +50,6 @@ export class IdeComponent implements OnInit, OnDestroy {
   codeEditorContent: string = "";
   currentFile: FilesTreeNode | null = null;
   selectedRobotId: number | null = null;
-  robotsList = [
-    {id: 1, name: "Robot 1"},
-    {id: 2, name: "Robot 2"},
-  ];
-
   codeMirrorOptions: any = {
     mode: {
       name: "python",
@@ -196,5 +191,9 @@ export class IdeComponent implements OnInit, OnDestroy {
 
   openDialog() {
     return this.dialog.open(ConfirmationDialogComponent).afterClosed();
+  }
+
+  get robots() {
+    return this.filesService.robots.getValue();
   }
 }

@@ -1,24 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject} from "rxjs";
 import {SocketService} from '@app/services/socket/socket.service';
-import {WebsocketsEvents} from '@app/classes/websockets-events';
-export interface RobotInformation {
-  id: number,
-  name: string,
-  battery: number,
-  status: string,
-  lastUpdate: number,
-  position: {
-    x: number,
-    y: number
-  }
-}
-
-export interface EmitFeedback {
-  timestamp: number,
-  message: string,
-  robotId: number
-}
+import {EmitFeedback, RobotInformation, WebsocketsEvents} from '@common';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +13,7 @@ export class RobotsService {
 
   constructor(private socketService: SocketService) {
     // Every second there's an update from the backend with the status
-    this.socketService.on(WebsocketsEvents.ROBOT_CONNECTED, (update: string) => this.parseRobots(update));
+    this.socketService.on(WebsocketsEvents.ROBOT_STATUS, (update: string) => this.parseRobots(update));
     this.socketService.on(WebsocketsEvents.IDENTIFY_FEEDBACK, (update: string) => this.parseEmitFeedback(update));
     this.socketService.on(WebsocketsEvents.HEADBACKBASE_FEEDBACK, (update: string) => this.parseEmitFeedback(update));
   }
@@ -41,11 +24,11 @@ export class RobotsService {
 
   private parseRobots(rawUpdate: string) {
     const jsonUpdate = JSON.parse(rawUpdate);
-    const update: RobotInformation[] = jsonUpdate.map((robot: any) => ({
+    const update: RobotInformation[] = jsonUpdate.map((robot: RobotInformation) => ({
       id: robot.id,
       name: robot.name,
       battery: robot.battery,
-      status: robot.status,
+      state: robot.state,
       lastUpdate: robot.lastUpdate,
       position: {
         x: robot.position.x,

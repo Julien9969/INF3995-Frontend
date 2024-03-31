@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {SocketService} from "@app/services/socket/socket.service";
 import {BehaviorSubject} from "rxjs";
-import {WebsocketsEvents} from "@app/classes/websockets-events";
+import {WebsocketsEvents} from "@common";
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +33,4 @@ export class MapService {
     image.src = bitmapBase64;
     this.isDefaultMap = false;
   }
-
-  // TODO: Display realtime location of the robots by drawing dots on the canvas
 }

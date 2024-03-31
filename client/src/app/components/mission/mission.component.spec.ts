@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 import {SocketService} from '@app/services/socket/socket.service';
 import {MissionService} from '@app/services/mission/mission.service';
 import {BehaviorSubject, Subject} from 'rxjs';
-import {MissionState, MissionStatus} from '@app/classes/mission-status';
+import {MissionState, BackendInterfaces} from '../../../common/backend-interfaces';
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 describe('MissionsComponent', () => {
@@ -18,21 +18,20 @@ describe('MissionsComponent', () => {
   let fixture: ComponentFixture<MissionComponent>;
   let healthServiceSpyObj: jasmine.SpyObj<HealthService>;
   let socketServiceObj: jasmine.SpyObj<SocketService>;
-  let missionStatusSubject: BehaviorSubject<MissionStatus>;
+  let missionStatusSubject: BehaviorSubject<BackendInterfaces>;
   let routerMock: { navigate: any; };
   let matSnackSpy: jasmine.SpyObj<MatSnackBar>;
   const identifyResponse = new Subject<string>();
 
   beforeEach(async () => {
-    const missionStatus: MissionStatus = {
+    const missionStatus: BackendInterfaces = {
       missionState: MissionState.ONGOING,
+      missionId: 0,
       startTimestamp: 0,
       elapsedTime: 0,
-      batteries: [0,0],
-      distances: [0,0],
       count: 2
     }
-    missionStatusSubject = new BehaviorSubject<MissionStatus>(missionStatus);
+    missionStatusSubject = new BehaviorSubject<BackendInterfaces>(missionStatus);
     const missionServiceObj = jasmine.createSpyObj('MissionService', ['toggleMission', 'identify'], { status: missionStatusSubject });
     routerMock = {
       navigate: jasmine.createSpy('navigate'),

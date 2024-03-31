@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environmentExt} from "@environment-ext";
 import { FilesTreeNode } from '@app/classes/files-tree';
+import {RobotsService} from "@app/services/robots/robots.service";
+import {RobotInformation} from "@common";
 
 const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
 
@@ -10,7 +12,10 @@ const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
   providedIn: 'root'
 })
 export class FilesService {
-  constructor(private readonly http: HttpClient) {
+  robots: BehaviorSubject<RobotInformation[]> = new BehaviorSubject<RobotInformation[]>([]);
+  constructor(private readonly http: HttpClient,
+              private readonly robotsService: RobotsService) {
+    this.robotsService.robots.subscribe(robots => this.robots.next(robots));
   }
 
     getFileTree(robotId: number): Observable<HttpResponse<string>> {

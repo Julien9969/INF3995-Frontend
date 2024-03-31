@@ -10,7 +10,7 @@ import {MissionService} from "@app/services/mission/mission.service";
 import {LogsService} from "@app/services/logs/logs.service";
 import {MapService} from "@app/services/map/map.service";
 import {BehaviorSubject} from "rxjs";
-import {Logs} from "@app/classes/logs";
+import {Logs, RobotInformation, EmitFeedback} from "@common";
 import {LogsComponent} from "@app/components/logs/logs.component";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
 import {
@@ -23,12 +23,12 @@ import {
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatToolbar} from "@angular/material/toolbar";
 import {MissionComponent} from "@app/components/mission/mission.component";
-import {MissionState, MissionStatus} from "@app/classes/mission-status";
+import {MissionState, MissionStatus} from "@common";
 import {MatTooltip} from "@angular/material/tooltip";
 import {HealthService} from "@app/services/health/health.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "@app/components/confirmation-dialog/confirmation-dialog.component";
-import {EmitFeedback, RobotInformation, RobotsService} from "@app/services/robots/robots.service";
+import {RobotsService} from "@app/services/robots/robots.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 
@@ -71,15 +71,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   robots: BehaviorSubject<RobotInformation[]> = new BehaviorSubject<RobotInformation[]>([]);
   logs: BehaviorSubject<Logs[]> = new BehaviorSubject<Logs[]>([]);
   map: BehaviorSubject<HTMLImageElement> = new BehaviorSubject<HTMLImageElement>(new Image());
-  status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({
-    missionState: MissionState.NOT_STARTED,
-    missionId: 0,
-    startTimestamp: 0,
-    elapsedTime: 0,
-    count: 0,
-    batteries: [],
-    distances: []
-  });
+  status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({} as MissionStatus);
   isLoading: boolean = false;
   previousMissionState: MissionState = MissionState.NOT_STARTED;
   identifyRobotTooltip: string = 'Ramener les robots à la base';
@@ -133,6 +125,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
       this.logs = this.historyService.getLogs(this.missionId);
       this.map = this.historyService.getMap(this.missionId);
       this.status = this.historyService.getStatus(this.missionId);
+      this.robots = this.historyService.getRobots(this.missionId);
     } else {
       this.logs = this.logsService.logs;
       this.map = this.mapService.image;

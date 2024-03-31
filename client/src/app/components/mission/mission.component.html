@@ -2,22 +2,22 @@
   <b matDialogTitle>Détails de la mission</b>
   <table [dataSource]="infoDataSource" mat-table>
     <ng-container matColumnDef="missionId">
-      <th *matHeaderCellDef mat-header-cell> <mat-icon>explore</mat-icon>Numéro de la mission</th>
+      <th *matHeaderCellDef mat-header-cell>Numéro de la mission</th>
       <td *matCellDef="let element" mat-cell> {{element.missionId}} </td>
     </ng-container>
 
     <ng-container matColumnDef="elapsedTime">
-      <th *matHeaderCellDef mat-header-cell><mat-icon>timer</mat-icon>Temps écoulé</th>
+      <th *matHeaderCellDef mat-header-cell>Temps écoulé</th>
       <td *matCellDef="let element" mat-cell> {{element.elapsedTime}}</td>
     </ng-container>
 
     <ng-container matColumnDef="timestamp">
-      <th *matHeaderCellDef mat-header-cell><mat-icon>schedule</mat-icon>Temps du lancement</th>
+      <th *matHeaderCellDef mat-header-cell>Temps du lancement</th>
       <td *matCellDef="let element" mat-cell>{{element.timestamp | date: 'HH:mm:ss'}}</td>
     </ng-container>
 
     <ng-container matColumnDef="simulation">
-      <th *matHeaderCellDef mat-header-cell><mat-icon>science</mat-icon>Simulation</th>
+      <th *matHeaderCellDef mat-header-cell>Simulation</th>
       <td *matCellDef="let element" mat-cell>{{element.isSimulation ? 'Oui' : 'Non'}}</td>
     </ng-container>
 
@@ -58,4 +58,7 @@
     <tr *matHeaderRowDef="robotDisplayedColumns" mat-header-row></tr>
     <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
   </table>
+  <div *ngIf="this.robots.getValue().length === 0" class="">
+    Aucun robot n'est disponible pour cette mission
+  </div>
 </div>

@@ -3,9 +3,9 @@ import {MissionService} from './mission.service';
 import {HttpClient} from '@angular/common/http';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {BehaviorSubject} from "rxjs";
-import {MissionState, MissionStatus} from "@app/classes/mission-status";
+import {MissionState, BackendInterfaces} from "../../../common/backend-interfaces";
 import {SocketService} from "@app/services/socket/socket.service";
-import {SocketMock} from "@app/classes/helpers/socket-mock-helper";
+import {SocketMock} from "@app/helpers/socket-mock-helper";
 import {WebsocketsEvents} from "@app/classes/websockets-events";
 import {environmentExt} from "@environment-ext";
 
@@ -52,7 +52,7 @@ describe('MissionService', () => {
   });
 
   it('should have default status', () => {
-    expect(service.status).toBeInstanceOf(BehaviorSubject<MissionStatus>);
+    expect(service.status).toBeInstanceOf(BehaviorSubject<BackendInterfaces>);
     expect(service.status.getValue().missionState).toEqual(MissionState.NOT_STARTED);
   });
 
@@ -92,7 +92,7 @@ describe('MissionService', () => {
 
 
   it('should start mission if Mission status is not not ongoing', () => {
-    const mission: MissionStatus = {
+    const mission: BackendInterfaces = {
       missionState: MissionState.NOT_STARTED,
       startTimestamp: 0,
       elapsedTime: 0,
@@ -107,7 +107,7 @@ describe('MissionService', () => {
   });
 
   it('should end mission if Mission status is ongoing', () => {
-    const mission: MissionStatus = {
+    const mission: BackendInterfaces = {
       missionState: MissionState.ONGOING,
       startTimestamp: 0,
       elapsedTime: 0,

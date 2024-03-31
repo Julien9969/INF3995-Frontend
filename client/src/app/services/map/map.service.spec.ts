@@ -2,7 +2,7 @@ import {TestBed} from '@angular/core/testing';
 
 import {MapService} from './map.service';
 import {SocketService} from "@app/services/socket/socket.service";
-import {SocketMock} from "@app/classes/helpers/socket-mock-helper";
+import {SocketMock} from "@app/helpers/socket-mock-helper";
 import {BehaviorSubject} from "rxjs";
 
 describe('MapService', () => {

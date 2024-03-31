@@ -4,8 +4,8 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {environmentExt} from "@environment-ext";
 import {BehaviorSubject} from "rxjs";
-import {Logs} from "@app/classes/logs";
-import {MissionState, MissionStatus} from "@app/classes/mission-status";
+import {MissionStatus, Logs} from "@common";
+import {RobotInformation} from "@common";
 
 const localUrl = (call: string) => `${environmentExt.apiUrl}history/${call}`;
 
@@ -25,15 +25,8 @@ export class HistoryService {
   private _missions: BehaviorSubject<HistoryData[]> = new BehaviorSubject<HistoryData[]>([]);
   private _logs: BehaviorSubject<Logs[]> = new BehaviorSubject<Logs[]>([]);
   private _map: BehaviorSubject<HTMLImageElement> = new BehaviorSubject<HTMLImageElement>(new Image());
-  private _status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({
-    missionState: MissionState.NOT_STARTED,
-    missionId: 0,
-    startTimestamp: 0,
-    elapsedTime: 0,
-    count: 0,
-    batteries: [],
-    distances: []
-  });
+  private _status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({} as MissionStatus);
+  private _robots: BehaviorSubject<RobotInformation[]> = new BehaviorSubject<RobotInformation[]>([] as RobotInformation[]);
   private historyLoaded: boolean = false;
 
   constructor(private healthCheck: HealthService,
@@ -71,13 +64,23 @@ export class HistoryService {
   }
 
   getStatus(missionId: number) {
-    this.httpClient.get(localUrl(`status/${missionId}`), {responseType: 'text'}).subscribe((data) => {
+    this.httpClient.get(localUrl(`status/${missionId}`), {responseType: 'json'}).subscribe((data) => {
       if (data) {
-        const status = JSON.parse(data) as MissionStatus;
+        const status = data as MissionStatus;
         this._status.next(status);
       }
     });
     return this._status;
+  }
+
+  getRobots(missionId: number) {
+    this.httpClient.get(localUrl(`robots/${missionId}`), {responseType: 'json'}).subscribe((data) => {
+      if (data) {
+        const status = data as RobotInformation[];
+        this._robots.next(status);
+      }
+    });
+    return this._robots;
   }
 
   private queryHistory(): void {

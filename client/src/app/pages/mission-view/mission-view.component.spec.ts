@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {MissionService} from "@app/services/mission/mission.service";
 import {Observable} from "rxjs/internal/Observable";
 import {DatePipe} from "@angular/common";
-import {MissionState} from "@app/classes/mission-status";
+import {MissionState} from "../../../common/backend-interfaces";
 
 describe('MissionDetailsComponent', () => {
   let component: MissionViewComponent;

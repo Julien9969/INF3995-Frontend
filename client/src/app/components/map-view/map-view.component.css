@@ -12,3 +12,12 @@ map-container {
   display: flex;
   flex-direction: column;
 }
+
+.icon-text {
+  display: flex;
+  align-items: center;
+}
+
+.v-align-middle {
+  vertical-align: middle;
+}

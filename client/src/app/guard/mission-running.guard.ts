@@ -10,10 +10,12 @@ export const missionRunningGuard = (missionViewComponent: MissionViewComponent, 
     // always allow redirect to error page
     if(routerNextState.url == "error") {
       resolve(false);
+      return;
     }
     // If mission is not ongoing, we don't care
     if (missionService.status.getValue().missionState != MissionState.ONGOING) {
       resolve(true);
+      return;
     }
     // else confirm with user
     missionViewComponent.openDialog().subscribe((result) => {

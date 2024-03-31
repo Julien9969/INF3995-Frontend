@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MapViewComponent } from './map-view.component';
+import {MissionState} from "@app/classes/mission-status";
 
 describe('MapViewComponent', () => {
   let component: MapViewComponent;
@@ -11,7 +12,7 @@ describe('MapViewComponent', () => {
       imports: [MapViewComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(MapViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

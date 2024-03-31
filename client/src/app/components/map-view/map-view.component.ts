@@ -1,12 +1,16 @@
-import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnChanges, ViewChild} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {BehaviorSubject} from "rxjs";
+import {MatIconButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-map-view',
   standalone: true,
   imports: [
-    NgIf
+    NgIf,
+    MatIconButton,
+    MatIcon
   ],
   templateUrl: './map-view.component.html',
   styleUrl: './map-view.component.css'

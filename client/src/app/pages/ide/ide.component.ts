@@ -19,6 +19,8 @@ import {MatToolbar} from "@angular/material/toolbar";
 import {HealthService} from "@app/services/health/health.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
+import {ConfirmationDialogComponent} from "@app/components/confirmation-dialog/confirmation-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-ide',
@@ -69,12 +71,14 @@ export class IdeComponent implements OnInit, OnDestroy {
     matchBrackets: true,
     lint: true,
   };
+  isDirty: boolean = false;
 
 
   constructor(private filesService: FilesService,
               private _snackBar: MatSnackBar,
               private healthService: HealthService,
-              public router: Router
+              public router: Router,
+              public dialog: MatDialog
   ) {
   }
 
@@ -126,6 +130,7 @@ export class IdeComponent implements OnInit, OnDestroy {
         console.log("Response code:", response.status);
         console.log("Response body:", response.body);
         this.openSnackBar(`Fichier sauvegardé`);
+        this.isDirty = false;
       },
       error: (error) => {
         console.error("Error:", error);
@@ -151,6 +156,7 @@ export class IdeComponent implements OnInit, OnDestroy {
         this.openSnackBar(`Erreur lors du chargement du fichier ${file.name}`, true);
       }
     });
+    this.isDirty = true;
   }
 
   updateRobot() {
@@ -186,5 +192,9 @@ export class IdeComponent implements OnInit, OnDestroy {
 
   refresh() {
     this.wasRobotChose = false;
+  }
+
+  openDialog() {
+    return this.dialog.open(ConfirmationDialogComponent).afterClosed();
   }
 }

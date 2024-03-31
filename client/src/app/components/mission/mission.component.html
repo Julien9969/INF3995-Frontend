@@ -1,4 +1,3 @@
-<div class="mission-info">
   <table [dataSource]="infoDataSource" mat-table>
     <ng-container matColumnDef="missionId">
       <th *matHeaderCellDef mat-header-cell> <mat-icon>explore</mat-icon>Numéro de la mission</th>
@@ -12,7 +11,7 @@
 
     <ng-container matColumnDef="timestamp">
       <th *matHeaderCellDef mat-header-cell><mat-icon>schedule</mat-icon>Temps du lancement</th>
-      <td *matCellDef="let element" mat-cell>{{element.missionStartedAt | date: 'HH:mm:ss'}}</td>
+      <td *matCellDef="let element" mat-cell>{{element.timestamp | date: 'HH:mm:ss'}}</td>
     </ng-container>
 
     <ng-container matColumnDef="simulation">
@@ -23,7 +22,6 @@
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
     <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   </table>
-</div>
 
 <table [dataSource]="robotDataSource" mat-table>
   <ng-container matColumnDef="id">
@@ -58,3 +56,4 @@
   <tr *matHeaderRowDef="robotDisplayedColumns" mat-header-row></tr>
   <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
 </table>
+

@@ -1,16 +1,19 @@
-<mat-toolbar *ngIf="!isTimeMachine" class="sticky-toolbar">
-  <button (click)="this.toggleMission()" [disabled]="missionState === MissionState.ONGOING" class="toolbar-button"
+<mat-toolbar *ngIf="!isTimeMachine" class="sticky-toolbar toolbar-no-overflow">
+  Mission
+  <span class="bar-spacer"></span>
+  <button  (click)="this.toggleMission()" [disabled]="missionState === MissionState.ONGOING" class="toolbar-button"
           color="primary"
-          mat-raised-button>{{missionState === MissionState.ENDED ? 'Redémarrer mission' : 'Lancer mission'}}
+           matTooltip="{{missionState === MissionState.ENDED ? 'Redémarrer mission' : 'Lancer mission'}}"
+           mat-icon-button>
     <mat-icon>{{this.missionState === MissionState.ENDED ? 'refresh' : 'play_arrow'}}</mat-icon>
   </button>
   <button (click)="this.toggleMission()" [disabled]="missionState !== MissionState.ONGOING" class="toolbar-button"
           color="accent"
-          mat-raised-button>Arrêter la mission
+          matTooltip="Arrêter mission"
+          mat-icon-button>
     <mat-icon>stop</mat-icon>
   </button>
-  <span class="bar-spacer"></span>
-  <button [matTooltip]="identifyRobotTooltip" mat-icon-button>
+  <button matTooltip="Ramener les robots à la base" mat-icon-button>
     <mat-icon>crisis_alert</mat-icon>
   </button>
 </mat-toolbar>
@@ -42,10 +45,17 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <app-map-view [map]="map"></app-map-view>
+      <div *ngIf="!this.mapInitialized" class="no-mission-container">
+    <span class="material-symbols-outlined">
+    route
+  </span>
+        <h2><b>La carte n'est pas encore disponible...</b></h2>
+      </div>
+      <app-map-view *ngIf="mapInitialized" [map]="map"></app-map-view>
     </ng-template>
   </mat-expansion-panel>
-  <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="true" class="last-expansion-panel">
+  <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="true"
+                       class="last-expansion-panel">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Journaux des robots

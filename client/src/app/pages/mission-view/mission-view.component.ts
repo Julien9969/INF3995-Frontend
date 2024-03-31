@@ -82,6 +82,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   missionState: MissionState = MissionState.NOT_STARTED;
   protected readonly MissionState = MissionState;
   private route = inject(ActivatedRoute);
+  mapInitialized: boolean = false;
 
   constructor(private historyService: HistoryService,
               private missionService: MissionService,
@@ -118,6 +119,9 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     } else {
       this.logs = this.logsService.logs;
       this.map = this.mapService.image;
+      this.map.subscribe(() => {
+        this.mapInitialized = !this.mapService.isDefaultMap; // TODO: confirm if this actually works
+      })
       this.status = this.missionService.status;
       this.status.subscribe((updatedStatus) => {
         this.missionState = updatedStatus.missionState;

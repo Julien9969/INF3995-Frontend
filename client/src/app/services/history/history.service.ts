@@ -14,6 +14,7 @@ export interface HistoryData {
   startTimestamp: number,
   duration: number,
   nbRobots: number,
+  distance: number,
 }
 
 @Injectable({

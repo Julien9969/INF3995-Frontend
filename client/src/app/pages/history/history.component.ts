@@ -16,11 +16,11 @@ import {MatToolbar} from "@angular/material/toolbar";
 import {MatSort, MatSortHeader, MatSortModule} from "@angular/material/sort";
 
 const initialData: HistoryData[] = [
-  {id: 1, startTimestamp: 1620000006, duration: 61, nbRobots: 2},
-  {id: 2, startTimestamp: 1620000005, duration: 60, nbRobots: 2},
-  {id: 3, startTimestamp: 1620000004, duration: 61, nbRobots: 1},
-  {id: 4, startTimestamp: 1620000003, duration: 60, nbRobots: 9},
-  {id: 5, startTimestamp: 1620000002, duration: 62, nbRobots: 9},
+  {id: 1, startTimestamp: 1620000006, duration: 61, nbRobots: 2, distance: 1000},
+  {id: 2, startTimestamp: 1620000005, duration: 60, nbRobots: 2, distance: 1000},
+  {id: 3, startTimestamp: 1620000004, duration: 61, nbRobots: 1, distance: 1000},
+  {id: 4, startTimestamp: 1620000003, duration: 60, nbRobots: 9, distance: 1000},
+  {id: 5, startTimestamp: 1620000002, duration: 62, nbRobots: 9, distance: 1000},
 ];
 
 @Component({
@@ -47,7 +47,7 @@ const initialData: HistoryData[] = [
 export class HistoryComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   dataSource: MatTableDataSource<HistoryData> = new MatTableDataSource<HistoryData>(initialData);
-  displayedColumns: string[] = ['id', 'timestamp', 'duration', 'robots', 'identify'];
+  displayedColumns: string[] = ['id', 'timestamp', 'duration', 'distance', 'robots', 'identify'];
 
   constructor(private healthCheck: HealthService,
               public router: Router,

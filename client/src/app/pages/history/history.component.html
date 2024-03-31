@@ -2,24 +2,24 @@
   Historique des missions
 </mat-toolbar>
 <div *ngIf="this.dataSource.data.length > 0">
-  <table [dataSource]="dataSource" mat-table>
+  <table [dataSource]="dataSource" mat-table matSort>
     <ng-container matColumnDef="id">
-      <th *matHeaderCellDef mat-header-cell> Mission </th>
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Mission </th>
       <td *matCellDef="let element" mat-cell> {{element.id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="timestamp">
-      <th *matHeaderCellDef mat-header-cell> Date </th>
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Date </th>
       <td *matCellDef="let element" mat-cell> {{ element.startTimestamp * 1000 | date: 'medium'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="duration">
-      <th *matHeaderCellDef mat-header-cell> Durée </th>
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Durée </th>
       <td *matCellDef="let element" mat-cell> {{formatTime(element.duration)}} </td>
     </ng-container>
 
     <ng-container matColumnDef="robots">
-      <th *matHeaderCellDef mat-header-cell> Nombre de robots </th>
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Nombre de robots </th>
       <td *matCellDef="let element" mat-cell> {{element.nbRobots}} </td>
     </ng-container>
 

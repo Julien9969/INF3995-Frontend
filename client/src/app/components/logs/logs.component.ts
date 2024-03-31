@@ -42,7 +42,7 @@ import {Logs} from "@app/classes/logs";
   styleUrl: './logs.component.scss'
 })
 export class LogsComponent implements AfterViewInit, OnInit, OnDestroy {
-  @ViewChild(MatSort) sort: MatSort | undefined;
+  @ViewChild(MatSort) sort!: MatSort;
   displayedColumns: string[] = ['eventType', 'robotId', 'message', 'timestamp']
   dataSource = new MatTableDataSource()
   @Input() logs!: BehaviorSubject<Logs[]>;

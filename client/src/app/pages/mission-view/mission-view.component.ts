@@ -70,6 +70,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   map: BehaviorSubject<HTMLImageElement> = new BehaviorSubject<HTMLImageElement>(new Image());
   status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({
     missionState: MissionState.NOT_STARTED,
+    missionId: 0,
     startTimestamp: 0,
     elapsedTime: 0,
     count: 0,

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {environmentExt} from "@environment-ext";
-import { FilesTreeNode } from '@app/interfaces/files-tree';
+import { FilesTreeNode } from '@app/classes/files-tree';
 
 const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
 

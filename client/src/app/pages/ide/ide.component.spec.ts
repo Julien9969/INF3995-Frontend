@@ -7,7 +7,7 @@ import { of, throwError } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { FilesTree } from '@app/interfaces/files-tree';
+import { FilesTree } from '@app/classes/files-tree';
 
 const fileTreeMock: FilesTree = [
     {
@@ -44,7 +44,7 @@ describe('IdeComponent', () => {
     filesServiceSpy.saveFile.and.returnValue(of(mockResponse));
     filesServiceSpy.getFile.and.returnValue(of(mockResponse));
     filesServiceSpy.updateRobot.and.returnValue(of(mockResponse));
-    
+
     await TestBed.configureTestingModule({
       imports: [IdeComponent, MatSnackBarModule, BrowserAnimationsModule, BrowserModule],
       providers: [{ provide: FilesService, useValue: filesServiceSpy }]
@@ -82,7 +82,7 @@ describe('IdeComponent', () => {
 
     filesServiceSpy.getFileTree.and.callFake(() => { throw new Error(errorMessage); });
     spyOn(component, 'openSnackBar');
-        
+
     component.onRobotSelected();
 
     expect(filesServiceSpy.getFileTree).toHaveBeenCalledWith(1);
@@ -95,7 +95,7 @@ describe('IdeComponent', () => {
 
     filesServiceSpy.getFileTree.and.returnValue(throwError(() => errorMessage));
     spyOn(component, 'openSnackBar');
-        
+
     component.onRobotSelected();
 
     expect(filesServiceSpy.getFileTree).toHaveBeenCalledWith(1);

@@ -1,5 +1,6 @@
 export interface MissionStatus {
   missionState: MissionState,
+  missionId: number,
   batteries: number[],
   distances: number[],
   count: number

@@ -15,6 +15,7 @@ export interface HistoryData {
   duration: number,
   nbRobots: number,
   distance: number,
+  isSimulation: boolean,
 }
 
 @Injectable({
@@ -26,6 +27,7 @@ export class HistoryService {
   private _map: BehaviorSubject<HTMLImageElement> = new BehaviorSubject<HTMLImageElement>(new Image());
   private _status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({
     missionState: MissionState.NOT_STARTED,
+    missionId: 0,
     startTimestamp: 0,
     elapsedTime: 0,
     count: 0,

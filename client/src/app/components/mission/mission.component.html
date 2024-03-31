@@ -1,3 +1,5 @@
+<div class="info-container">
+  <b matDialogTitle>Détails de la mission</b>
   <table [dataSource]="infoDataSource" mat-table>
     <ng-container matColumnDef="missionId">
       <th *matHeaderCellDef mat-header-cell> <mat-icon>explore</mat-icon>Numéro de la mission</th>
@@ -22,27 +24,27 @@
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
     <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   </table>
+  <b matDialogTitle>Informations système</b>
+  <table [dataSource]="robotDataSource" mat-table>
+    <ng-container matColumnDef="id">
+      <th *matHeaderCellDef mat-header-cell> Robot ID</th>
+      <td *matCellDef="let element" mat-cell> {{element.id}} </td>
+    </ng-container>
 
-<table [dataSource]="robotDataSource" mat-table>
-  <ng-container matColumnDef="id">
-    <th *matHeaderCellDef mat-header-cell> Robot ID</th>
-    <td *matCellDef="let element" mat-cell> {{element.id}} </td>
-  </ng-container>
+    <ng-container matColumnDef="state">
+      <th *matHeaderCellDef mat-header-cell> État du robot</th>
+      <td *matCellDef="let element" mat-cell> {{element.state}}</td>
+    </ng-container>
 
-  <ng-container matColumnDef="state">
-    <th *matHeaderCellDef mat-header-cell> État du robot</th>
-    <td *matCellDef="let element" mat-cell> {{element.state}}</td>
-  </ng-container>
+    <ng-container matColumnDef="distance">
+      <th *matHeaderCellDef mat-header-cell> Distance parcourue</th>
+      <td *matCellDef="let element" mat-cell> {{element.distance}}m</td>
+    </ng-container>
 
-  <ng-container matColumnDef="distance">
-    <th *matHeaderCellDef mat-header-cell> Distance parcourue</th>
-    <td *matCellDef="let element" mat-cell> {{element.distance}}m</td>
-  </ng-container>
-
-  <ng-container matColumnDef="battery">
-    <th *matHeaderCellDef mat-header-cell> Batterie</th>
-    <td *matCellDef="let element" mat-cell> {{element.battery}}%</td>
-  </ng-container>
+    <ng-container matColumnDef="battery">
+      <th *matHeaderCellDef mat-header-cell> Batterie</th>
+      <td *matCellDef="let element" mat-cell> {{element.battery}}%</td>
+    </ng-container>
 
     <ng-container matColumnDef="identify">
       <th *matHeaderCellDef mat-header-cell> Identifier</th>
@@ -53,7 +55,7 @@
       </td>
     </ng-container>
 
-  <tr *matHeaderRowDef="robotDisplayedColumns" mat-header-row></tr>
-  <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
-</table>
-
+    <tr *matHeaderRowDef="robotDisplayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
+  </table>
+</div>

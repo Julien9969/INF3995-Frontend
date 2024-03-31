@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {MatCard, MatCardContent, MatCardModule} from "@angular/material/card";
 import {MatDivider} from "@angular/material/divider";
 import {MatButton, MatIconButton} from "@angular/material/button";
@@ -30,6 +30,8 @@ import {
 import {formatCounter} from "@app/classes/utils";
 import {BehaviorSubject} from "rxjs";
 import {MissionService} from "@app/services/mission/mission.service";
+import {MatDialogTitle} from "@angular/material/dialog";
+import {RobotInformation} from "@app/services/robots/robots.service";
 
 interface RobotData {
   id: number,
@@ -79,7 +81,7 @@ interface MissionInfo {
     MatHeaderCellDef,
     MatRow,
     MatRowDef,
-    MatTable,
+    MatTable, MatDialogTitle,
   ],
   selector: 'app-mission',
   standalone: true,
@@ -88,6 +90,7 @@ interface MissionInfo {
 })
 export class MissionComponent implements OnChanges {
   @Input() missionState: MissionState = MissionState.NOT_STARTED;
+  @Input() robots: BehaviorSubject<RobotInformation[]> = new BehaviorSubject<RobotInformation[]>([] as RobotInformation[]);
   @Input() status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({} as MissionStatus);
   robotDisplayedColumns: string[] = ['id', 'state', 'distance', 'battery', 'identify'];
   robotDataSource = new MatTableDataSource();
@@ -101,7 +104,8 @@ export class MissionComponent implements OnChanges {
   rowData: MissionInfo = {} as MissionInfo;
   infoDataSource = new MatTableDataSource([this.rowData])
 
-  constructor(private matSnackBar: MatSnackBar, private missionService: MissionService) {
+  constructor(private matSnackBar: MatSnackBar,
+              private missionService: MissionService,) {
   }
 
 
@@ -110,17 +114,6 @@ export class MissionComponent implements OnChanges {
       if(updatedStatus) {
         this.elapsedTime = formatCounter(updatedStatus.elapsedTime)
         this.missionStartedAt = updatedStatus.startTimestamp * 1000
-        const newRobotLogs: RobotData[] = []
-        for (let i = 0; i < updatedStatus.batteries.length; i++) {
-          const newRobotData: RobotData = {
-            id: i + 1,
-            battery: Math.round(Math.random() * 100),
-            distance: this.distance,
-            state: 'IDLE'
-          }
-          newRobotLogs.push(newRobotData)
-        }
-        this.robotDataSource.data = newRobotLogs
         this.rowData = {
           missionId: this.missionId,
           elapsedTime: this.elapsedTime,
@@ -130,7 +123,20 @@ export class MissionComponent implements OnChanges {
         this.infoDataSource.data = [this.rowData]
       }
     });
-    this.distance = this.distance + 0.01;
+
+    this.robots.subscribe((updatedRobots) => {
+      const newRobotLogs: RobotData[] = []
+      for (let i = 0; i < updatedRobots.length; i++) {
+        const newRobotData: RobotData = {
+          id: i + 1,
+          battery: Math.round(Math.random() * 100),
+          distance: this.distance,
+          state: 'IDLE'
+        }
+        newRobotLogs.push(newRobotData)
+      }
+      this.robotDataSource.data = newRobotLogs
+    });
   }
 
   openSnackBar(robotId: number) {

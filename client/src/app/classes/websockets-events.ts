@@ -6,4 +6,10 @@ export enum WebsocketsEvents {
   MAP_DATA = "map-data",
   MISSION_MAP = "mission-map",
   ABORT_MISSION = "abort-mission",
+  ROBOT_CONNECTED = "robot-connected",
+  ROBOT_DISCONNECTED = "robot-disconnected",
+  IDENTIFY_FEEDBACK = "identify-feedback",
+  IDENTIFY_REQUEST = "identify-request",
+  HEADBACKBASE_FEEDBACK = "headbackbase-feedback",
+  HEADBACKBASE_REQUEST = "headbackbase-request",
 }

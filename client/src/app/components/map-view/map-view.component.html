@@ -1,12 +1,18 @@
 <div class="map-container">
+  <div class="vertical-menu">
+    <button (click)="zoomIn()" mat-icon-button>
+      <mat-icon>zoom_in</mat-icon>
+    </button>
+    <button (click)="zoomOut()" mat-icon-button>
+      <mat-icon>zoom_out</mat-icon>
+    </button>
+  </div>
   <canvas
     class="map-display"
     id="map-canvas"
+    [width]="width"
+    [height]="height"
     #mapCanvas
   ></canvas>
-  <div>
-    <button mat-icon-button><mat-icon>plus</mat-icon></button>
-    <button mat-icon-button>plus</button>
-  </div>
 </div>
 

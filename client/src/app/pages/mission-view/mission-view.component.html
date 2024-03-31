@@ -13,7 +13,7 @@
           mat-icon-button>
     <mat-icon>stop</mat-icon>
   </button>
-  <button matTooltip="Ramener les robots à la base" mat-icon-button>
+  <button (click)="toggleHeadBackBase()" matTooltip="Ramener les robots à la base" mat-icon-button>
     <mat-icon>crisis_alert</mat-icon>
   </button>
 </mat-toolbar>
@@ -31,7 +31,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <app-mission [status]="status"></app-mission>
+      <app-mission [status]="status" [robots]="robots"></app-mission>
     </ng-template>
   </mat-expansion-panel>
   <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="false">
@@ -51,7 +51,7 @@
   </span>
         <h2><b>La carte n'est pas encore disponible...</b></h2>
       </div>
-      <app-map-view *ngIf="mapInitialized" [map]="map"></app-map-view>
+      <app-map-view *ngIf="!mapInitialized" [map]="map"></app-map-view>
     </ng-template>
   </mat-expansion-panel>
   <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="true"

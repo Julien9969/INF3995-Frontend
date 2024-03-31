@@ -28,6 +28,8 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {HealthService} from "@app/services/health/health.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "@app/components/confirmation-dialog/confirmation-dialog.component";
+import {EmitFeedback, RobotInformation, RobotsService} from "@app/services/robots/robots.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 @Component({
@@ -66,6 +68,7 @@ import {ConfirmationDialogComponent} from "@app/components/confirmation-dialog/c
 export class MissionViewComponent implements OnInit, OnDestroy {
   missionId: number = 0;
   isTimeMachine: boolean = false;
+  robots: BehaviorSubject<RobotInformation[]> = new BehaviorSubject<RobotInformation[]>([]);
   logs: BehaviorSubject<Logs[]> = new BehaviorSubject<Logs[]>([]);
   map: BehaviorSubject<HTMLImageElement> = new BehaviorSubject<HTMLImageElement>(new Image());
   status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({
@@ -89,8 +92,10 @@ export class MissionViewComponent implements OnInit, OnDestroy {
               private missionService: MissionService,
               private logsService: LogsService,
               private mapService: MapService,
+              private robotsService: RobotsService,
               private healthService: HealthService,
               private router: Router,
+              public matSnackBar: MatSnackBar,
               public dialog: MatDialog
   ) {
 
@@ -100,6 +105,17 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     this.missionService.toggleMission()
     this.previousMissionState = this.missionState
     this.isLoading = true
+  }
+
+  toggleHeadBackBase() {
+    this.matSnackBar.open("Requête de ramener les robots à la base envoyée", 'Fermer', {
+      duration: 4000,
+    })
+    this.robotsService.headBackBase().subscribe((result: EmitFeedback) => {
+      this.matSnackBar.open(result.message, 'Fermer', {
+        duration: 4000,
+      })
+    });
   }
 
   ngOnInit() {
@@ -123,6 +139,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
       this.map.subscribe(() => {
         this.mapInitialized = !this.mapService.isDefaultMap; // TODO: confirm if this actually works
       })
+      this.robots = this.robotsService.robots
       this.status = this.missionService.status;
       this.status.subscribe((updatedStatus) => {
         this.missionState = updatedStatus.missionState;

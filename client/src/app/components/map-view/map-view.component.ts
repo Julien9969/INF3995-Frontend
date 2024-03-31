@@ -17,10 +17,16 @@ import {MatIcon} from "@angular/material/icon";
 })
 export class MapViewComponent implements AfterViewInit {
   @Input() map!: BehaviorSubject<HTMLImageElement>;
-  mapInitialized: boolean = false;
   @ViewChild('mapCanvas', {static: false}) private mapCanvas!: ElementRef<HTMLCanvasElement>;
+  private ratio: number = 16/9;
+  height: number = 300;
+  width: number = this.ratio * this.height;
 
   constructor() {
+  }
+
+  get mapInitialized(): boolean {
+    return this.map.getValue() !== undefined;
   }
 
   get canvas(): HTMLCanvasElement {
@@ -33,8 +39,19 @@ export class MapViewComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.map.subscribe((bitmap: HTMLImageElement) => {
-      this.context.drawImage(bitmap, 0, 0, this.canvas.width, this.canvas.height);
-      this.mapInitialized = true;
+      this.context.drawImage(bitmap, 0, 0, this.width, this.height);
     });
+  }
+
+  zoomIn() {
+    this.height += 50;
+    this.width = this.ratio * this.height;
+    this.context.drawImage(this.map.getValue(), 0, 0, this.width, this.height);
+  }
+
+  zoomOut() {
+    this.height -= 50;
+    this.width = this.ratio * this.height;
+    this.context.drawImage(this.map.getValue(), 0, 0, this.width, this.height);
   }
 }

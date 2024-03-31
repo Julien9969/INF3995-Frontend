@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {LogsComponent} from "@app/components/logs/logs.component";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatCard} from "@angular/material/card";
 import {
   MatTableDataSource,
@@ -40,12 +40,14 @@ const initialData: HistoryData[] = [
     MatSort,
     MatSortModule,
     MatSortHeader,
+    MatPaginatorModule,
   ],
   templateUrl: './history.component.html',
   styleUrl: './history.component.css'
 })
 export class HistoryComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource: MatTableDataSource<HistoryData> = new MatTableDataSource<HistoryData>(initialData);
   displayedColumns: string[] = ['id', 'timestamp', 'duration', 'distance', 'robots', 'identify'];
 
@@ -66,6 +68,7 @@ export class HistoryComponent implements AfterViewInit {
   ngAfterViewInit() {
     if (this.sort) {
       this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     }
   }
 }

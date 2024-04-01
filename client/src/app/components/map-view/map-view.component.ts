@@ -68,18 +68,6 @@ export class MapViewComponent implements AfterViewInit {
     this.context.stroke();
   }
 
-  zoomIn() {
-    this.height += 50;
-    this.width = this.ratio * this.height;
-    this.context.drawImage(this.map.getValue(), 0, 0, this.width, this.height);
-  }
-
-  zoomOut() {
-    this.height -= 50;
-    this.width = this.ratio * this.height;
-    this.context.drawImage(this.map.getValue(), 0, 0, this.width, this.height);
-  }
-
   toggleActualPosition() {
     this.drawActualPosition = !this.drawActualPosition;
   }

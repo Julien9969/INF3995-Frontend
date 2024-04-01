@@ -1,3 +1,9 @@
+export enum MissionState {
+  ONGOING = "ongoing",
+  ENDED = "ended",
+  NOT_STARTED = "not-started",
+}
+
 export interface MissionStatus {
   missionState: MissionState,
   missionId: number,
@@ -8,17 +14,12 @@ export interface MissionStatus {
   isHistorical: boolean,
 }
 
-export enum MissionState {
-  ONGOING = "ongoing",
-  ENDED = "ended",
-  NOT_STARTED = "not-started",
-}
-
 export interface Logs {
-  eventType: string;
-  robotId: number;
   message: string;
   timestamp: number;
+  robotId: number;
+  eventType: string;
+  missionId: number;
 }
 
 export enum WebsocketsEvents {
@@ -29,7 +30,7 @@ export enum WebsocketsEvents {
   MAP_DATA = "map-data",
   MISSION_MAP = "mission-map",
   ABORT_MISSION = "abort-mission",
-  ROBOT_STATUS = "robot-connected",
+  ROBOT_STATUS = "robot-status",
   IDENTIFY_FEEDBACK = "identify-feedback",
   IDENTIFY_REQUEST = "identify-request",
   HEADBACKBASE_FEEDBACK = "headbackbase-feedback",

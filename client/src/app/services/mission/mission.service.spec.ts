@@ -3,10 +3,9 @@ import {MissionService} from './mission.service';
 import {HttpClient} from '@angular/common/http';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {BehaviorSubject} from "rxjs";
-import {MissionState, BackendInterfaces} from "../../../common/backend-interfaces";
+import {MissionState, MissionStatus, WebsocketsEvents} from "@common";
 import {SocketService} from "@app/services/socket/socket.service";
 import {SocketMock} from "@app/helpers/socket-mock-helper";
-import {WebsocketsEvents} from "@app/classes/websockets-events";
 import {environmentExt} from "@environment-ext";
 
 
@@ -43,7 +42,7 @@ describe('MissionService', () => {
     expect(socketServiceObj.send).toHaveBeenCalledWith(WebsocketsEvents.MISSION_STATUS);
   });
 
-  it('should subscribe to mission status updates in contructor', () => {
+  it('should subscribe to mission-view status updates in contructor', () => {
 
     service = TestBed.inject(MissionService);
 
@@ -52,11 +51,11 @@ describe('MissionService', () => {
   });
 
   it('should have default status', () => {
-    expect(service.status).toBeInstanceOf(BehaviorSubject<BackendInterfaces>);
+    expect(service.status).toBeInstanceOf(BehaviorSubject<MissionStatus>);
     expect(service.status.getValue().missionState).toEqual(MissionState.NOT_STARTED);
   });
 
-  it ('should parse raw json and update mission status in updateMission', () => {
+  it ('should parse raw json and update mission-view status in updateMission', () => {
     const rawUpdate = JSON.stringify({
       missionState: MissionState.ONGOING,
       startTimestamp: 123,
@@ -72,11 +71,9 @@ describe('MissionService', () => {
     expect(service.status.getValue().startTimestamp).toEqual(123);
     expect(service.status.getValue().elapsedTime).toEqual(456);
     expect(service.status.getValue().count).toEqual(789);
-    expect(service.status.getValue().batteries).toEqual([1, 2, 3]);
-    expect(service.status.getValue().distances).toEqual([4, 5, 6]);
   });
 
-  it ('should use default values for mission fields in raw update', () => {
+  it ('should use default values for mission-view fields in raw update', () => {
     const rawUpdate = JSON.stringify({
     });
 
@@ -86,19 +83,18 @@ describe('MissionService', () => {
     expect(service.status.getValue().startTimestamp).toEqual(0);
     expect(service.status.getValue().elapsedTime).toEqual(0);
     expect(service.status.getValue().count).toEqual(0);
-    expect(service.status.getValue().batteries).toEqual([]);
-    expect(service.status.getValue().distances).toEqual([]);
   });
 
 
-  it('should start mission if Mission status is not not ongoing', () => {
-    const mission: BackendInterfaces = {
+  it('should start mission-view if Mission status is not not ongoing', () => {
+    const mission: MissionStatus = {
       missionState: MissionState.NOT_STARTED,
       startTimestamp: 0,
       elapsedTime: 0,
       count: 0,
-      batteries: [],
-      distances: []
+      isSimulation: false,
+      isHistorical: false,
+      missionId: 1,
     }
 
     spyOn(service.status, 'getValue').and.returnValue(mission);
@@ -106,14 +102,15 @@ describe('MissionService', () => {
     expect(socketServiceObj.send).toHaveBeenCalledWith(WebsocketsEvents.MISSION_START);
   });
 
-  it('should end mission if Mission status is ongoing', () => {
-    const mission: BackendInterfaces = {
+  it('should end mission-view if Mission status is ongoing', () => {
+    const mission: MissionStatus = {
       missionState: MissionState.ONGOING,
       startTimestamp: 0,
       elapsedTime: 0,
       count: 0,
-      batteries: [],
-      distances: []
+      isSimulation: false,
+      isHistorical: false,
+      missionId: 1,
     }
     spyOn(service.status, 'getValue').and.returnValue(mission);
     service.toggleMission();

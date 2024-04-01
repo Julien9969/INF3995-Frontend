@@ -12,7 +12,7 @@ export const missionRunningGuard = (missionViewComponent: MissionViewComponent, 
       resolve(false);
       return;
     }
-    // If mission is not ongoing, we don't care
+    // If mission-view is not ongoing, we don't care
     if (missionService.status.getValue().missionState != MissionState.ONGOING) {
       resolve(true);
       return;

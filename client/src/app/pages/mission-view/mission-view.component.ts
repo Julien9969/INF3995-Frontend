@@ -30,6 +30,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "@app/components/confirmation-dialog/confirmation-dialog.component";
 import {RobotsService} from "@app/services/robots/robots.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {RobotsViewComponent} from "@app/components/robots-view/robots-view.component";
 
 
 @Component({
@@ -61,6 +62,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
     NgIf,
     MissionComponent,
     MatTooltip,
+    RobotsViewComponent,
   ],
   templateUrl: './mission-view.component.html',
   styleUrl: './mission-view.component.scss'
@@ -68,13 +70,14 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class MissionViewComponent implements OnInit, OnDestroy {
   missionId: number = 0;
   isTimeMachine: boolean = false;
+
   robots: BehaviorSubject<RobotInformation[]> = new BehaviorSubject<RobotInformation[]>([]);
   logs: BehaviorSubject<Logs[]> = new BehaviorSubject<Logs[]>([]);
   map: BehaviorSubject<HTMLImageElement> = new BehaviorSubject<HTMLImageElement>(new Image());
   status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({} as MissionStatus);
+
   isLoading: boolean = false;
   previousMissionState: MissionState = MissionState.NOT_STARTED;
-  identifyRobotTooltip: string = 'Ramener les robots à la base';
   missionState: MissionState = MissionState.NOT_STARTED;
   protected readonly MissionState = MissionState;
   private route = inject(ActivatedRoute);

@@ -23,7 +23,7 @@
   <mat-expansion-panel class="accordion-headers-align" [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Mission d'exploration
+        Paramètres
       </mat-panel-title>
       <mat-panel-description>
         <span></span>
@@ -31,7 +31,21 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <app-mission [status]="status" [robots]="robots"></app-mission>
+      <app-mission [status]="status"></app-mission>
+    </ng-template>
+  </mat-expansion-panel>
+  <mat-expansion-panel class="accordion-headers-align" [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Information système
+      </mat-panel-title>
+      <mat-panel-description>
+        <span></span>
+        <mat-icon>smart_toy</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <ng-template matExpansionPanelContent>
+      <app-robots-view [robots]="robots"></app-robots-view>
     </ng-template>
   </mat-expansion-panel>
   <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="false">

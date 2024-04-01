@@ -43,7 +43,7 @@ describe('MissionService', () => {
     expect(socketServiceObj.send).toHaveBeenCalledWith(WebsocketsEvents.MISSION_STATUS);
   });
 
-  it('should subscribe to mission status updates in contructor', () => {
+  it('should subscribe to mission-view status updates in contructor', () => {
 
     service = TestBed.inject(MissionService);
 
@@ -56,7 +56,7 @@ describe('MissionService', () => {
     expect(service.status.getValue().missionState).toEqual(MissionState.NOT_STARTED);
   });
 
-  it ('should parse raw json and update mission status in updateMission', () => {
+  it ('should parse raw json and update mission-view status in updateMission', () => {
     const rawUpdate = JSON.stringify({
       missionState: MissionState.ONGOING,
       startTimestamp: 123,
@@ -76,7 +76,7 @@ describe('MissionService', () => {
     expect(service.status.getValue().distances).toEqual([4, 5, 6]);
   });
 
-  it ('should use default values for mission fields in raw update', () => {
+  it ('should use default values for mission-view fields in raw update', () => {
     const rawUpdate = JSON.stringify({
     });
 
@@ -91,7 +91,7 @@ describe('MissionService', () => {
   });
 
 
-  it('should start mission if Mission status is not not ongoing', () => {
+  it('should start mission-view if Mission status is not not ongoing', () => {
     const mission: BackendInterfaces = {
       missionState: MissionState.NOT_STARTED,
       startTimestamp: 0,
@@ -106,7 +106,7 @@ describe('MissionService', () => {
     expect(socketServiceObj.send).toHaveBeenCalledWith(WebsocketsEvents.MISSION_START);
   });
 
-  it('should end mission if Mission status is ongoing', () => {
+  it('should end mission-view if Mission status is ongoing', () => {
     const mission: BackendInterfaces = {
       missionState: MissionState.ONGOING,
       startTimestamp: 0,

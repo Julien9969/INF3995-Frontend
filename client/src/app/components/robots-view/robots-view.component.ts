@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {MatCard, MatCardContent, MatCardModule} from "@angular/material/card";
 import {MatDivider} from "@angular/material/divider";
 import {MatButton, MatIconButton} from "@angular/material/button";
@@ -11,7 +11,8 @@ import {MatAccordion, MatExpansionModule, MatExpansionPanel} from "@angular/mate
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {MatPaginator} from "@angular/material/paginator";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
-import {MissionState, MissionStatus} from '@common';
+import {MissionState} from '@common';
+import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {
@@ -26,16 +27,11 @@ import {
   MatTable,
   MatTableDataSource
 } from "@angular/material/table";
-import {formatCounter} from "@app/helpers/utils";
 import {BehaviorSubject} from "rxjs";
+import {MissionService} from "@app/services/mission/mission.service";
 import {MatDialogTitle} from "@angular/material/dialog";
+import {RobotInformation} from "@common";
 
-interface MissionInfo {
-  missionId: number;
-  elapsedTime: string;
-  timestamp: number;
-  simulation: boolean;
-}
 
 @Component({
   imports: [MatCardModule,
@@ -72,31 +68,37 @@ interface MissionInfo {
     MatRowDef,
     MatTable, MatDialogTitle,
   ],
-  selector: 'app-mission',
+  selector: 'app-robots-view',
   standalone: true,
-  styleUrl: './mission.component.scss',
-  templateUrl: './mission.component.html'
+  styleUrl: './robots-view.component.scss',
+  templateUrl: './robots-view.component.html'
 })
-export class MissionComponent implements AfterViewInit {
+export class RobotsViewComponent implements OnChanges {
+  @Input() robots: BehaviorSubject<RobotInformation[]> = new BehaviorSubject<RobotInformation[]>([] as RobotInformation[]);
   @Input() missionState: MissionState = MissionState.NOT_STARTED;
-  @Input() status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({} as MissionStatus);
+  robotDisplayedColumns: string[] = ['id', 'state', 'distance', 'battery', 'identify'];
+  robotDataSource = new MatTableDataSource();
   protected readonly MissionState = MissionState;
-  isSimulation: boolean = false;
-  displayedColumns: string[] = ["missionId", "elapsedTime", "timestamp", "simulation"];
-  rowData: MissionInfo = {} as MissionInfo;
-  infoDataSource = new MatTableDataSource([this.rowData])
 
-  ngAfterViewInit() {
-    this.status.subscribe((updatedStatus) => {
-      if(updatedStatus) {
-        this.rowData = {
-          missionId: updatedStatus.missionId,
-          elapsedTime: formatCounter(updatedStatus.elapsedTime),
-          timestamp: updatedStatus.startTimestamp * 1000,
-          simulation: updatedStatus.isSimulation,
-        }
-        this.infoDataSource.data = [this.rowData]
-      }
+  constructor(private matSnackBar: MatSnackBar,
+              private missionService: MissionService,) {
+  }
+
+
+  ngOnChanges() {
+    this.robots.subscribe((updatedRobots: RobotInformation[]) => {
+      this.robotDataSource.data = updatedRobots
     });
+  }
+
+  openSnackBar(message: string) {
+    this.matSnackBar.open(message, 'Fermer', {
+      duration: 2000,
+    });
+  }
+
+  identifyRobots(robotId: number) {
+    this.openSnackBar(`Requête d'identification envoyée au robot ${robotId}!`)
+    this.missionService.identify(robotId).subscribe(() => this.openSnackBar(`Robot ${robotId} s'est identifié!`));
   }
 }

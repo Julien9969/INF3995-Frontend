@@ -29,8 +29,6 @@ export class MissionService {
       startTimestamp: jsonUpdate.startTimestamp || 0,
       elapsedTime: jsonUpdate.elapsedTime || 0,
       count: jsonUpdate.count || 0,
-      isSimulation: jsonUpdate.isSimulation || false,
-      isHistorical: false, // if historical, there's no update anyway
     }
     this._status.next(update);
   }

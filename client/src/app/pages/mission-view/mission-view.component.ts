@@ -10,7 +10,7 @@ import {MissionService} from "@app/services/mission/mission.service";
 import {LogsService} from "@app/services/logs/logs.service";
 import {MapService} from "@app/services/map/map.service";
 import {BehaviorSubject} from "rxjs";
-import {Logs, RobotInformation, EmitFeedback} from "@common";
+import {EmitFeedback, Logs, MissionState, MissionStatus, RobotInformation} from "@common";
 import {LogsComponent} from "@app/components/logs/logs.component";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
 import {
@@ -23,7 +23,6 @@ import {
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatToolbar} from "@angular/material/toolbar";
 import {MissionComponent} from "@app/components/mission/mission.component";
-import {MissionState, MissionStatus} from "@common";
 import {MatTooltip} from "@angular/material/tooltip";
 import {HealthService} from "@app/services/health/health.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -79,9 +78,9 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   previousMissionState: MissionState = MissionState.NOT_STARTED;
   missionState: MissionState = MissionState.NOT_STARTED;
+  mapInitialized: boolean = false;
   protected readonly MissionState = MissionState;
   private route = inject(ActivatedRoute);
-  mapInitialized: boolean = false;
 
   constructor(private historyService: HistoryService,
               private missionService: MissionService,

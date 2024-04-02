@@ -10,8 +10,6 @@ export interface MissionStatus {
   count: number
   startTimestamp: number
   elapsedTime: number,
-  isSimulation: boolean,
-  isHistorical: boolean,
 }
 
 export interface Logs {

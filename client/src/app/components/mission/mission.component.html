@@ -1,5 +1,4 @@
 <div class="info-container">
-  <b matDialogTitle>Détails de la mission</b>
   <table [dataSource]="infoDataSource" mat-table>
     <ng-container matColumnDef="missionId">
       <th *matHeaderCellDef mat-header-cell>Numéro de la mission</th>
@@ -14,11 +13,6 @@
     <ng-container matColumnDef="timestamp">
       <th *matHeaderCellDef mat-header-cell>Temps du lancement</th>
       <td *matCellDef="let element" mat-cell>{{element.timestamp | date: 'HH:mm:ss'}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="simulation">
-      <th *matHeaderCellDef mat-header-cell>Simulation</th>
-      <td *matCellDef="let element" mat-cell>{{element.isSimulation ? 'Oui' : 'Non'}}</td>
     </ng-container>
 
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>

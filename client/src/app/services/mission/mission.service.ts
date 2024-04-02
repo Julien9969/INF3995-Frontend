@@ -33,10 +33,6 @@ export class MissionService {
     this._status.next(update);
   }
 
-  identify(robotId: number): Observable<string> {
-    return this.http.get(localUrl(`identify/id/${robotId}`), {responseType: 'text'});
-  }
-
   toggleMission() {
     const state = this._status.getValue().missionState;
     if (state == MissionState.ONGOING) {

@@ -31,6 +31,7 @@ import {BehaviorSubject} from "rxjs";
 import {MissionService} from "@app/services/mission/mission.service";
 import {MatDialogTitle} from "@angular/material/dialog";
 import {RobotInformation} from "@common";
+import {RobotsService} from "@app/services/robots/robots.service";
 
 
 @Component({
@@ -81,7 +82,7 @@ export class RobotsViewComponent implements OnChanges {
   protected readonly MissionState = MissionState;
 
   constructor(private matSnackBar: MatSnackBar,
-              private missionService: MissionService,) {
+              private robotsService: RobotsService) {
   }
 
 
@@ -99,6 +100,6 @@ export class RobotsViewComponent implements OnChanges {
 
   identifyRobots(robotId: number) {
     this.openSnackBar(`Requête d'identification envoyée au robot ${robotId}!`)
-    this.missionService.identify(robotId).subscribe(() => this.openSnackBar(`Robot ${robotId} s'est identifié!`));
+    this.robotsService.identify(robotId).subscribe(() => this.openSnackBar(`Robot ${robotId} s'est identifié!`));
   }
 }

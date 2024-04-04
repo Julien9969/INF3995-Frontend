@@ -8,12 +8,26 @@ import {MatDialog} from "@angular/material/dialog";
 import {of} from "rxjs";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {ActivatedRoute} from "@angular/router";
+import {HistoryService} from "@app/services/history/history.service";
+import {LogsService} from "@app/services/logs/logs.service";
+import {MapService} from "@app/services/map/map.service";
+import {RobotsService} from "@app/services/robots/robots.service";
 
 describe('MissionDetailsComponent', () => {
   let component: MissionViewComponent;
   let fixture: ComponentFixture<MissionViewComponent>;
+  let missionServiceSpyObj: jasmine.SpyObj<MissionService>;
+  let historyServiceSpyObj: jasmine.SpyObj<HistoryService>;
+  let logsServiceSpyObj: jasmine.SpyObj<LogsService>;
+  let mapServiceSpyObj: jasmine.SpyObj<MapService>;
+  let robotsServiceSpyObj: jasmine.SpyObj<LogsService>;
 
   beforeEach(async () => {
+    missionServiceSpyObj = jasmine.createSpyObj('MissionService', [], {status: new Observable()});
+    historyServiceSpyObj = jasmine.createSpyObj('HistoryService', ['getHistory', 'getStatus', 'getRobots', 'getMap'], {status: new Observable()});
+    logsServiceSpyObj = jasmine.createSpyObj('LogsService', [], {logs: new Observable()});
+    mapServiceSpyObj = jasmine.createSpyObj('MapService', [], {map: new Observable()});
+    robotsServiceSpyObj = jasmine.createSpyObj('RobotsService', [], {robots: new Observable()});
     await TestBed.configureTestingModule({
       imports: [MissionViewComponent, HttpClientTestingModule],
       providers: [{
@@ -44,9 +58,14 @@ describe('MissionDetailsComponent', () => {
                 get: () => '1'
               }
             }
-
           }
-        }]
+        },
+        { provide: MissionService, useValue: missionServiceSpyObj },
+        { provide: HistoryService, useValue: historyServiceSpyObj },
+        { provide: LogsService, useValue: logsServiceSpyObj },
+        { provide: MapService, useValue: mapServiceSpyObj },
+        { provide: RobotsService, useValue: robotsServiceSpyObj},
+      ]
     })
       .compileComponents();
 

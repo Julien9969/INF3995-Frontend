@@ -10,27 +10,19 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {BehaviorSubject, Subject} from "rxjs";
 import {Logs} from "@common";
 import {LogsService} from "@app/services/logs/logs.service";
-import {Component} from "@angular/core";
 
-
-@Component({
-  selector: `host-component`,
-  template: `<app-logs logs="logs"></app-logs>`
-})
-class TestHostComponent {
-  logs: BehaviorSubject<Logs[]> = new BehaviorSubject([] as Logs[]);
-}
 
 describe('LogsComponent', () => {
   let component: LogsComponent;
   let fixture: ComponentFixture<LogsComponent>;
   let logServiceSpyObj: jasmine.SpyObj<LogsComponent>;
-  let logsObservable: Subject<Logs[]>;
+  let logsObservable: BehaviorSubject<Logs[]>;
 
   beforeEach(async () => {
-    logsObservable = new Subject<Logs[]>();
+    logsObservable = new BehaviorSubject<Logs[]>([] as Logs[]);
     logServiceSpyObj = jasmine.createSpyObj('LogsService', [],{ logs: logsObservable.asObservable() });
     await TestBed.configureTestingModule({
+      declarations: [],
       imports: [LogsComponent, MatDialogClose, MatTableModule, MatIcon, MatHeaderRowDef, MatRowDef, MatCellDef, MatHeaderCellDef, MatCard, BrowserAnimationsModule, HttpClientTestingModule],
       providers: [
         { provide: LogsService, useValue: logServiceSpyObj}
@@ -39,6 +31,7 @@ describe('LogsComponent', () => {
 
     fixture = TestBed.createComponent(LogsComponent);
     component = fixture.componentInstance;
+    component.logs = new BehaviorSubject([] as Logs[]);
     fixture.detectChanges();
   });
 

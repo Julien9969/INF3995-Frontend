@@ -39,7 +39,7 @@ describe('MissionsComponent', () => {
     };
     missionServiceObj.identify.and.returnValue(identifyResponse.asObservable());
     healthServiceSpyObj = jasmine.createSpyObj('HealthService', ['isServerOk']);
-    socketServiceObj = jasmine.createSpyObj('SocketService', {'on': missionStatus})
+    socketServiceObj = jasmine.createSpyObj('SocketService', ['send'], {'on': missionStatus})
     matSnackSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
     await TestBed.configureTestingModule({
       imports: [MissionComponent, MatCard, BrowserModule, HttpClientModule, HttpClientTestingModule, BrowserAnimationsModule],

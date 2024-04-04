@@ -13,7 +13,7 @@ export class MapService {
     const image = new Image();
     image.src = "";
     this.imageSubject = new BehaviorSubject<HTMLImageElement>(image);
-    this.socket.on(WebsocketsEvents.MAP_DATA, (bitmapBase64: string) => this.loadImage(bitmapBase64))
+    this.socket.on(WebsocketsEvents.MISSION_MAP, (bitmapBase64: string) => this.loadImage(bitmapBase64))
   }
 
   get image() {

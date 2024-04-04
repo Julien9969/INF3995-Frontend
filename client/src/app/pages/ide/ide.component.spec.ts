@@ -30,7 +30,7 @@ const fileTreeMock: FilesTree = [
     }
   ];
 
-fdescribe('IdeComponent', () => {
+describe('IdeComponent', () => {
   let component: IdeComponent;
   let fixture: ComponentFixture<IdeComponent>;
   let filesServiceSpy: jasmine.SpyObj<FilesService>;

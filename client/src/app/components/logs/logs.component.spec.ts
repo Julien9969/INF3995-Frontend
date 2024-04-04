@@ -8,9 +8,18 @@ import {MatCellDef, MatHeaderCellDef, MatHeaderRowDef, MatRowDef, MatTableModule
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {BehaviorSubject, Subject} from "rxjs";
-import {Logs} from "@app/classes/logs";
-import {Observable} from "rxjs/internal/Observable";
+import {Logs} from "@common";
 import {LogsService} from "@app/services/logs/logs.service";
+import {Component} from "@angular/core";
+
+
+@Component({
+  selector: `host-component`,
+  template: `<app-logs logs="logs"></app-logs>`
+})
+class TestHostComponent {
+  logs: BehaviorSubject<Logs[]> = new BehaviorSubject([] as Logs[]);
+}
 
 describe('LogsComponent', () => {
   let component: LogsComponent;
@@ -53,7 +62,13 @@ describe('LogsComponent', () => {
 
   it("should add log", () => {
     expect(component.dataSource.data.length).toBe(0);
-    const log = {eventType: "test", robotId: 1, message: "test", timestamp: 1};
+    const log = {
+      eventType: "test",
+      robotId: 1,
+      message: "test",
+      timestamp: 1,
+      missionId: 1
+    };
     logsObservable.next([log])
     expect(component.dataSource.data.length).toBe(1);
   });

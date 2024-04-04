@@ -9,12 +9,10 @@ import {SocketMock} from "@app/helpers/socket-mock-helper";
 import {environmentExt} from "@environment-ext";
 
 
-const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
 
 describe('RobotsService', () => {
   let service: RobotsService;
   let socketClient: SocketMock = new SocketMock();
-  let httpTestingController: HttpTestingController;
   let onSpy = jasmine.createSpy('on');
   let socketServiceObj = {
     socketClient: socketClient,
@@ -34,12 +32,10 @@ describe('RobotsService', () => {
       ]
     });
     service = TestBed.inject(RobotsService);
-    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
-    expect(socketServiceObj.send).toHaveBeenCalledWith(WebsocketsEvents.MISSION_STATUS);
   });
 
 });

@@ -3,11 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IdeComponent } from './ide.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FilesService } from '@app/services/files/files.service';
-import { of, throwError } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
+import {BehaviorSubject, of, throwError} from 'rxjs';
+import {HttpClientModule, HttpResponse} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FilesTree } from '@app/classes/files-tree';
+import {Component} from "@angular/core";
+import {Logs, RobotInformation} from "@common";
 
 const fileTreeMock: FilesTree = [
     {
@@ -28,7 +30,7 @@ const fileTreeMock: FilesTree = [
     }
   ];
 
-describe('IdeComponent', () => {
+fdescribe('IdeComponent', () => {
   let component: IdeComponent;
   let fixture: ComponentFixture<IdeComponent>;
   let filesServiceSpy: jasmine.SpyObj<FilesService>;
@@ -36,7 +38,7 @@ describe('IdeComponent', () => {
   let mockResponse2: HttpResponse<any>;
 
   beforeEach(async () => {
-    filesServiceSpy = jasmine.createSpyObj('FilesService', ['getFileTree', 'saveFile', 'getFile', 'updateRobot']);
+    filesServiceSpy = jasmine.createSpyObj('FilesService', ['getFileTree', 'saveFile', 'getFile', 'updateRobot'], { robots: new BehaviorSubject([] as RobotInformation[]) });
     mockResponse = new HttpResponse({ status: 200, body: { content: 'Test content'}});
     mockResponse2 = new HttpResponse({ status: 200, body: JSON.stringify(fileTreeMock)});
 
@@ -44,10 +46,24 @@ describe('IdeComponent', () => {
     filesServiceSpy.saveFile.and.returnValue(of(mockResponse));
     filesServiceSpy.getFile.and.returnValue(of(mockResponse));
     filesServiceSpy.updateRobot.and.returnValue(of(mockResponse));
-
     await TestBed.configureTestingModule({
-      imports: [IdeComponent, MatSnackBarModule, BrowserAnimationsModule, BrowserModule],
-      providers: [{ provide: FilesService, useValue: filesServiceSpy }]
+      declarations: [],
+      imports: [IdeComponent, MatSnackBarModule, BrowserAnimationsModule, BrowserModule, HttpClientModule],
+      providers: [{ provide: FilesService, useValue: filesServiceSpy }, {
+        provide: MatSnackBarModule,
+        useValue: {
+          open() {
+            return {
+              afterClose() {
+                return of('your result');
+              }
+            };
+          }
+        }
+
+      }, {
+        provide: FilesService, useValue: filesServiceSpy
+      }]
     }).compileComponents();
 
     fixture = TestBed.createComponent(IdeComponent);

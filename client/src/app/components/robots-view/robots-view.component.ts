@@ -11,7 +11,7 @@ import {MatAccordion, MatExpansionModule, MatExpansionPanel} from "@angular/mate
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {MatPaginator} from "@angular/material/paginator";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
-import {MissionState} from '@common';
+import {MissionState, RobotInformation} from '@common';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
@@ -19,7 +19,8 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
   MatRow,
@@ -28,9 +29,7 @@ import {
   MatTableDataSource
 } from "@angular/material/table";
 import {BehaviorSubject} from "rxjs";
-import {MissionService} from "@app/services/mission/mission.service";
 import {MatDialogTitle} from "@angular/material/dialog";
-import {RobotInformation} from "@common";
 import {RobotsService} from "@app/services/robots/robots.service";
 
 

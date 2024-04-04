@@ -2,13 +2,9 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {LogsComponent} from "@app/components/logs/logs.component";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatCard} from "@angular/material/card";
-import {
-  MatTableDataSource,
-  MatTableModule
-} from "@angular/material/table";
+import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
-import {HealthService} from "@app/services/health/health.service";
 import {Router} from "@angular/router";
 import {HistoryService} from "@app/services/history/history.service";
 import {DatePipe, NgIf} from "@angular/common";
@@ -62,7 +58,7 @@ export class HistoryComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    if(this.historyService.getMissions().getValue().length !== 0) {
+    if (this.historyService.getMissions().getValue().length !== 0) {
       this.parseData(this.historyService.getMissions().getValue());
     }
     this.historyService.getMissions().subscribe((data: MissionStatus[]) => {
@@ -86,7 +82,8 @@ export class HistoryComponent implements AfterViewInit, OnInit {
   }
 
   openMission(id: number) {
-    this.router.navigate(['/mission', id]).then(() => {});
+    this.router.navigate(['/mission', id]).then(() => {
+    });
   }
 
   formatTime(timestamp: number): string {

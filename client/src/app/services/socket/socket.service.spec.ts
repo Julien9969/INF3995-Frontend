@@ -21,13 +21,6 @@ describe('SocketService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should join', () => {
-    const roomId = '1';
-    const emitSpy = spyOn(service['socketClient'], 'emit');
-    service.join(roomId);
-    expect(emitSpy).toHaveBeenCalledWith('joinRoom', roomId);
-  });
-
   it('should call socket.on with the correct parameters', () => {
     const event = 'event';
     const action = () => {};

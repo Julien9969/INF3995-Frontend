@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "@environment";
-import {BehaviorSubject, Subject} from "rxjs";
-import {Observable} from "rxjs/internal/Observable";
+import {BehaviorSubject} from "rxjs";
 
 const LOCAL_URL = `${environment.serverUrl}api/ping/`;
 
@@ -11,10 +10,11 @@ const LOCAL_URL = `${environment.serverUrl}api/ping/`;
 })
 export class HealthService {
   private _healthObservable: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(private readonly httpClient: HttpClient) {
-    setInterval( () => {
+    setInterval(() => {
       this.httpClient.get(LOCAL_URL, {responseType: 'text'}).subscribe((status) => {
-        if(status){
+        if (status) {
           this._healthObservable.next(status.includes('pong'));
         }
       });

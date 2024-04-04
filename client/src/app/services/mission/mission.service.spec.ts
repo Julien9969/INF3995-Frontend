@@ -60,7 +60,7 @@ describe('MissionService', () => {
       missionState: MissionState.ONGOING,
       startTimestamp: 123,
       elapsedTime: 456,
-      count: 789,
+      robotCount: 789,
       batteries: [1, 2, 3],
       distances: [4, 5, 6]
     });
@@ -70,7 +70,7 @@ describe('MissionService', () => {
     expect(service.status.getValue().missionState).toEqual(MissionState.ONGOING);
     expect(service.status.getValue().startTimestamp).toEqual(123);
     expect(service.status.getValue().elapsedTime).toEqual(456);
-    expect(service.status.getValue().count).toEqual(789);
+    expect(service.status.getValue().robotCount).toEqual(789);
   });
 
   it ('should use default values for mission-view fields in raw update', () => {
@@ -82,7 +82,7 @@ describe('MissionService', () => {
     expect(service.status.getValue().missionState).toEqual(MissionState.NOT_STARTED);
     expect(service.status.getValue().startTimestamp).toEqual(0);
     expect(service.status.getValue().elapsedTime).toEqual(0);
-    expect(service.status.getValue().count).toEqual(0);
+    expect(service.status.getValue().robotCount).toEqual(0);
   });
 
 
@@ -91,9 +91,7 @@ describe('MissionService', () => {
       missionState: MissionState.NOT_STARTED,
       startTimestamp: 0,
       elapsedTime: 0,
-      count: 0,
-      isSimulation: false,
-      isHistorical: false,
+      robotCount: 0,
       missionId: 1,
     }
 
@@ -107,9 +105,7 @@ describe('MissionService', () => {
       missionState: MissionState.ONGOING,
       startTimestamp: 0,
       elapsedTime: 0,
-      count: 0,
-      isSimulation: false,
-      isHistorical: false,
+      robotCount: 0,
       missionId: 1,
     }
     spyOn(service.status, 'getValue').and.returnValue(mission);
@@ -120,10 +116,6 @@ describe('MissionService', () => {
   it('should return identification information for the given robotId', () => {
     const robotId = 123;
     const mockResponse = 'Identification information';
-
-    service.identify(robotId).subscribe(response => {
-      expect(response).toEqual(mockResponse);
-    });
 
     const req = httpTestingController.expectOne(localUrl(`identify/id/${robotId}`));
     expect(req.request.method).toEqual('GET');

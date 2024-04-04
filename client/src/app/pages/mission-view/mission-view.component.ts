@@ -115,7 +115,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.missionId = Number(this.route.snapshot.paramMap.get("id")) || 0;
     if (this.missionId !== 0) {
-      const historyData = this.historyService.getMissions().getValue().find(mission => mission.id === this.missionId);
+      const historyData = this.historyService.getMissions().getValue().find(mission => mission.missionId === this.missionId);
       this.isTimeMachine = historyData !== undefined; // Check if id is in history
     } else {
       this.isTimeMachine = false;

@@ -1,11 +1,13 @@
 map-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  width: 100px;
+  justify-content: center;
 }
 
 #map-canvas {
   border: 2px dashed #000000;
-  padding: 8px;
+  width: 100%;
 }
 
 .vertical-menu {

@@ -30,6 +30,7 @@ export class RobotsService {
       battery: robot.battery,
       state: robot.state,
       lastUpdate: robot.lastUpdate,
+      distance: robot.distance,
       position: {
         x: robot.position.x,
         y: robot.position.y

@@ -23,16 +23,12 @@ export class MapViewComponent implements AfterViewInit {
   @Input() robots!: BehaviorSubject<RobotInformation[]>;
   height: number = 300;
   @ViewChild('mapCanvas', {static: false}) private mapCanvas!: ElementRef<HTMLCanvasElement>;
-  private ratio: number = 16 / 9;
+  private ratio: number = 1 / 1;
   width: number = this.ratio * this.height;
   private drawActualPosition: boolean = true;
   private drawInitialPosition: boolean = true;
 
   constructor() {
-  }
-
-  get mapInitialized(): boolean {
-    return this.map.getValue() !== undefined;
   }
 
   get canvas(): HTMLCanvasElement {

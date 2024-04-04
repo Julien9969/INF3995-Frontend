@@ -1,21 +1,23 @@
-<mat-toolbar *ngIf="!isTimeMachine" class="sticky-toolbar toolbar-no-overflow">
+<mat-toolbar class="sticky-toolbar toolbar-no-overflow">
   Mission
   <span class="bar-spacer"></span>
-  <button (click)="this.toggleMission()" [disabled]="missionState === MissionState.ONGOING" class="toolbar-button"
-          color="primary"
-          matTooltip="{{missionState === MissionState.ENDED ? 'Redémarrer mission' : 'Lancer mission'}}"
-          mat-icon-button>
-    <mat-icon>{{this.missionState === MissionState.ENDED ? 'refresh' : 'play_arrow'}}</mat-icon>
-  </button>
-  <button (click)="this.toggleMission()" [disabled]="missionState !== MissionState.ONGOING" class="toolbar-button"
-          color="accent"
-          matTooltip="Arrêter mission"
-          mat-icon-button>
-    <mat-icon>stop</mat-icon>
-  </button>
-  <button (click)="toggleHeadBackBase()" matTooltip="Ramener les robots à la base" mat-icon-button>
-    <mat-icon>crisis_alert</mat-icon>
-  </button>
+  <div *ngIf="!isTimeMachine">
+    <button (click)="this.toggleMission()" [disabled]="missionState === MissionState.ONGOING" class="toolbar-button"
+            color="primary"
+            matTooltip="{{missionState === MissionState.ENDED ? 'Redémarrer mission' : 'Lancer mission'}}"
+            mat-icon-button>
+      <mat-icon>{{this.missionState === MissionState.ENDED ? 'refresh' : 'play_arrow'}}</mat-icon>
+    </button>
+    <button (click)="this.toggleMission()" [disabled]="missionState !== MissionState.ONGOING" class="toolbar-button"
+            color="accent"
+            matTooltip="Arrêter mission"
+            mat-icon-button>
+      <mat-icon>stop</mat-icon>
+    </button>
+    <button (click)="toggleHeadBackBase()" matTooltip="Ramener les robots à la base" mat-icon-button>
+      <mat-icon>crisis_alert</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>
 
 
@@ -27,7 +29,7 @@
       </mat-panel-title>
       <mat-panel-description>
         <span></span>
-        <mat-icon>explore</mat-icon>
+        <mat-icon>settings</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
@@ -59,7 +61,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <div *ngIf="!this.mapInitialized" class="no-mission-container">
+      <div *ngIf="this.mapInitialized" class="no-mission-container">
     <span class="material-symbols-outlined">
     route
   </span>

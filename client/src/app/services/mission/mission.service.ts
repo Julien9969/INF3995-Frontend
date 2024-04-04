@@ -28,7 +28,7 @@ export class MissionService {
       missionId: jsonUpdate.missionId || 0,
       startTimestamp: jsonUpdate.startTimestamp || 0,
       elapsedTime: jsonUpdate.elapsedTime || 0,
-      count: jsonUpdate.count || 0,
+      robotCount: jsonUpdate.count || 0,
     }
     this._status.next(update);
   }

@@ -6,7 +6,7 @@
 
   <ng-container matColumnDef="state">
     <th *matHeaderCellDef mat-header-cell> État du robot</th>
-    <td *matCellDef="let element" mat-cell> {{element.state}}</td>
+    <td *matCellDef="let element" mat-cell> {{element.state === "idle" ? "En veille" : "En déplacement" }}</td>
   </ng-container>
 
   <ng-container matColumnDef="distance">
@@ -33,5 +33,6 @@
   <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
 </table>
 <div *ngIf="this.robots.getValue().length === 0" class="">
-  <h2>Aucun robot n'est disponible pour cette mission</h2>
+  <p>Aucun robot n'est disponible pour cette mission.</p>
+  <p>Ils seront affichés ici lors d'une nouvelle connexion.</p>
 </div>

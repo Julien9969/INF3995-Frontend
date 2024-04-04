@@ -7,7 +7,7 @@ export enum MissionState {
 export interface MissionStatus {
   missionState: MissionState,
   missionId: number,
-  count: number
+  robotCount: number
   startTimestamp: number
   elapsedTime: number,
 }
@@ -41,6 +41,7 @@ export interface RobotInformation {
   battery: number,
   state: string,
   lastUpdate: number,
+  distance: number,
   position: {
     x: number,
     y: number

@@ -80,7 +80,6 @@ export class MissionComponent implements AfterViewInit {
   @Input() missionState: MissionState = MissionState.NOT_STARTED;
   @Input() status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({} as MissionStatus);
   protected readonly MissionState = MissionState;
-  isSimulation: boolean = false;
   displayedColumns: string[] = ["missionId", "elapsedTime", "timestamp"];
   rowData: MissionInfo = {} as MissionInfo;
   infoDataSource = new MatTableDataSource([this.rowData])

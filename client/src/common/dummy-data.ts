@@ -1,4 +1,4 @@
-import {HistoryData} from "@app/services/history/history.service";
+import {HistoryData} from "@app/pages/history/history.component";
 
 export const initialData: HistoryData[] = [
   {id: 1, startTimestamp: 1620000006, duration: 61, nbRobots: 2, distance: 1000, isSimulation: true},

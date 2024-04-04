@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {MatCard, MatCardContent, MatCardModule} from "@angular/material/card";
 import {MatDivider} from "@angular/material/divider";
 import {MatButton, MatIconButton} from "@angular/material/button";
@@ -18,7 +18,8 @@ import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
   MatHeaderRowDef,
   MatRow,
@@ -76,17 +77,17 @@ interface MissionInfo {
   styleUrl: './mission.component.scss',
   templateUrl: './mission.component.html'
 })
-export class MissionComponent implements AfterViewInit {
+export class MissionComponent implements OnChanges {
   @Input() missionState: MissionState = MissionState.NOT_STARTED;
   @Input() status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({} as MissionStatus);
-  protected readonly MissionState = MissionState;
   displayedColumns: string[] = ["missionId", "elapsedTime", "timestamp"];
   rowData: MissionInfo = {} as MissionInfo;
   infoDataSource = new MatTableDataSource([this.rowData])
+  protected readonly MissionState = MissionState;
 
-  ngAfterViewInit() {
+  ngOnChanges() {
     this.status.subscribe((updatedStatus) => {
-      if(updatedStatus) {
+      if (updatedStatus) {
         this.rowData = {
           missionId: updatedStatus.missionId,
           elapsedTime: formatCounter(updatedStatus.elapsedTime),

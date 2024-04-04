@@ -75,7 +75,6 @@ export class HistoryService {
     this.httpClient.get(localUrl(""), {responseType: 'json'}).subscribe((data) => {
       if (data) {
         const missions = JSON.parse(data as string) as MissionStatus[];
-        console.log(missions)
         this._missions.next(missions);
       }
     });

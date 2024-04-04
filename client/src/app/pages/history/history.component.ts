@@ -72,7 +72,7 @@ export class HistoryComponent implements AfterViewInit, OnInit {
 
   parseData(data: MissionStatus[]) {
     const historyData: HistoryData[] = [];
-    for (const mission of this.historyService.getMissions().getValue()) {
+    for (const mission of data) {
       historyData.push({
         id: mission.missionId,
         startTimestamp: mission.startTimestamp,

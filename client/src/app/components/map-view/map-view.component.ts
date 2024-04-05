@@ -70,7 +70,7 @@ export class MapViewComponent implements AfterViewInit {
   }
 
   toggleInitialPosition() {
-    this.drawActualPosition = !this.drawActualPosition;
-    return this.drawActualPosition;
+    this.drawInitialPosition = !this.drawInitialPosition;
+    return this.drawInitialPosition;
   }
 }

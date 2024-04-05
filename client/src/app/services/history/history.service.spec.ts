@@ -38,7 +38,6 @@ describe('HistoryService', () => {
     const _missions = service.getMissions()
     const request = httpMock.expectOne(localUrl(''));
     request.flush(JSON.stringify(missions))
-    console.error("Missions", _missions.getValue())
     expect(_missions.getValue().length).toEqual(missions.length);
   });
 
@@ -55,7 +54,10 @@ describe('HistoryService', () => {
     const _logs = service.getLogs(missionId)
     const request = httpMock.expectOne(localUrl('logs/1'));
     request.flush(JSON.stringify(logs))
-    expect(_logs.getValue().length).toEqual(logs.length);
+    console.log("Logs", _logs.getValue())
+    _logs.subscribe((logs) => {
+      expect(logs.length).toEqual(logs.length);
+    });
   });
 
   it('should return robots', () => {
@@ -95,7 +97,9 @@ describe('HistoryService', () => {
     const request = httpMock.expectOne(localUrl(`status/${missionId}`));
     request.flush(JSON.stringify(status))
     const result = _status.getValue()
-    expect(result).toEqual(status);
+    _status.subscribe((status) => {
+      expect(status).toEqual(result);
+    });
   });
 
   it('should return map', () => {

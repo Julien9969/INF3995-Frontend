@@ -4,13 +4,19 @@ import {MapViewComponent} from './map-view.component';
 import {MapService} from "@app/services/map/map.service";
 import {BehaviorSubject} from "rxjs";
 import {CUSTOM_ELEMENTS_SCHEMA, ElementRef, NO_ERRORS_SCHEMA} from "@angular/core";
+import {RobotInformation} from "@common";
 
 describe('MapViewComponent', () => {
   let component: MapViewComponent;
   let fixture: ComponentFixture<MapViewComponent>;
   let mapServiceSpyObj: jasmine.SpyObj<MapService>;
+  let robots: BehaviorSubject<RobotInformation[]>;
+  let map: BehaviorSubject<HTMLImageElement>;
 
   beforeEach(async () => {
+    robots = new BehaviorSubject<RobotInformation[]>([]);
+    map = new BehaviorSubject<HTMLImageElement>(new Image());
+
     mapServiceSpyObj = jasmine.createSpyObj('MapService', ['getMap'], { image: new Image()});
     const elementRef = jasmine.createSpyObj(
       'ElementRef',
@@ -32,18 +38,21 @@ describe('MapViewComponent', () => {
 
     fixture = TestBed.createComponent(MapViewComponent);
     component = fixture.componentInstance;
-    component.map = new BehaviorSubject<HTMLImageElement>(new Image());
+    component.map = map;
+    component.robots = robots;
     fixture.detectChanges();
   });
 
   it('should create', () => {
+    map.next(new Image());
+    robots.next([]); // TODO: add expect
     expect(component).toBeTruthy();
   });
 
   it('should toggle', () => {
     const isActualPosition = component["drawActualPosition"];
     const isInitialPosition = component["drawInitialPosition"];
-    expect(component.toggleActualPosition).toEqual(!isActualPosition);
-    expect(component.toggleInitialPosition).toEqual(!isInitialPosition);
+    expect(component.toggleActualPosition()).toEqual(!isActualPosition);
+    expect(component.toggleInitialPosition()).toEqual(!isInitialPosition);
   });
 });

@@ -15,15 +15,21 @@ describe('HealthService', () => {
     service = TestBed.inject(HealthService);
     httpMock = TestBed.inject(HttpTestingController);
   });
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should be ok', (done) => {
-    service.check.subscribe((status) => {});
-
+  it('should be ok', async () => {
+    service.check.subscribe((value) => {
+      console.error("SUBSCRIBED!")
+      expect(value).toBe(true);
+    });
+    jasmine.clock().install()
+    service.configureTimer();
     const request = httpMock.expectOne(LOCAL_URL);
-    expect(request.request.body).toBe(null);
-    request.flush('ok');
+    request.flush('pong');
+    jasmine.clock().tick(1000);
   });
+
 });

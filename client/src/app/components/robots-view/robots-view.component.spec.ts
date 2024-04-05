@@ -13,7 +13,7 @@ import {BehaviorSubject, Subject} from 'rxjs';
 import {MissionState, MissionStatus} from '@common';
 import {MatSnackBar} from "@angular/material/snack-bar";
 
-describe('MissionsComponent', () => {
+describe('RobotsViewComponent', () => {
   let component: RobotsViewComponent;
   let fixture: ComponentFixture<RobotsViewComponent>;
   let healthServiceSpyObj: jasmine.SpyObj<HealthService>;
@@ -38,7 +38,7 @@ describe('MissionsComponent', () => {
     };
     missionServiceObj.identify.and.returnValue(identifyResponse.asObservable());
     healthServiceSpyObj = jasmine.createSpyObj('HealthService', ['isServerOk']);
-    socketServiceObj = jasmine.createSpyObj('SocketService', {'on': missionStatus})
+    socketServiceObj = jasmine.createSpyObj('SocketService', ['send', 'on'], {})
     matSnackSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
     await TestBed.configureTestingModule({
       imports: [RobotsViewComponent, MatCard, BrowserModule, HttpClientModule, HttpClientTestingModule, BrowserAnimationsModule],

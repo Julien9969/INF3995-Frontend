@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
-import {HttpClient} from "@angular/common/http";
 import {SocketService} from '@app/services/socket/socket.service';
 import {MissionState, MissionStatus, WebsocketsEvents} from '@common';
 
@@ -9,12 +8,19 @@ import {MissionState, MissionStatus, WebsocketsEvents} from '@common';
   providedIn: 'root'
 })
 export class MissionService {
-  constructor(private http: HttpClient, private readonly socketService: SocketService) {
+  defaultStatus: MissionStatus = {
+    missionState: MissionState.NOT_STARTED,
+    missionId: 0,
+    startTimestamp: 0,
+    elapsedTime: 0,
+    robotCount: 0,
+  }
+  constructor(private socketService: SocketService) {
     // Every second there's an update from the backend with the status
     this.socketService.on(WebsocketsEvents.MISSION_STATUS, (update: string) => this.updateMission(update));
   }
 
-  private _status: BehaviorSubject<MissionStatus> = new BehaviorSubject({} as MissionStatus);
+  private _status: BehaviorSubject<MissionStatus> = new BehaviorSubject(this.defaultStatus);
 
   get status(): BehaviorSubject<MissionStatus> {
     return this._status;

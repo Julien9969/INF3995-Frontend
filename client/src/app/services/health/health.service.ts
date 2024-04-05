@@ -12,13 +12,17 @@ export class HealthService {
   private _healthObservable: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private readonly httpClient: HttpClient) {
+    this.configureTimer()
+  }
+
+  configureTimer() {
     setInterval(() => {
       this.httpClient.get(LOCAL_URL, {responseType: 'text'}).subscribe((status) => {
         if (status) {
           this._healthObservable.next(status.includes('pong'));
         }
       });
-    }, 5000);
+    }, 1000);
   }
 
   get check() {

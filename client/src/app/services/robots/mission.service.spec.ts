@@ -19,11 +19,9 @@ describe('RobotsService', () => {
     on: onSpy,
     send: jasmine.createSpy()
   };
-  let httpSpyObj: jasmine.SpyObj<HttpClient>;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    httpSpyObj = jasmine.createSpyObj('HttpClient', ['get', 'pipe']);
-    httpSpyObj.get.and.returnValue(new BehaviorSubject<string>(""));
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -32,6 +30,7 @@ describe('RobotsService', () => {
       ]
     });
     service = TestBed.inject(RobotsService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

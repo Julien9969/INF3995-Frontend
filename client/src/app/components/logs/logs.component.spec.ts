@@ -2,14 +2,11 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {LogsComponent} from './logs.component';
 import {MatDialogClose} from '@angular/material/dialog';
-import {MatCard} from '@angular/material/card';
-import {MatIcon} from '@angular/material/icon';
-import {MatCellDef, MatHeaderCellDef, MatHeaderRowDef, MatRowDef, MatTableModule} from '@angular/material/table';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {BehaviorSubject, Subject} from "rxjs";
+import {MatTableModule} from '@angular/material/table';
+import {BehaviorSubject} from "rxjs";
 import {Logs} from "@common";
 import {LogsService} from "@app/services/logs/logs.service";
+import {MatSort, MatSortModule} from "@angular/material/sort";
 
 
 describe('LogsComponent', () => {
@@ -17,21 +14,24 @@ describe('LogsComponent', () => {
   let fixture: ComponentFixture<LogsComponent>;
   let logServiceSpyObj: jasmine.SpyObj<LogsComponent>;
   let logsObservable: BehaviorSubject<Logs[]>;
+  let matSortSpyObj: jasmine.SpyObj<MatSort>;
 
   beforeEach(async () => {
     logsObservable = new BehaviorSubject<Logs[]>([] as Logs[]);
-    logServiceSpyObj = jasmine.createSpyObj('LogsService', [],{ logs: logsObservable.asObservable() });
+    logServiceSpyObj = jasmine.createSpyObj('LogsService', [], {logs: logsObservable.asObservable()});
+    matSortSpyObj = jasmine.createSpyObj('MatSort', ['sortChange'], {active: 'timestamp', direction: 'asc'});
     await TestBed.configureTestingModule({
       declarations: [],
-      imports: [LogsComponent, MatDialogClose, MatTableModule, MatIcon, MatHeaderRowDef, MatRowDef, MatCellDef, MatHeaderCellDef, MatCard, BrowserAnimationsModule, HttpClientTestingModule],
+      imports: [LogsComponent, MatDialogClose, MatTableModule, MatSortModule],
       providers: [
-        { provide: LogsService, useValue: logServiceSpyObj}
+        {provide: LogsService, useValue: logServiceSpyObj},
+        {provide: MatSort, useValue: matSortSpyObj},
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(LogsComponent);
     component = fixture.componentInstance;
-    component.logs = new BehaviorSubject([] as Logs[]);
+    component.logs = logsObservable;
     fixture.detectChanges();
   });
 

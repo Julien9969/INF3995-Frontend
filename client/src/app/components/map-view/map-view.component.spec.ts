@@ -12,18 +12,32 @@ describe('MapViewComponent', () => {
   let mapServiceSpyObj: jasmine.SpyObj<MapService>;
   let robots: BehaviorSubject<RobotInformation[]>;
   let map: BehaviorSubject<HTMLImageElement>;
+  let elementRefSpyObj: jasmine.SpyObj<ElementRef>;
 
   beforeEach(async () => {
     robots = new BehaviorSubject<RobotInformation[]>([]);
     map = new BehaviorSubject<HTMLImageElement>(new Image());
 
     mapServiceSpyObj = jasmine.createSpyObj('MapService', ['getMap'], { image: new Image()});
-    const elementRef = jasmine.createSpyObj(
+    elementRefSpyObj = jasmine.createSpyObj(
       'ElementRef',
       {},
       {
         nativeElement: {
-          offsetParent: {},
+          getContext: () => {
+            return {
+              fillStyle: '',
+              arc: () => {},
+              drawImage: () => {
+              },
+              beginPath: () => {
+              },
+              fill: () => {
+              },
+              stroke: () => {
+              },
+            };
+          },
         },
       },
     );
@@ -31,7 +45,7 @@ describe('MapViewComponent', () => {
       imports: [MapViewComponent],
       providers: [
         { provide: MapService, useValue: mapServiceSpyObj },
-        { provide: ElementRef, useValue: elementRef}
+        { provide: ElementRef, useValue: elementRefSpyObj},
       ],
     })
       .compileComponents();
@@ -45,7 +59,22 @@ describe('MapViewComponent', () => {
 
   it('should create', () => {
     map.next(new Image());
-    robots.next([]); // TODO: add expect
+    robots.next([{
+      id: 1,
+      name: "Robot 1",
+      battery: 100,
+      state: "Idle",
+      lastUpdate: 0,
+      distance: 0,
+      initialPosition: {
+        x: 0,
+        y: 0
+      },
+      position: {
+        x: 0,
+        y: 0
+      }
+    }]);
     expect(component).toBeTruthy();
   });
 
@@ -54,5 +83,10 @@ describe('MapViewComponent', () => {
     const isInitialPosition = component["drawInitialPosition"];
     expect(component.toggleActualPosition()).toEqual(!isActualPosition);
     expect(component.toggleInitialPosition()).toEqual(!isInitialPosition);
+  });
+
+  it('should draw', () => {
+    component.drawPositionIndicator(0, 0, 'green');
+    expect(elementRefSpyObj.nativeElement.context.getContext).toHaveBeenCalled();
   });
 });

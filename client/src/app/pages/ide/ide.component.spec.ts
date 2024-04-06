@@ -96,7 +96,7 @@ describe('IdeComponent', () => {
     const errorMessage = 'Test error message';
     component.selectedRobotId = 1;
 
-    filesServiceSpy.getFileTree.and.callFake(() => { throw new Error(errorMessage); });
+    filesServiceSpy.getFileTree.and.throwError(errorMessage);
     spyOn(component, 'openSnackBar');
 
     component.onRobotSelected();

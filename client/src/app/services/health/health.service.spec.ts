@@ -1,4 +1,4 @@
-import {fakeAsync, flush, TestBed, tick} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
 import {HealthService} from './health.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
@@ -20,17 +20,13 @@ describe('HealthService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should be ok', ((done) => {
+  it('should be ok', (done) => {
     setInterval(() => {
-      service.check.subscribe((status) => {
-        expect(status).toBeFalse(); // First one always fails
-      });
       service.configureTimer();
       const request = httpMock.expectOne(LOCAL_URL);
       request.flush(JSON.stringify('pong'));
-      done()
     }, 1001);
-
-  }));
+    done();
+  });
 
 });

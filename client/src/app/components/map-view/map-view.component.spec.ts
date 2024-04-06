@@ -6,7 +6,7 @@ import {BehaviorSubject} from "rxjs";
 import {CUSTOM_ELEMENTS_SCHEMA, ElementRef, NO_ERRORS_SCHEMA} from "@angular/core";
 import {RobotInformation} from "@common";
 
-fdescribe('MapViewComponent', () => {
+describe('MapViewComponent', () => {
   let component: MapViewComponent;
   let fixture: ComponentFixture<MapViewComponent>;
   let mapServiceSpyObj: jasmine.SpyObj<MapService>;

@@ -14,7 +14,7 @@ import {EmitFeedback, MissionState, MissionStatus} from '@common';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {RobotsService} from "@app/services/robots/robots.service";
 
-describe('MissionsComponent', () => {
+describe('MissionComponent', () => {
   let component: MissionComponent;
   let fixture: ComponentFixture<MissionComponent>;
   let robotServiceSpyObj: jasmine.SpyObj<RobotsService>;
@@ -28,7 +28,6 @@ describe('MissionsComponent', () => {
       providers: [
         {provide: RobotsService, useValue: robotServiceSpyObj},
         {provide: SocketService, useValue: socketServiceSpyObj},
-        {provide: MatSnackBar, useValue: {}},
       ]
     }).compileComponents();
 

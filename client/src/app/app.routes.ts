@@ -9,12 +9,8 @@ import {unsavedChangesGuard} from "@app/guard/unsaved-changes.guard";
 
 export const routes: Routes = [
   {path: '', pathMatch: 'full', component: DashboardComponent},
-  {
-    path: 'mission', component: MissionViewComponent, canDeactivate: [missionRunningGuard], children:
-      [
-        {path: ':id', component: MissionViewComponent} // No guard if past mission
-      ]
-  },
+  {path: 'mission/:id', component: MissionViewComponent, canDeactivate: [missionRunningGuard]},
+  {path: 'mission', component: MissionViewComponent},
   {path: 'ide', component: IdeComponent, canDeactivate: [unsavedChangesGuard]},
   {path: 'history', component: HistoryComponent},
   {path: 'error', component: ErrorComponent}

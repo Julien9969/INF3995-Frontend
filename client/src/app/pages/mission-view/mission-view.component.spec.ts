@@ -20,7 +20,6 @@ import {MissionComponent} from "@app/components/mission/mission.component";
 import {RobotsViewComponent} from "@app/components/robots-view/robots-view.component";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
 import {LogsComponent} from "@app/components/logs/logs.component";
-import {MockComponents} from "ng-mocks";
 
 
 describe('MissionViewComponent', () => {
@@ -67,7 +66,7 @@ describe('MissionViewComponent', () => {
     robotsServiceSpyObj.headBackBase.and.returnValue(headBackBase);
     await TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, NoopAnimationsModule, HttpClientTestingModule],
-      declarations: [...MockComponents(MissionComponent, RobotsViewComponent, MapViewComponent, LogsComponent)],
+      declarations: [],
       providers: [
         {
           provide: MatDialog,

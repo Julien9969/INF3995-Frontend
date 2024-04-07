@@ -4,7 +4,7 @@ import {HistoryService} from './history.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {BehaviorSubject} from "rxjs";
 import {environmentExt} from "@environment-ext";
-import {Logs, MissionState, MissionStatus, RobotInformation} from "@common";
+import {Logs, MissionState, MissionStatus, RobotInformation, RobotState} from "@common";
 
 const localUrl = (call: string) => `${environmentExt.apiUrl}history/${call}`;
 
@@ -73,7 +73,7 @@ describe('HistoryService', () => {
         x: 1,
         y: 1,
       },
-      state: "test",
+      state: RobotState.IDLE,
       initialPosition: {
         x: 1,
         y: 1,

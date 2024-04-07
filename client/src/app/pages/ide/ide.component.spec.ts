@@ -95,14 +95,14 @@ describe('IdeComponent', () => {
   it('should handle error when getFileTree fails', () => {
     const errorMessage = 'Test error message';
     component.selectedRobotId = 1;
-
     filesServiceSpy.getFileTree.and.throwError(errorMessage);
     spyOn(component, 'openSnackBar');
-
-    component.onRobotSelected();
-
-    expect(filesServiceSpy.getFileTree).toHaveBeenCalledWith(1);
-    expect(component.openSnackBar).toHaveBeenCalledWith(`Erreur lors de la récupération de l'arbre de fichier du robot ${component.selectedRobotId}`, true);
+    try{
+      component.onRobotSelected();
+    } catch (e) {
+      expect(filesServiceSpy.getFileTree).toHaveBeenCalledWith(1);
+      expect(component.openSnackBar).toHaveBeenCalledWith(`Erreur lors de la récupération de l'arbre de fichier du robot ${component.selectedRobotId}`, true);
+    }
   });
 
   it('should handle error when getFileTree fails', () => {

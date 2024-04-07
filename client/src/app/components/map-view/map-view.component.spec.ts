@@ -3,8 +3,8 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {MapViewComponent} from './map-view.component';
 import {MapService} from "@app/services/map/map.service";
 import {BehaviorSubject} from "rxjs";
-import {CUSTOM_ELEMENTS_SCHEMA, ElementRef, NO_ERRORS_SCHEMA} from "@angular/core";
-import {RobotInformation} from "@common";
+import {ElementRef} from "@angular/core";
+import {RobotInformation, RobotState} from "@common";
 
 describe('MapViewComponent', () => {
   let component: MapViewComponent;
@@ -53,7 +53,7 @@ describe('MapViewComponent', () => {
       id: 1,
       name: "Robot 1",
       battery: 100,
-      state: "Idle",
+      state: RobotState.IDLE,
       lastUpdate: 0,
       distance: 0,
       initialPosition: {

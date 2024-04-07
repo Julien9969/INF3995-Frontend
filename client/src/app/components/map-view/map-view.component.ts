@@ -46,12 +46,12 @@ export class MapViewComponent implements AfterViewInit {
 
     this.robots.subscribe((robots: RobotInformation[]) => {
       robots.forEach((robot: RobotInformation) => {
-        if (this.drawActualPosition) {
+        /*if (this.drawActualPosition) {
           this.drawPositionIndicator(robot.position.x, robot.position.y, 'green')
         }
         if (this.drawInitialPosition) {
           this.drawPositionIndicator(robot.initialPosition.x, robot.initialPosition.y, 'blue')
-        }
+        }*/
       });
     });
   }

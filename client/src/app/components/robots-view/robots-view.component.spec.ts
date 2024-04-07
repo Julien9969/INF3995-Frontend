@@ -10,8 +10,9 @@ import {Router} from '@angular/router';
 import {SocketService} from '@app/services/socket/socket.service';
 import {MissionService} from '@app/services/mission/mission.service';
 import {BehaviorSubject, Subject} from 'rxjs';
-import {MissionState, MissionStatus} from '@common';
+import {MissionState, MissionStatus, RobotInformation} from '@common';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {B} from "@angular/cdk/keycodes";
 
 describe('RobotsViewComponent', () => {
   let component: RobotsViewComponent;
@@ -54,6 +55,8 @@ describe('RobotsViewComponent', () => {
 
     fixture = TestBed.createComponent(RobotsViewComponent);
     component = fixture.componentInstance;
+    component.missionState = MissionState.NOT_STARTED;
+    component.robots = new BehaviorSubject([] as RobotInformation[]);
     fixture.detectChanges();
   });
 

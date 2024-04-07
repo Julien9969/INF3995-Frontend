@@ -120,14 +120,16 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     }*/
 
     this.missionId = Number(this.route.snapshot.paramMap.get("id")) || 0;
-    const historyData = this.historyService.getMissions().getValue().find(mission => mission.missionId === this.missionId);
-
-    if(historyData === undefined && this.missionId !== 0) {
-      const errorMessage = "Mission non trouvée."
-      this.openSnackBar(errorMessage)
-      this.router.navigate(['/error'], {state: {errorMessage: errorMessage}}).then(() => {});
-      return;
-    }
+    let historyData = undefined;
+    this.historyService.getMissions().subscribe((missions) =>{
+      historyData = missions.find(mission => mission.missionId === this.missionId);
+      if(historyData === undefined && this.missionId !== 0) {
+        const errorMessage = "Mission non trouvée."
+        this.openSnackBar(errorMessage)
+        this.router.navigate(['/error'], {state: {errorMessage: errorMessage}}).then(() => {});
+        return;
+      }
+    });
 
     this.isTimeMachine = this.missionId !== 0;
 

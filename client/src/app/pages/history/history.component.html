@@ -43,7 +43,7 @@
   </table>
   <mat-divider></mat-divider>
   <mat-paginator [length]="this.dataSource.data.length"
-                 [pageSize]="this.dataSource.data.length > 10 ? 10 : this.dataSource.data.length"
+                 [pageSize]="10"
                  [pageSizeOptions]="[1, 5, 10, 15]">
   </mat-paginator>
 </div>

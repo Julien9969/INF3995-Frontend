@@ -25,8 +25,8 @@ export class MapViewComponent implements AfterViewInit {
   @ViewChild('mapCanvas', {static: false}) private mapCanvas!: ElementRef<HTMLCanvasElement>;
   private ratio: number = 1 / 1;
   width: number = this.ratio * this.height;
-  private drawActualPosition: boolean = true;
-  private drawInitialPosition: boolean = true;
+  private drawActualPosition: boolean = false;
+  private drawInitialPosition: boolean = false;
 
   constructor() {
   }

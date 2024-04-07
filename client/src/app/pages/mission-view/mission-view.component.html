@@ -2,19 +2,24 @@
   <span>MISSION</span>
   <span class="bar-spacer"></span>
   <div *ngIf="!isTimeMachine">
-    <button (click)="this.toggleMission()" [disabled]="missionState === MissionState.ONGOING" class="toolbar-button"
+    <button (click)="this.toggleMission()"
+            [disabled]="missionState === MissionState.ONGOING"
+            class="toolbar-button"
             color="primary"
             matTooltip="{{missionState === MissionState.ENDED ? 'Redémarrer mission' : 'Lancer mission'}}"
             mat-icon-button>
       <mat-icon>{{this.missionState === MissionState.ENDED ? 'refresh' : 'play_arrow'}}</mat-icon>
     </button>
-    <button (click)="this.toggleMission()" [disabled]="missionState !== MissionState.ONGOING" class="toolbar-button"
+    <button (click)="this.toggleMission()"
+            [disabled]="missionState !== MissionState.ONGOING"
+            class="toolbar-button"
             color="accent"
             matTooltip="Arrêter mission"
             mat-icon-button>
       <mat-icon>stop</mat-icon>
     </button>
     <button (click)="toggleHeadBackBase()"
+            [disabled]="missionState !== MissionState.ONGOING"
             class="toolbar-button"
             matTooltip="Ramener les robots à la base"
             mat-icon-button>
@@ -56,7 +61,7 @@
   <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="false">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Carte exploratoire en 3D
+        Carte d'exploration
       </mat-panel-title>
       <mat-panel-description>
         <span></span>

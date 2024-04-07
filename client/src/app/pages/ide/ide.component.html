@@ -18,9 +18,9 @@
       <mat-card-title>Choix du robot</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>Veuillez en sélectionner un robot dans la liste ci-dessous pour éditer son code.</p>
+      <p>Veuillez sélectionner un robot dans la liste ci-dessous pour éditer son code.</p>
       <mat-form-field subscriptSizing="dynamic" class="centered">
-        <mat-label>Sélectionner le robot</mat-label>
+        <mat-label>Robot</mat-label>
         <mat-select [(ngModel)]="selectedRobotId" (selectionChange)="onRobotSelected()" name="food">
           @for (robot of robots ; track robot) {
           <mat-option [value]="robot.id">{{robot.id}}</mat-option>

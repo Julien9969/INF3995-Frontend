@@ -14,8 +14,8 @@ export class RobotsService {
   constructor(private socketService: SocketService) {
     // Every second there's an update from the backend with the status
     this.socketService.on(WebsocketsEvents.ROBOT_STATUS, (update: string) => this.parseRobots(update));
-    this.socketService.on(WebsocketsEvents.IDENTIFY_FEEDBACK, (update: string) => this.parseEmitFeedback(update));
-    this.socketService.on(WebsocketsEvents.HEADBACKBASE_FEEDBACK, (update: string) => this.parseEmitFeedback(update));
+    // this.socketService.on(WebsocketsEvents.IDENTIFY_FEEDBACK, (update: string) => this.parseEmitFeedback(update));
+    // this.socketService.on(WebsocketsEvents.HEADBACKBASE_FEEDBACK, (update: string) => this.parseEmitFeedback(update));
   }
 
   get robots(): BehaviorSubject<RobotInformation[]> {

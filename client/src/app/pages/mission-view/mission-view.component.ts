@@ -116,7 +116,7 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     this.missionId = Number(this.route.snapshot.paramMap.get("id")) || 0;
     if (this.missionId !== 0) {
       const historyData = this.historyService.getMissions().getValue().find(mission => mission.missionId === this.missionId);
-      this.isTimeMachine = historyData !== undefined; // Check if id is in history
+      this.isTimeMachine = historyData !== undefined; // Check if valid id was provided
     } else {
       this.isTimeMachine = false;
     }
@@ -126,8 +126,10 @@ export class MissionViewComponent implements OnInit, OnDestroy {
     if (this.isTimeMachine) {
       this.logs = this.historyService.getLogs(this.missionId);
       this.map = this.historyService.getMap(this.missionId);
+      this.mapInitialized = true;
       this.status = this.historyService.getStatus(this.missionId);
       this.robots = this.historyService.getRobots(this.missionId);
+      this.missionState = MissionState.ENDED;
     } else {
       this.logs = this.logsService.logs;
       this.map = this.mapService.image;

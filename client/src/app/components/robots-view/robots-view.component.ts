@@ -98,7 +98,11 @@ export class RobotsViewComponent implements OnChanges {
   }
 
   identifyRobots(robotId: number) {
-    this.openSnackBar(`Requête d'identification envoyée au robot ${robotId}!`)
-    this.robotsService.identify(robotId).subscribe(() => this.openSnackBar(`Robot ${robotId} s'est identifié!`));
+    if (this.missionState === MissionState.NOT_STARTED) {
+      this.openSnackBar(`Requête d'identification envoyée au robot ${robotId}!`)
+      this.robotsService.identify(robotId).subscribe(() => this.openSnackBar(`Robot ${robotId} s'est identifié!`));
+    } else {
+      this.openSnackBar("Impossible d'identifier les robots pendant une mission en cours!")
+    }
   }
 }

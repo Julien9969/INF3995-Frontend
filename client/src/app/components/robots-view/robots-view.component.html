@@ -22,7 +22,7 @@
   <ng-container matColumnDef="identify">
     <th *matHeaderCellDef mat-header-cell> Identifier</th>
     <td *matCellDef="let element" mat-cell>
-      <button mat-icon-button [disabled]="missionState === MissionState.NOT_STARTED"
+      <button mat-icon-button
               (click)="identifyRobots(element.id)" mat-icon-button>
         <mat-icon>my_location</mat-icon>
       </button>

@@ -43,13 +43,11 @@ export class MissionService {
     if (state == MissionState.ONGOING) {
       this.socketService.send(WebsocketsEvents.MISSION_END);
     } else {
-      this.socketService.send(WebsocketsEvents.MISSION_START);
       this.socketService.send(WebsocketsEvents.MISSION_MAP);
-
     }
   }
 
   disconnect() {
-    this.socketService.disconnect();
+    this.socketService.send(WebsocketsEvents.MISSION_END);
   }
 }

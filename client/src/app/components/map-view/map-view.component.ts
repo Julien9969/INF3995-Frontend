@@ -45,6 +45,7 @@ export class MapViewComponent implements AfterViewInit {
     });
 
     this.robots.subscribe((robots: RobotInformation[]) => {
+      /*
       robots.forEach((robot: RobotInformation) => {
         if (this.drawActualPosition) {
           this.drawPositionIndicator(robot.position.x, robot.position.y, 'green')
@@ -53,6 +54,7 @@ export class MapViewComponent implements AfterViewInit {
           this.drawPositionIndicator(robot.initialPosition.x, robot.initialPosition.y, 'blue')
         }
       });
+      */
     });
   }
 
@@ -62,6 +64,7 @@ export class MapViewComponent implements AfterViewInit {
     this.context.fillStyle = color;
     this.context.fill();
     this.context.stroke();
+    // Draw image as well
   }
 
   toggleActualPosition() {

@@ -61,13 +61,11 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <div *ngIf="this.mapInitialized" class="no-mission-container">
-    <span class="material-symbols-outlined">
-    route
-  </span>
+      <div *ngIf="!mapInitialized" class="no-mission-container">
+        <span class="material-symbols-outlined">route</span>
         <h2><b>La carte n'est pas encore disponible...</b></h2>
       </div>
-      <app-map-view *ngIf="!mapInitialized" [map]="map" [robots]="robots"></app-map-view>
+      <app-map-view *ngIf="mapInitialized" [map]="map" [robots]="robots"></app-map-view>
     </ng-template>
   </mat-expansion-panel>
   <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="true"

@@ -33,7 +33,7 @@ export class HistoryService {
   getLogs(missionId: number) {
     this.httpClient.get(localUrl(`logs/${missionId}`), {responseType: 'json'}).subscribe((data) => {
       if (data) {
-        const logs = data as Logs[];
+        const logs = JSON.parse(data as string) as Logs[];
         this._logs.next(logs);
       }
     });
@@ -44,8 +44,10 @@ export class HistoryService {
     this.httpClient.get(localUrl(`map/${missionId}`), {responseType: 'text'}).subscribe((data) => {
       if (data) {
         const image = new Image();
+        image.onload = async () => {
+          this._map.next(image);
+        }
         image.src = data;
-        this._map.next(image); // returns base 64 encoded image
       }
     });
     return this._map;
@@ -54,7 +56,7 @@ export class HistoryService {
   getStatus(missionId: number) {
     this.httpClient.get(localUrl(`status/${missionId}`), {responseType: 'json'}).subscribe((data) => {
       if (data) {
-        const status = data as MissionStatus;
+        const status = JSON.parse(data as string) as MissionStatus;
         this._status.next(status);
       }
     });

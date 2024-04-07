@@ -35,6 +35,7 @@ interface MissionInfo {
   missionId: number;
   elapsedTime: string;
   timestamp: number;
+  isSimulation: boolean;
 }
 
 @Component({
@@ -80,7 +81,7 @@ interface MissionInfo {
 export class MissionComponent implements OnChanges {
   @Input() missionState: MissionState = MissionState.NOT_STARTED;
   @Input() status: BehaviorSubject<MissionStatus> = new BehaviorSubject<MissionStatus>({} as MissionStatus);
-  displayedColumns: string[] = ["missionId", "elapsedTime", "timestamp"];
+  displayedColumns: string[] = ["missionId", "elapsedTime", "timestamp", "isSimulation"];
   rowData: MissionInfo = {} as MissionInfo;
   infoDataSource = new MatTableDataSource([this.rowData])
   protected readonly MissionState = MissionState;
@@ -92,6 +93,7 @@ export class MissionComponent implements OnChanges {
           missionId: updatedStatus.missionId,
           elapsedTime: formatCounter(updatedStatus.elapsedTime),
           timestamp: updatedStatus.startTimestamp * 1000,
+          isSimulation: updatedStatus.isSimulation,
         }
         this.infoDataSource.data = [this.rowData]
       }

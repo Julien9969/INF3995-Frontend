@@ -10,6 +10,7 @@ export interface MissionStatus {
   robotCount: number
   startTimestamp: number
   elapsedTime: number,
+  isSimulation: boolean
 }
 
 export interface Logs {

@@ -50,6 +50,7 @@ describe('HistoryComponent', () => {
         startTimestamp: 1,
         elapsedTime: 1,
         missionState: MissionState.ONGOING,
+        isSimulation: false,
       }
     ];
     component.parseData(data);

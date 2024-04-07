@@ -14,6 +14,7 @@ export class MissionService {
     startTimestamp: 0,
     elapsedTime: 0,
     robotCount: 0,
+    isSimulation: false,
   }
   constructor(private socketService: SocketService) {
     // Every second there's an update from the backend with the status
@@ -34,6 +35,7 @@ export class MissionService {
       startTimestamp: jsonUpdate.startTimestamp || 0,
       elapsedTime: jsonUpdate.elapsedTime || 0,
       robotCount: jsonUpdate.count || 0,
+      isSimulation: jsonUpdate.isSimulation || false,
     }
     this._status.next(update);
   }
@@ -43,7 +45,7 @@ export class MissionService {
     if (state == MissionState.ONGOING) {
       this.socketService.send(WebsocketsEvents.MISSION_END);
     } else {
-      this.socketService.send(WebsocketsEvents.MISSION_MAP);
+      this.socketService.send(WebsocketsEvents.MISSION_START);
     }
   }
 

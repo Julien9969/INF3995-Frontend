@@ -40,6 +40,7 @@ describe('MissionComponent', () => {
       missionState: MissionState.NOT_STARTED,
       startTimestamp: 0,
       robotCount: 1,
+      isSimulation: false,
     });
     fixture.detectChanges();
   });

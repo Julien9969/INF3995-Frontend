@@ -34,6 +34,7 @@ describe('HistoryService', () => {
       startTimestamp: 1,
       elapsedTime: 1,
       missionState: MissionState.ONGOING,
+      isSimulation: false,
     }];
     const _missions = service.getMissions()
     const request = httpMock.expectOne(localUrl(''));
@@ -92,6 +93,7 @@ describe('HistoryService', () => {
       startTimestamp: 1,
       elapsedTime: 1,
       missionState: MissionState.ONGOING,
+      isSimulation: false,
     };
     const _status = service.getStatus(missionId)
     const request = httpMock.expectOne(localUrl(`status/${missionId}`));

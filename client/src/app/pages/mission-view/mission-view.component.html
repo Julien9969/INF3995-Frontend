@@ -1,5 +1,5 @@
-<mat-toolbar class="sticky-toolbar toolbar-no-overflow">
-  Mission
+<mat-toolbar class="sticky-toolbar toolbar-no-overflow white-toolbar">
+  <span>MISSION</span>
   <span class="bar-spacer"></span>
   <div *ngIf="!isTimeMachine">
     <button (click)="this.toggleMission()" [disabled]="missionState === MissionState.ONGOING" class="toolbar-button"
@@ -14,7 +14,10 @@
             mat-icon-button>
       <mat-icon>stop</mat-icon>
     </button>
-    <button (click)="toggleHeadBackBase()" matTooltip="Ramener les robots à la base" mat-icon-button>
+    <button (click)="toggleHeadBackBase()"
+            class="toolbar-button"
+            matTooltip="Ramener les robots à la base"
+            mat-icon-button>
       <mat-icon>crisis_alert</mat-icon>
     </button>
   </div>
@@ -47,7 +50,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
-      <app-robots-view [robots]="robots"></app-robots-view>
+      <app-robots-view [robots]="robots" [missionState]="missionState"></app-robots-view>
     </ng-template>
   </mat-expansion-panel>
   <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="false">

@@ -1,5 +1,5 @@
-<mat-toolbar>
-  Historique des missions
+<mat-toolbar class="white-toolbar">
+  HISTORIQUE
 </mat-toolbar>
 <div *ngIf="this.dataSource.data.length > 0">
   <table [dataSource]="dataSource" mat-table matSort matTableResponsive>
@@ -10,7 +10,7 @@
 
     <ng-container matColumnDef="timestamp">
       <th *matHeaderCellDef mat-header-cell mat-sort-header> Date </th>
-      <td *matCellDef="let element" mat-cell> {{ element.startTimestamp * 1000 | date: 'medium'}} </td>
+      <td *matCellDef="let element" mat-cell> {{ element.startTimestamp * 1000 | date: 'short'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="duration">
@@ -19,7 +19,7 @@
     </ng-container>
 
     <ng-container matColumnDef="distance">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header> Distance parcourue (total) </th>
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Distance parcourue totale </th>
       <td *matCellDef="let element" mat-cell> {{element.distance}}m </td>
     </ng-container>
 
@@ -29,7 +29,7 @@
     </ng-container>
 
     <ng-container matColumnDef="simulation">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header> Simulation? </th>
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Environnement simulé </th>
       <td *matCellDef="let element" mat-cell> {{element.isSimulation ? 'Oui' : 'Non'}}</td>
     </ng-container>
 

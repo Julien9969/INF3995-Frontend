@@ -91,8 +91,12 @@ export class MissionViewComponent implements OnInit, OnDestroy {
               private router: Router,
               public matSnackBar: MatSnackBar,
               public dialog: MatDialog
-  ) {
+  ) {}
 
+  openSnackBar(message: string) {
+    this.matSnackBar.open(message, 'Fermer', {
+      duration: 4000,
+    });
   }
 
   toggleMission() {
@@ -102,27 +106,30 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   }
 
   toggleHeadBackBase() {
-    this.matSnackBar.open("Requête de ramener les robots à la base envoyée", 'Fermer', {
-      duration: 4000,
-    })
-    this.robotsService.headBackBase().subscribe((result: EmitFeedback) => {
-      this.matSnackBar.open(result.message, 'Fermer', {
-        duration: 4000,
-      })
-    });
+    if(this.missionState === MissionState.ONGOING) {
+      this.openSnackBar("Requête de ramener les robots à la base envoyée")
+    } else {
+      this.openSnackBar('La mission doit être en cours pour pouvoir renvoyer les robots à la base.')
+    }
+    this.robotsService.headBackBase().subscribe((result: EmitFeedback) => this.openSnackBar(result.message));
   }
 
   ngOnInit() {
-    this.missionId = Number(this.route.snapshot.paramMap.get("id")) || 0;
-    if (this.missionId !== 0) {
-      const historyData = this.historyService.getMissions().getValue().find(mission => mission.missionId === this.missionId);
-      this.isTimeMachine = historyData !== undefined; // Check if valid id was provided
-    } else {
-      this.isTimeMachine = false;
-    }
     /*if (!this.healthService.check.getValue()) {
       this.router.navigate(['/error']).then(() => {});
     }*/
+
+    this.missionId = Number(this.route.snapshot.paramMap.get("id")) || 0;
+    const historyData = this.historyService.getMissions().getValue().find(mission => mission.missionId === this.missionId);
+
+    if(historyData === undefined && this.missionId !== 0) {
+      this.openSnackBar("Mission non trouvée.")
+      this.router.navigate(['/error']).then(() => {});
+      return;
+    }
+
+    this.isTimeMachine = this.missionId !== 0;
+
     if (this.isTimeMachine) {
       this.logs = this.historyService.getLogs(this.missionId);
       this.map = this.historyService.getMap(this.missionId);

@@ -78,10 +78,11 @@ export class IdeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.healthService.check.getValue()) {
+    /*if (this.healthService.check.getValue()) {
       this.router.navigate(['/error']).then(() => {
       });
-    }
+    }*/
+    return;
   }
 
   ngOnDestroy() {

@@ -74,11 +74,10 @@ import {RobotsService} from "@app/services/robots/robots.service";
   templateUrl: './robots-view.component.html'
 })
 export class RobotsViewComponent implements OnChanges {
-  @Input() robots: BehaviorSubject<RobotInformation[]> = new BehaviorSubject<RobotInformation[]>([] as RobotInformation[]);
-  @Input() missionState: MissionState = MissionState.NOT_STARTED;
+  @Input() robots!: BehaviorSubject<RobotInformation[]>;
+  @Input() missionState!: MissionState;
   robotDisplayedColumns: string[] = ['id', 'state', 'distance', 'battery', 'identify'];
   robotDataSource = new MatTableDataSource();
-  protected readonly MissionState = MissionState;
 
   constructor(private matSnackBar: MatSnackBar,
               private robotsService: RobotsService) {
@@ -93,16 +92,16 @@ export class RobotsViewComponent implements OnChanges {
 
   openSnackBar(message: string) {
     this.matSnackBar.open(message, 'Fermer', {
-      duration: 2000,
+      duration: 4000,
     });
   }
 
   identifyRobots(robotId: number) {
-    if (this.missionState === MissionState.NOT_STARTED) {
+    if (this.missionState !== MissionState.ONGOING) {
       this.openSnackBar(`Requête d'identification envoyée au robot ${robotId}!`)
-      this.robotsService.identify(robotId).subscribe(() => this.openSnackBar(`Robot ${robotId} s'est identifié!`));
     } else {
       this.openSnackBar("Impossible d'identifier les robots pendant une mission en cours!")
     }
+    this.robotsService.identify(robotId).subscribe(() => this.openSnackBar(`Robot ${robotId} s'est identifié!`));
   }
 }

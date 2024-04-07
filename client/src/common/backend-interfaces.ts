@@ -4,6 +4,13 @@ export enum MissionState {
   NOT_STARTED = "not-started",
 }
 
+export enum RobotState {
+  IDLE = "idle",
+  MOVING = "moving",
+  DISCONNECTED = "disconnected",
+  HEAD_BACK_BASE = "head-back-base",
+}
+
 export interface MissionStatus {
   missionState: MissionState,
   missionId: number,
@@ -39,7 +46,7 @@ export interface RobotInformation {
   id: number,
   name: string,
   battery: number,
-  state: string,
+  state: RobotState,
   lastUpdate: number,
   distance: number,
   position: {

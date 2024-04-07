@@ -32,7 +32,9 @@
   <tr *matHeaderRowDef="robotDisplayedColumns" mat-header-row></tr>
   <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
 </table>
-<div *ngIf="this.robots.getValue().length === 0" class="">
-  <p>Aucun robot n'est disponible pour cette mission.</p>
-  <p>Ils seront affichés ici lors d'une nouvelle connexion.</p>
+<div *ngIf="this.robots.getValue().length === 0" class="no-mission-container">
+  <span class="material-symbols-outlined">
+    rocket_launch
+  </span>
+  <h2>Aucun robot n'est disponible pour cette mission. Ils seront affichés ici lors d'une nouvelle connexion.</h2>
 </div>

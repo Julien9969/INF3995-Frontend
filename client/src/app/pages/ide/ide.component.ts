@@ -21,6 +21,7 @@ import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {ConfirmationDialogComponent} from "@app/components/confirmation-dialog/confirmation-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {MatCard, MatCardContent, MatCardHeader, MatCardModule} from "@angular/material/card";
 
 @Component({
   selector: 'app-ide',
@@ -37,6 +38,10 @@ import {MatDialog} from "@angular/material/dialog";
     MatSelectModule,
     MatTooltipModule,
     MatToolbar,
+    MatCard,
+    MatCardHeader,
+    MatCardContent,
+    MatCardModule
   ],
   templateUrl: './ide.component.html',
   styleUrl: './ide.component.scss'
@@ -195,6 +200,6 @@ export class IdeComponent implements OnInit, OnDestroy {
   }
 
   get robots() {
-    return this.filesService.robots.getValue();
+    return this.filesService.robots;
   }
 }

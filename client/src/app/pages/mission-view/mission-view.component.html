@@ -70,7 +70,7 @@
     </mat-expansion-panel-header>
     <ng-template matExpansionPanelContent>
       <div *ngIf="!mapInitialized" class="no-mission-container">
-        <span class="material-symbols-outlined">route</span>
+        <span class="material-symbols-outlined">map</span>
         <h2><b>La carte n'est pas encore disponible...</b></h2>
       </div>
       <app-map-view *ngIf="mapInitialized" [map]="map" [robots]="robots"></app-map-view>

@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IdeComponent } from './ide.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { FilesService } from '@app/services/files/files.service';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {IdeComponent} from './ide.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {FilesService} from '@app/services/files/files.service';
 import {BehaviorSubject, of, throwError} from 'rxjs';
 import {HttpClientModule, HttpResponse} from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
-import { FilesTree } from '@app/classes/files-tree';
-import {Component} from "@angular/core";
-import {Logs, RobotInformation} from "@common";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserModule} from '@angular/platform-browser';
+import {FilesTree} from '@app/classes/files-tree';
+import {RobotInformation, RobotState} from "@common";
+import {Router} from "@angular/router";
+import {HealthService} from "@app/services/health/health.service";
+import {RobotsService} from "@app/services/robots/robots.service";
+import {MatCardModule} from "@angular/material/card";
 
 const fileTreeMock: FilesTree = [
     {
@@ -36,20 +39,55 @@ describe('IdeComponent', () => {
   let filesServiceSpy: jasmine.SpyObj<FilesService>;
   let mockResponse: HttpResponse<any>;
   let mockResponse2: HttpResponse<any>;
+  let routerSpyObj: jasmine.SpyObj<Router>;
+  let mockHealthService: jasmine.SpyObj<HealthService>;
+  let check: BehaviorSubject<boolean>;
+  let robotsInformation: RobotInformation[];
 
   beforeEach(async () => {
-    filesServiceSpy = jasmine.createSpyObj('FilesService', ['getFileTree', 'saveFile', 'getFile', 'updateRobot'], { robots: new BehaviorSubject([] as RobotInformation[]) });
+    robotsInformation = [
+      {
+        id: 1,
+        name: 'robot1',
+        battery: 100,
+        state: RobotState.IDLE,
+        lastUpdate: 17000000,
+        distance: 0,
+        position: { x: 0, y: 0 },
+        initialPosition: { x: 0, y: 0 },
+      },
+      {
+        id: 2,
+        name: 'robot2',
+        battery: 100,
+        state: RobotState.IDLE,
+        lastUpdate: 17000000,
+        distance: 0,
+        position: { x: 0, y: 0 },
+        initialPosition: { x: 0, y: 0 },
+      }
+    ];
+    filesServiceSpy = jasmine.createSpyObj('FilesService', ['getFileTree', 'saveFile', 'getFile', 'updateRobot'], { robots: new BehaviorSubject(robotsInformation).getValue() });
     mockResponse = new HttpResponse({ status: 200, body: { content: 'Test content'}});
     mockResponse2 = new HttpResponse({ status: 200, body: JSON.stringify(fileTreeMock)});
+    routerSpyObj = jasmine.createSpyObj('Router', ['navigate']);
+
 
     filesServiceSpy.getFileTree.and.returnValue(of(mockResponse2));
     filesServiceSpy.saveFile.and.returnValue(of(mockResponse));
     filesServiceSpy.getFile.and.returnValue(of(mockResponse));
     filesServiceSpy.updateRobot.and.returnValue(of(mockResponse));
+
+    check = new BehaviorSubject<boolean>(true);
+    mockHealthService = jasmine.createSpyObj('HealthService', [''], { check: check.asObservable() });
     await TestBed.configureTestingModule({
       declarations: [],
-      imports: [IdeComponent, MatSnackBarModule, BrowserAnimationsModule, BrowserModule, HttpClientModule],
-      providers: [{ provide: FilesService, useValue: filesServiceSpy }, {
+      imports: [IdeComponent, MatSnackBarModule, BrowserAnimationsModule, BrowserModule, HttpClientModule, MatCardModule, ],
+      providers: [
+        { provide: FilesService, useValue: filesServiceSpy },
+        { provide: Router, useValue: routerSpyObj},
+        { provide: HealthService, useValue: mockHealthService },
+        {
         provide: MatSnackBarModule,
         useValue: {
           open() {

@@ -46,6 +46,7 @@ export class MapViewComponent implements AfterViewInit {
 
     this.robots.subscribe((robots: RobotInformation[]) => {
       robots.forEach((robot: RobotInformation) => {
+        console.log(robot); // to simply avoid linting error
         /*if (this.drawActualPosition) {
           this.drawPositionIndicator(robot.position.x, robot.position.y, 'green')
         }

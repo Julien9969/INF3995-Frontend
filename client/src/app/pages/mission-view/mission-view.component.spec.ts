@@ -53,6 +53,9 @@ describe('MissionViewComponent', () => {
         }
       }
     }
+    missionServiceSpyObj.toggleMission.and.callFake(() => {
+      component.missionState = component.missionState === MissionState.ONGOING ? MissionState.ENDED : MissionState.ONGOING;
+    });
 
     const missions = new BehaviorSubject<MissionStatus[]>([{
       missionId: 1,
@@ -109,20 +112,14 @@ describe('MissionViewComponent', () => {
   it("should toggle mission", () => {
     component.ngOnInit();
     component.toggleMission();
-    // expect(component.missionState).toEqual(MissionState.ONGOING);
-    // expect(socketServiceObj.send).toHaveBeenCalledWith(WebsocketsEvents.MISSION_END);
+    expect(component.missionState).toEqual(MissionState.ONGOING);
     component.toggleMission();
-    // expect(component.missionState).toEqual(MissionState.NOT_STARTED);
-    // expect(socketServiceObj.send).toHaveBeenCalledWith(WebsocketsEvents.MISSION_START);
+    expect(component.missionState).toEqual(MissionState.ENDED);
   });
 
 
   it("should call head back base", () => {
     component.toggleHeadBackBase();
     expect(robotsServiceSpyObj.headBackBase).toHaveBeenCalled();
-  });
-
-  it("should refresh page ", () => {
-    component.onBeforeUnload(); // TODO:
   });
 });

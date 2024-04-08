@@ -2,6 +2,10 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject} from "rxjs";
 import {SocketService} from '@app/services/socket/socket.service';
 import {EmitFeedback, RobotInformation, WebsocketsEvents} from '@common';
+import {HttpClient} from "@angular/common/http";
+import {environmentExt} from "@environment-ext";
+
+const localUrl = (call: string) => `${environmentExt.apiUrl}identify/${call}`;
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +15,9 @@ export class RobotsService {
   private _identify: Subject<EmitFeedback> = new Subject();
   private _headBackBase: Subject<EmitFeedback> = new Subject();
 
-  constructor(private socketService: SocketService) {
+  constructor(private socketService: SocketService, public httpClient: HttpClient) {
     // Every second there's an update from the backend with the status
     this.socketService.on(WebsocketsEvents.ROBOT_STATUS, (update: string) => this.parseRobots(update));
-    // this.socketService.on(WebsocketsEvents.IDENTIFY_FEEDBACK, (update: string) => this.parseEmitFeedback(update));
-    // this.socketService.on(WebsocketsEvents.HEADBACKBASE_FEEDBACK, (update: string) => this.parseEmitFeedback(update));
   }
 
   get robots(): BehaviorSubject<RobotInformation[]> {
@@ -46,16 +48,14 @@ export class RobotsService {
       message: jsonUpdate.message,
       robotId: jsonUpdate.robotId
     }
-    if (jsonUpdate.message === 'Identify request sent') {
-      this._identify.next(update);
-    } else {
-      this._headBackBase.next(update);
-    }
+    this._headBackBase.next(update);
   }
 
   identify(robotId: number) {
-    this.socketService.send(WebsocketsEvents.IDENTIFY_REQUEST, robotId);
-    return this._identify.asObservable()
+    this.httpClient.get(localUrl(`${robotId}`)).subscribe((response) => {
+      this._identify.next(response as EmitFeedback);
+    });
+    return this._identify.asObservable();
   }
 
   headBackBase() {

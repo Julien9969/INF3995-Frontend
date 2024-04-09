@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Terminer la mission?</h2>
+<mat-dialog-content>
+  Souhaitez-vous vraiment quitter cette page et mettre fin à la mission en cours?
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close [matDialogClose]="false">Non</button>
+  <button mat-button mat-dialog-close cdkFocusInitial [matDialogClose]="true">Oui</button>
+</mat-dialog-actions>

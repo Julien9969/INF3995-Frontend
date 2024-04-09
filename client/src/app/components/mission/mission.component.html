@@ -1,0 +1,26 @@
+<div class="info-container">
+  <table [dataSource]="infoDataSource" mat-table>
+    <ng-container matColumnDef="missionId">
+      <th *matHeaderCellDef mat-header-cell>Numéro de la mission</th>
+      <td *matCellDef="let element" mat-cell> {{element.missionId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="elapsedTime">
+      <th *matHeaderCellDef mat-header-cell>Temps écoulé</th>
+      <td *matCellDef="let element" mat-cell> {{element.elapsedTime}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="timestamp">
+      <th *matHeaderCellDef mat-header-cell>Temps du lancement</th>
+      <td *matCellDef="let element" mat-cell>{{element.timestamp | date: 'short'}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="isSimulation">
+      <th *matHeaderCellDef mat-header-cell>Environnement simulé</th>
+      <td *matCellDef="let element" mat-cell>{{element.isSimulation ? 'Oui' : 'Non'}}</td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+</div>

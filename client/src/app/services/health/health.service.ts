@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "@environment";
+import {BehaviorSubject} from "rxjs";
 
 const LOCAL_URL = `${environment.serverUrl}api/ping/`;
 
@@ -8,10 +9,23 @@ const LOCAL_URL = `${environment.serverUrl}api/ping/`;
   providedIn: 'root'
 })
 export class HealthService {
+  private _healthObservable: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(private readonly httpClient: HttpClient) {
+    this.configureTimer()
   }
 
-  async isServerOk(): Promise<void> {
-    await this.httpClient.get(LOCAL_URL, {responseType: 'text'}).toPromise();
+  configureTimer() {
+    setInterval(() => {
+      this.httpClient.get(LOCAL_URL, {responseType: 'text'}).subscribe((status) => {
+        if (status) {
+          this._healthObservable.next(status.includes('pong'));
+        }
+      });
+    }, 1000);
+  }
+
+  get check() {
+    return this._healthObservable;
   }
 }

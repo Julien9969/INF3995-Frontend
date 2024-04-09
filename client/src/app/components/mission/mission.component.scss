@@ -1,0 +1,143 @@
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.bar-spacer {
+  flex: 1 1 auto;
+}
+
+.mat-expansion-panel {
+  margin: 16px;
+}
+
+.last-expansion-panel {
+  margin-bottom: 32px;
+}
+
+mat-expansion-panel {
+  margin-right: 32px;
+  margin-left: 32px;
+}
+
+.toolbar-button {
+  margin: 8px;
+  text-transform: uppercase;
+}
+
+.accordion-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
+  margin-left: 8px;
+}
+
+.mission-detail {
+  background: #e3e0e0;
+}
+
+mat-card-title > mat-icon {
+  margin-top: 4px;
+  margin-right: 4px;
+}
+
+.no-mission-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.material-symbols-outlined {
+  font-size: 300px;
+  color: lightgray;
+}
+
+.no-mission-container h2 {
+  color: lightgray;
+}
+
+.no-mission-container p {
+  color: lightgray;
+}
+
+.sticky-toolbar {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+map-view {
+  height: 80%;
+  width: 80%;
+}
+
+mat-card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+mat-card-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+mat-card-title mat-icon {
+  padding: 8px;
+}
+
+mat-card-actions {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+.no-bullets {
+  list-style-type: none;
+}
+
+ul > li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.mission-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+.spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: Add a semi-transparent background */
+  z-index: 1001;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}

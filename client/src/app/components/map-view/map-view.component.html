@@ -1,7 +1,25 @@
 <div class="map-container">
+  <div class="vertical-menu">
+    <div class="icon-text">
+      <mat-icon class="v-align-middle">location_on</mat-icon>
+      <mat-slide-toggle class="v-align-middle" (click)="toggleActualPosition()">
+        Position actuelle
+      </mat-slide-toggle>
+    </div>
+    <div class="icon-text">
+      <span class="material-symbols-outlined v-align-middle">
+        home_pin
+      </span>
+      <mat-slide-toggle class="v-align-middle" (click)="toggleInitialPosition()" mat-icon-button>
+        Position initiale
+      </mat-slide-toggle>
+    </div>
+  </div>
   <canvas
     class="map-display"
     id="map-canvas"
+    [width]="width"
+    [height]="height"
     #mapCanvas
   ></canvas>
 </div>

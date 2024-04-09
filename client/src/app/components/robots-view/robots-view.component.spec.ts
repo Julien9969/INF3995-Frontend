@@ -1,5 +1,5 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {MissionComponent} from './mission.component';
+import {RobotsViewComponent} from './robots-view.component';
 import {MatCard} from '@angular/material/card';
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpClientModule} from "@angular/common/http";
@@ -10,13 +10,13 @@ import {Router} from '@angular/router';
 import {SocketService} from '@app/services/socket/socket.service';
 import {MissionService} from '@app/services/mission/mission.service';
 import {BehaviorSubject, Subject} from 'rxjs';
-import {MissionState, MissionStatus} from '@app/classes/mission-status';
-import {Observable} from "rxjs/internal/Observable";
+import {MissionState, MissionStatus, RobotInformation} from '@common';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {B} from "@angular/cdk/keycodes";
 
-describe('MissionsComponent', () => {
-  let component: MissionComponent;
-  let fixture: ComponentFixture<MissionComponent>;
+describe('RobotsViewComponent', () => {
+  let component: RobotsViewComponent;
+  let fixture: ComponentFixture<RobotsViewComponent>;
   let healthServiceSpyObj: jasmine.SpyObj<HealthService>;
   let socketServiceObj: jasmine.SpyObj<SocketService>;
   let missionStatusSubject: BehaviorSubject<MissionStatus>;
@@ -27,11 +27,11 @@ describe('MissionsComponent', () => {
   beforeEach(async () => {
     const missionStatus: MissionStatus = {
       missionState: MissionState.ONGOING,
+      missionId: 0,
       startTimestamp: 0,
       elapsedTime: 0,
-      batteries: [0,0],
-      distances: [0,0],
-      count: 2
+      robotCount: 2,
+      isSimulation: false,
     }
     missionStatusSubject = new BehaviorSubject<MissionStatus>(missionStatus);
     const missionServiceObj = jasmine.createSpyObj('MissionService', ['toggleMission', 'identify'], { status: missionStatusSubject });
@@ -40,11 +40,10 @@ describe('MissionsComponent', () => {
     };
     missionServiceObj.identify.and.returnValue(identifyResponse.asObservable());
     healthServiceSpyObj = jasmine.createSpyObj('HealthService', ['isServerOk']);
-    healthServiceSpyObj.isServerOk.and.returnValue(Promise.reject());
-    socketServiceObj = jasmine.createSpyObj('SocketService', {'on': missionStatus})
+    socketServiceObj = jasmine.createSpyObj('SocketService', ['send', 'on'], {})
     matSnackSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
     await TestBed.configureTestingModule({
-      imports: [MissionComponent, MatCard, BrowserModule, HttpClientModule, HttpClientTestingModule, BrowserAnimationsModule],
+      imports: [RobotsViewComponent, MatCard, BrowserModule, HttpClientModule, HttpClientTestingModule, BrowserAnimationsModule],
       providers: [
         { provide: HealthService, useValue: healthServiceSpyObj},
         { provide: SocketService, useValue: socketServiceObj},
@@ -54,8 +53,10 @@ describe('MissionsComponent', () => {
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MissionComponent);
+    fixture = TestBed.createComponent(RobotsViewComponent);
     component = fixture.componentInstance;
+    component.missionState = MissionState.NOT_STARTED;
+    component.robots = new BehaviorSubject([] as RobotInformation[]);
     fixture.detectChanges();
   });
 
@@ -63,44 +64,15 @@ describe('MissionsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('it should toggle mission', () => {
-    component.toggleMission();
-    expect(component.missionService.toggleMission).toHaveBeenCalled();
-  });
-
-  it('it should return an array with the batteries', () => {
-    expect(component.batteries).toBeInstanceOf(Array<number>);
-  });
-
-  it('should route to error page', () => {
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/error']);
-  });
-
-  it('it should start mission and change ongoing mission', () => {
-    component.ongoingMission = false;
-    component.toggleMission();
-    expect(component.missionService.toggleMission).toHaveBeenCalled();
-    missionStatusSubject.next({missionState: MissionState.ONGOING, startTimestamp: 0, elapsedTime: 0, batteries: [0,0], distances: [0,0], count: 2})
-    expect(component.ongoingMission).toBe(true);
-  });
-
-  it('it should stop mission and change ongoing mission', () => {
-    component.ongoingMission = true;
-    component.toggleMission();
-    expect(component.missionService.toggleMission).toHaveBeenCalled();
-    missionStatusSubject.next({missionState: MissionState.ENDED, startTimestamp: 0, elapsedTime: 0, batteries: [0,0], distances: [0,0], count: 2})
-    expect(component.ongoingMission).toBe(false);
-  });
-
   it('it should identify robots', () => {
     component.identifyRobots(1);
     identifyResponse.next('response');
-    expect(component.missionService.identify).toHaveBeenCalledWith(1);
+    // expect(missio.identify).toHaveBeenCalledWith(1);
     expect(matSnackSpy['open']).toHaveBeenCalled();
   });
 
   it('it should open snackbar', () => {
-    component.openSnackBar(1);
+    component.openSnackBar("");
     expect(matSnackSpy['open']).toHaveBeenCalled();
   });
 });

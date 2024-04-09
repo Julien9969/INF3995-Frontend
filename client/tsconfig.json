@@ -26,7 +26,9 @@
     "paths": {
       "@app/*": ["./src/app/*"],
       "@environment": ["./src/environments/environment.ts"],
-      "@environment-ext": ["./src/environments/environment-ext.ts"]
+      "@environment-ext": ["./src/environments/environment-ext.ts"],
+      "@common": ["./src/common/backend-interfaces.ts"],
+      "@common/dummy-data": ["./src/common/dummy-data.ts"]
     }
   },
   "angularCompilerOptions": {

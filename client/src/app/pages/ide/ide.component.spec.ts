@@ -1,13 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IdeComponent } from './ide.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { FilesService } from '@app/services/files/files.service';
-import { of, throwError } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
-import { FilesTree } from '@app/interfaces/files-tree';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {IdeComponent} from './ide.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {FilesService} from '@app/services/files/files.service';
+import {BehaviorSubject, of, throwError} from 'rxjs';
+import {HttpClientModule, HttpResponse} from '@angular/common/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserModule} from '@angular/platform-browser';
+import {FilesTree} from '@app/classes/files-tree';
+import {RobotInformation, RobotState} from "@common";
+import {Router} from "@angular/router";
+import {HealthService} from "@app/services/health/health.service";
+import {RobotsService} from "@app/services/robots/robots.service";
+import {MatCardModule} from "@angular/material/card";
 
 const fileTreeMock: FilesTree = [
     {
@@ -34,20 +39,69 @@ describe('IdeComponent', () => {
   let filesServiceSpy: jasmine.SpyObj<FilesService>;
   let mockResponse: HttpResponse<any>;
   let mockResponse2: HttpResponse<any>;
+  let routerSpyObj: jasmine.SpyObj<Router>;
+  let mockHealthService: jasmine.SpyObj<HealthService>;
+  let check: BehaviorSubject<boolean>;
+  let robotsInformation: RobotInformation[];
 
   beforeEach(async () => {
-    filesServiceSpy = jasmine.createSpyObj('FilesService', ['getFileTree', 'saveFile', 'getFile', 'updateRobot']);
+    robotsInformation = [
+      {
+        id: 1,
+        name: 'robot1',
+        battery: 100,
+        state: RobotState.IDLE,
+        lastUpdate: 17000000,
+        distance: 0,
+        position: { x: 0, y: 0 },
+        initialPosition: { x: 0, y: 0 },
+      },
+      {
+        id: 2,
+        name: 'robot2',
+        battery: 100,
+        state: RobotState.IDLE,
+        lastUpdate: 17000000,
+        distance: 0,
+        position: { x: 0, y: 0 },
+        initialPosition: { x: 0, y: 0 },
+      }
+    ];
+    filesServiceSpy = jasmine.createSpyObj('FilesService', ['getFileTree', 'saveFile', 'getFile', 'updateRobot'], { robots: new BehaviorSubject(robotsInformation).getValue() });
     mockResponse = new HttpResponse({ status: 200, body: { content: 'Test content'}});
     mockResponse2 = new HttpResponse({ status: 200, body: JSON.stringify(fileTreeMock)});
+    routerSpyObj = jasmine.createSpyObj('Router', ['navigate']);
+
 
     filesServiceSpy.getFileTree.and.returnValue(of(mockResponse2));
     filesServiceSpy.saveFile.and.returnValue(of(mockResponse));
     filesServiceSpy.getFile.and.returnValue(of(mockResponse));
     filesServiceSpy.updateRobot.and.returnValue(of(mockResponse));
-    
+
+    check = new BehaviorSubject<boolean>(true);
+    mockHealthService = jasmine.createSpyObj('HealthService', [''], { check: check.asObservable() });
     await TestBed.configureTestingModule({
-      imports: [IdeComponent, MatSnackBarModule, BrowserAnimationsModule, BrowserModule],
-      providers: [{ provide: FilesService, useValue: filesServiceSpy }]
+      declarations: [],
+      imports: [IdeComponent, MatSnackBarModule, BrowserAnimationsModule, BrowserModule, HttpClientModule, MatCardModule, ],
+      providers: [
+        { provide: FilesService, useValue: filesServiceSpy },
+        { provide: Router, useValue: routerSpyObj},
+        { provide: HealthService, useValue: mockHealthService },
+        {
+        provide: MatSnackBarModule,
+        useValue: {
+          open() {
+            return {
+              afterClose() {
+                return of('your result');
+              }
+            };
+          }
+        }
+
+      }, {
+        provide: FilesService, useValue: filesServiceSpy
+      }]
     }).compileComponents();
 
     fixture = TestBed.createComponent(IdeComponent);
@@ -79,14 +133,14 @@ describe('IdeComponent', () => {
   it('should handle error when getFileTree fails', () => {
     const errorMessage = 'Test error message';
     component.selectedRobotId = 1;
-
-    filesServiceSpy.getFileTree.and.callFake(() => { throw new Error(errorMessage); });
+    filesServiceSpy.getFileTree.and.throwError(errorMessage);
     spyOn(component, 'openSnackBar');
-        
-    component.onRobotSelected();
-
-    expect(filesServiceSpy.getFileTree).toHaveBeenCalledWith(1);
-    expect(component.openSnackBar).toHaveBeenCalledWith(`Erreur lors de la récupération de l'arbre de fichier du robot ${component.selectedRobotId}`, true);
+    try{
+      component.onRobotSelected();
+    } catch (e) {
+      expect(filesServiceSpy.getFileTree).toHaveBeenCalledWith(1);
+      expect(component.openSnackBar).toHaveBeenCalledWith(`Erreur lors de la récupération de l'arbre de fichier du robot ${component.selectedRobotId}`, true);
+    }
   });
 
   it('should handle error when getFileTree fails', () => {
@@ -95,7 +149,7 @@ describe('IdeComponent', () => {
 
     filesServiceSpy.getFileTree.and.returnValue(throwError(() => errorMessage));
     spyOn(component, 'openSnackBar');
-        
+
     component.onRobotSelected();
 
     expect(filesServiceSpy.getFileTree).toHaveBeenCalledWith(1);

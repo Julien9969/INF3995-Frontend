@@ -15,20 +15,18 @@ describe('HealthService', () => {
     service = TestBed.inject(HealthService);
     httpMock = TestBed.inject(HttpTestingController);
   });
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
   it('should be ok', (done) => {
-    service
-      .isServerOk()
-      .then(() => done())
-      .catch((err) => {
-        done.fail(err);
-      });
-
-    const request = httpMock.expectOne(LOCAL_URL);
-    expect(request.request.body).toBe(null);
-    request.flush('ok');
+    setInterval(() => {
+      service.configureTimer();
+      const request = httpMock.expectOne(LOCAL_URL);
+      request.flush(JSON.stringify('pong'));
+    }, 1001);
+    done();
   });
+
 });

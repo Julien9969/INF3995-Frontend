@@ -1,0 +1,40 @@
+<table *ngIf="this.robots.getValue().length > 0" [dataSource]="robotDataSource" mat-table>
+  <ng-container matColumnDef="id">
+    <th *matHeaderCellDef mat-header-cell> Robot ID</th>
+    <td *matCellDef="let element" mat-cell> {{element.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="state">
+    <th *matHeaderCellDef mat-header-cell> État du robot</th>
+    <td *matCellDef="let element" mat-cell> {{element.state === "idle" ? "En veille" : "En déplacement" }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="distance">
+    <th *matHeaderCellDef mat-header-cell> Distance parcourue</th>
+    <td *matCellDef="let element" mat-cell> {{element.distance}}m</td>
+  </ng-container>
+
+  <ng-container matColumnDef="battery">
+    <th *matHeaderCellDef mat-header-cell> Batterie</th>
+    <td *matCellDef="let element" mat-cell> {{element.battery}}%</td>
+  </ng-container>
+
+  <ng-container matColumnDef="identify">
+    <th *matHeaderCellDef mat-header-cell> Identifier</th>
+    <td *matCellDef="let element" mat-cell>
+      <button mat-icon-button
+              (click)="identifyRobots(element.id)" mat-icon-button>
+        <mat-icon>my_location</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="robotDisplayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
+</table>
+<div *ngIf="this.robots.getValue().length === 0" class="no-mission-container">
+  <span class="material-symbols-outlined">
+    rocket_launch
+  </span>
+  <h2>Aucun robot n'est encore connecté au serveur</h2>
+</div>

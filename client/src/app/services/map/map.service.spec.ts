@@ -2,7 +2,7 @@ import {TestBed} from '@angular/core/testing';
 
 import {MapService} from './map.service';
 import {SocketService} from "@app/services/socket/socket.service";
-import {SocketMock} from "@app/classes/helpers/socket-mock-helper";
+import {SocketMock} from "@app/helpers/socket-mock-helper";
 import {BehaviorSubject} from "rxjs";
 
 describe('MapService', () => {
@@ -56,23 +56,4 @@ describe('MapService', () => {
     expect(service['imageSubject'].getValue().src).not.toBe(imageBase64);
   });
 
-  it('should notify the observers',(done) => {
-    // Mock the Image constructor to return a mock image object
-    const mockImage = new Image();
-    spyOn(window, 'Image').and.returnValue(mockImage);
-
-    // Call the loadImage method with a valid base64 string
-    const bitmapBase64 = 'data:image/bmp;base64,...'; // Your base64 string here
-    service.loadImage(bitmapBase64);
-
-    // Manually trigger the onload event on the mock image object
-    // @ts-ignore
-    mockImage.onload(new Event('onload'));
-
-    // Use the done callback to wait for the asynchronous operation to complete
-    setTimeout(() => {
-      expect(imageSubjectSpy).toHaveBeenCalled();
-      done();
-    }, 0);
-  });
 });

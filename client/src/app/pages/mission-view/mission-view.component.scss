@@ -1,23 +1,9 @@
-body {
-  display: flex;
-  flex-direction: column;
-}
-
 .bar-spacer {
   flex: 1 1 auto;
 }
 
 .mat-expansion-panel {
   margin: 16px;
-}
-
-.last-expansion-panel {
-  margin-bottom: 32px;
-}
-
-mat-expansion-panel {
-  margin-right: 32px;
-  margin-left: 32px;
 }
 
 .toolbar-button {
@@ -34,10 +20,6 @@ mat-expansion-panel {
   margin-left: 8px;
 }
 
-.mission-detail {
-  background: #e3e0e0;
-}
-
 mat-card-title > mat-icon {
   margin-top: 4px;
   margin-right: 4px;
@@ -48,11 +30,10 @@ mat-card-title > mat-icon {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
 }
 
 .material-symbols-outlined {
-  font-size: 300px;
+  font-size: 25vh;
   color: lightgray;
 }
 
@@ -64,14 +45,42 @@ mat-card-title > mat-icon {
   color: lightgray;
 }
 
-.sticky-toolbar {
-  position: -webkit-sticky; /* For Safari */
-  position: sticky;
-  top: 0;
-  z-index: 1000; /* Ensure the toolbar is above other content */
+.robot-detail {
+  margin: 8px;
+  display: inline-block;
 }
 
-map-view {
-  height: 80%;
-  width: 80%;
+.robot-detail-container {
+  overflow-x: auto;
+  display: inline-grid;
+  grid-template-columns: repeat(auto-fill, minmax(1fr, 1fr));
+  grid-auto-rows: 1fr;
+  grid-auto-flow: column;
+}
+
+.spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: Add a semi-transparent background */
+  z-index: 1001;
+}
+
+.toolbar-no-overflow {
+  overflow: hidden;
+}
+
+button {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+.white-toolbar {
+  background-color: transparent;
 }

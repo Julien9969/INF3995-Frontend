@@ -60,7 +60,7 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-              "ssr": false, 
+              "ssr": false,
               "prerender": false
             }
           },
@@ -107,7 +107,7 @@
             },
             "scripts": [],
             "codeCoverageExclude": [
-              "src/app/classes/helpers/*"
+              "src/app/helpers/*"
             ]
           }
         },

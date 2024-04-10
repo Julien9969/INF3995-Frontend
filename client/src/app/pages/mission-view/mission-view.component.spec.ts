@@ -64,6 +64,7 @@ describe('MissionViewComponent', () => {
       elapsedTime: 1,
       missionState: MissionState.ONGOING,
       isSimulation: false,
+      distance: 1,
     }]);
     historyServiceSpyObj.getMissions.and.returnValue(missions);
     const headBackBase = new BehaviorSubject<EmitFeedback>({} as EmitFeedback);

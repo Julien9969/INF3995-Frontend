@@ -21,6 +21,11 @@ export class HistoryService {
   constructor(private healthCheck: HealthService,
               public router: Router,
               private httpClient: HttpClient) {
+    this.healthCheck.check.subscribe((status) => {
+      if (!status) {
+        this.router.navigate(['/error'], { state: { errorMessage: 'Backend is not reachable' }} );
+      }
+    });
   }
 
   getMissions() {

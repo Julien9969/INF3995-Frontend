@@ -1,28 +1,27 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {environment} from "@environment";
 import {BehaviorSubject} from "rxjs";
+import {SocketService} from "@app/services/socket/socket.service";
+import {HealthState, WebsocketsEvents} from "@common";
 
-const LOCAL_URL = `${environment.serverUrl}api/ping/`;
 
 @Injectable({
   providedIn: 'root'
 })
 export class HealthService {
-  private _healthObservable: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
-  constructor(private readonly httpClient: HttpClient) {
-    this.configureTimer()
-  }
-
-  configureTimer() {
+  private _healthObservable: BehaviorSubject<HealthState> = new BehaviorSubject<HealthState>(HealthState.UNKNOWN);
+  lastPing: number = Date.now();
+  constructor(private socketClient: SocketService) {
     setInterval(() => {
-      this.httpClient.get(LOCAL_URL, {responseType: 'text'}).subscribe((status) => {
-        if (status) {
-          this._healthObservable.next(status.includes('pong'));
-        }
-      });
+      this.socketClient.send(WebsocketsEvents.PING, {});
+      if(Date.now() - this.lastPing > 5000) {
+        this._healthObservable.next(HealthState.UNHEALTHY);
+      }
     }, 1000);
+
+    this.socketClient.on(WebsocketsEvents.PONG, () => {
+      this._healthObservable.next(HealthState.HEALTHY);
+      this.lastPing = Date.now();
+    });
   }
 
   get check() {

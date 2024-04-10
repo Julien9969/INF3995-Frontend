@@ -12,7 +12,7 @@
 
     <ng-container matColumnDef="timestamp">
       <th *matHeaderCellDef mat-header-cell>Temps du lancement</th>
-      <td *matCellDef="let element" mat-cell>{{element.timestamp | date: 'short'}}</td>
+      <td *matCellDef="let element;" mat-cell>{{ formatTimestamp(element.timestamp) }}</td>
     </ng-container>
 
     <ng-container matColumnDef="isSimulation">

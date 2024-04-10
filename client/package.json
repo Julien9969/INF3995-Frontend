@@ -30,6 +30,7 @@
     "@angular/ssr": "^17.1.0",
     "@ctrl/ngx-codemirror": "^7.0.0",
     "codemirror": "^5.65.16",
+    "material-symbols": "^0.17.1",
     "socket.io-client": "^4.7.4",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

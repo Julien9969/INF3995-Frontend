@@ -39,7 +39,7 @@ describe('MissionService', () => {
       distances: [4, 5, 6]
     });
 
-    service.updateMission(rawUpdate);
+    service['updateMission'](rawUpdate);
 
     expect(service.status.getValue().missionState).toEqual(MissionState.ONGOING);
     expect(service.status.getValue().startTimestamp).toEqual(123);
@@ -50,7 +50,7 @@ describe('MissionService', () => {
     const rawUpdate = JSON.stringify({
     });
 
-    service.updateMission(rawUpdate);
+    service['updateMission'](rawUpdate);
 
     expect(service.status.getValue().missionState).toEqual(MissionState.NOT_STARTED);
     expect(service.status.getValue().startTimestamp).toEqual(0);
@@ -66,7 +66,8 @@ describe('MissionService', () => {
       elapsedTime: 0,
       robotCount: 0,
       missionId: 1,
-      isSimulation: false
+      isSimulation: false,
+      distance: 0,
     }
 
     service.status.next(mission);

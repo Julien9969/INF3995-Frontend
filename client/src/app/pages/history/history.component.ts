@@ -74,7 +74,7 @@ export class HistoryComponent implements AfterViewInit, OnInit {
         startTimestamp: mission.startTimestamp,
         duration: mission.elapsedTime,
         nbRobots: mission.robotCount,
-        distance: 0,
+        distance: mission.distance,
         isSimulation: false,
       });
     }

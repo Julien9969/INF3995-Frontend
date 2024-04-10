@@ -85,6 +85,7 @@ export class MissionComponent implements OnChanges {
   rowData: MissionInfo = {} as MissionInfo;
   infoDataSource = new MatTableDataSource([this.rowData])
   protected readonly MissionState = MissionState;
+  timestamp: string = "";
 
   ngOnChanges() {
     this.status.subscribe((updatedStatus) => {
@@ -98,5 +99,13 @@ export class MissionComponent implements OnChanges {
         this.infoDataSource.data = [this.rowData]
       }
     });
+  }
+
+  formatTimestamp(timestamp: number) {
+    if (timestamp !== 0) {
+      return new Date(timestamp).toLocaleString();
+    } else {
+      return "";
+    }
   }
 }

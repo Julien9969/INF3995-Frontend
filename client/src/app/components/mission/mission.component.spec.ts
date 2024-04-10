@@ -41,6 +41,7 @@ describe('MissionComponent', () => {
       startTimestamp: 0,
       robotCount: 1,
       isSimulation: false,
+      distance: 0,
     });
     fixture.detectChanges();
   });

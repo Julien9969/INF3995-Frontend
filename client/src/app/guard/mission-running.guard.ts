@@ -9,7 +9,7 @@ export const missionRunningGuard = (missionViewComponent: MissionViewComponent, 
   return new Promise((resolve) => {
     // always allow redirect to error page
     if(routerNextState.url == "error") {
-      resolve(false);
+      resolve(true);
       return;
     }
     // If mission-view is not ongoing, we don't care
@@ -19,7 +19,7 @@ export const missionRunningGuard = (missionViewComponent: MissionViewComponent, 
     }
 
     if(missionService.shouldDisconnect) {
-      resolve(false);
+      resolve(true);
       return;
     }
     // else confirm with user

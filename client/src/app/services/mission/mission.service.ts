@@ -52,6 +52,9 @@ export class MissionService {
   }
 
   disconnect() {
-    this.socketService.send(WebsocketsEvents.MISSION_END);
+    const state = this._status.getValue().missionState;
+    if(state == MissionState.ONGOING){
+      this.socketService.send(WebsocketsEvents.MISSION_END);
+    }
   }
 }

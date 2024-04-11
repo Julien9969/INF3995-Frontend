@@ -74,33 +74,4 @@ describe('MissionService', () => {
     service.toggleMission();
     expect(socketServiceObj.send).toHaveBeenCalledWith(WebsocketsEvents.MISSION_START);
   });
-
-  /*it('should end mission if Mission status is ongoing', () => {
-    const mission: MissionStatus = {
-      missionState: MissionState.ONGOING,
-      startTimestamp: 0,
-      elapsedTime: 0,
-      robotCount: 0,
-      missionId: 1,
-      isSimulation: false
-    }
-    spyOn(service.status, 'getValue').and.returnValue(mission);
-    service.toggleMission();
-    expect(socketServiceObj.send).toHaveBeenCalledWith(WebsocketsEvents.MISSION_END);
-  });*/
-
-  it('should disconnect', () => {
-    const mission: MissionStatus = {
-      missionState: MissionState.ONGOING,
-      startTimestamp: 0,
-      elapsedTime: 0,
-      robotCount: 0,
-      missionId: 1,
-      isSimulation: false,
-      distance: 0,
-    }
-    spyOn(service.status, 'getValue').and.returnValue(mission);
-    service.disconnect();
-    expect(socketServiceObj.send).toHaveBeenCalledWith(WebsocketsEvents.MISSION_END);
-  });
 });

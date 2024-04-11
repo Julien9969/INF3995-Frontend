@@ -17,7 +17,6 @@ export class MissionService {
     isSimulation: false,
     distance: 0,
   }
-  shouldDisconnect: boolean = false;
   constructor(private socketService: SocketService) {
     // Every second there's an update from the backend with the status
     this.socketService.on(WebsocketsEvents.MISSION_STATUS, (update: string) => this.updateMission(update));
@@ -49,6 +48,7 @@ export class MissionService {
       this.socketService.send(WebsocketsEvents.MISSION_END);
     } else {
       this.socketService.send(WebsocketsEvents.MISSION_START);
+      this.socketService.send(WebsocketsEvents.MISSION_MAP);
     }
   }
 }

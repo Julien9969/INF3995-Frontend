@@ -12,12 +12,8 @@ import {MatIcon} from "@angular/material/icon";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  status: string = 'offline';
 
   constructor(private router: Router) {
   }
 
-  goBackHome() {
-    this.router.navigate(['/'])
-  }
 }

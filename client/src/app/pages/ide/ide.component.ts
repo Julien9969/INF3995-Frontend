@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {NestedTreeControl} from '@angular/cdk/tree';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatTreeModule, MatTreeNestedDataSource} from "@angular/material/tree";
@@ -16,7 +16,6 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatToolbar} from "@angular/material/toolbar";
-import {HealthService} from "@app/services/health/health.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {ConfirmationDialogComponent} from "@app/components/confirmation-dialog/confirmation-dialog.component";
@@ -46,7 +45,7 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardModule} from "@angular/ma
   templateUrl: './ide.component.html',
   styleUrl: './ide.component.scss'
 })
-export class IdeComponent implements OnInit, OnDestroy {
+export class IdeComponent {
   wasRobotChose: boolean = false;
   health: Subscription = new Subscription();
   treeControl = new NestedTreeControl<FilesTreeNode>(node => node.children);
@@ -76,22 +75,13 @@ export class IdeComponent implements OnInit, OnDestroy {
 
   constructor(private filesService: FilesService,
               private _snackBar: MatSnackBar,
-              private healthService: HealthService,
               public router: Router,
               public dialog: MatDialog
   ) {
   }
 
-  ngOnInit() {
-    /*if (this.healthService.check.getValue()) {
-      this.router.navigate(['/error']).then(() => {
-      });
-    }*/
-    return;
-  }
-
-  ngOnDestroy() {
-    this.health.unsubscribe();
+  get robots() {
+    return this.filesService.robots;
   }
 
   onRobotSelected() {
@@ -118,7 +108,6 @@ export class IdeComponent implements OnInit, OnDestroy {
       this.openSnackBar(`Erreur lors de la récupération de l'arbre de fichier du robot ${this.selectedRobotId}`, true);
     }
   }
-
 
   saveFile() {
     console.log(this.codeEditorContent);
@@ -197,9 +186,5 @@ export class IdeComponent implements OnInit, OnDestroy {
 
   openDialog() {
     return this.dialog.open(ConfirmationDialogComponent).afterClosed();
-  }
-
-  get robots() {
-    return this.filesService.robots;
   }
 }

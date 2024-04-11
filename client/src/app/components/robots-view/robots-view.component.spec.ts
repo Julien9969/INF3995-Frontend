@@ -32,6 +32,7 @@ describe('RobotsViewComponent', () => {
       elapsedTime: 0,
       robotCount: 2,
       isSimulation: false,
+      distance: 0,
     }
     missionStatusSubject = new BehaviorSubject<MissionStatus>(missionStatus);
     const missionServiceObj = jasmine.createSpyObj('MissionService', ['toggleMission', 'identify'], { status: missionStatusSubject });

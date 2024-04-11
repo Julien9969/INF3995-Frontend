@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="toolbar-no-overflow rounded-toolbar">
-  <span>LIMO3995™</span>
+  <a [routerLink]="['/']" class="clean-link">LIMO3995™</a>
   <span class="bar-spacer"></span>
   <nav>
     <button [routerLink]="['/mission']" class="uppercase nav-button" mat-button>
@@ -12,7 +12,7 @@
     </button>
     <button [routerLink]="['/ide']" class="uppercase nav-button" mat-button>
       <mat-icon>code</mat-icon>
-      IDE
+      Éditeur
     </button>
   </nav>
 </mat-toolbar>

@@ -77,7 +77,7 @@
       <app-map-view *ngIf="mapInitialized" [map]="map" [robots]="robots"></app-map-view>
     </ng-template>
   </mat-expansion-panel>
-  <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="true"
+  <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="false"
                        class="last-expansion-panel">
     <mat-expansion-panel-header>
       <mat-panel-title>

@@ -64,6 +64,7 @@ describe('MissionViewComponent', () => {
       elapsedTime: 1,
       missionState: MissionState.ONGOING,
       isSimulation: false,
+      distance: 1,
     }]);
     historyServiceSpyObj.getMissions.and.returnValue(missions);
     const headBackBase = new BehaviorSubject<EmitFeedback>({} as EmitFeedback);
@@ -121,5 +122,11 @@ describe('MissionViewComponent', () => {
   it("should call head back base", () => {
     component.toggleHeadBackBase();
     expect(robotsServiceSpyObj.headBackBase).toHaveBeenCalled();
+  });
+
+
+  it("should call openSnackBar", () => {
+    component.openSnackBar("test");
+    expect(matSnackBarObj.open).toHaveBeenCalled();
   });
 });

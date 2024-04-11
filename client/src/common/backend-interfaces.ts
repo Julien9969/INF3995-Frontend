@@ -17,7 +17,8 @@ export interface MissionStatus {
   robotCount: number
   startTimestamp: number
   elapsedTime: number,
-  isSimulation: boolean
+  isSimulation: boolean,
+  distance: number,
 }
 
 export interface Logs {
@@ -36,10 +37,10 @@ export enum WebsocketsEvents {
   MISSION_MAP = "mission-map",
   ABORT_MISSION = "abort-mission",
   ROBOT_STATUS = "robot-status",
-  IDENTIFY_FEEDBACK = "identify-feedback",
-  IDENTIFY_REQUEST = "identify-request",
   HEADBACKBASE_FEEDBACK = "headbackbase-feedback",
   HEADBACKBASE_REQUEST = "headbackbase-request",
+  PING = "ping",
+  PONG = "pong",
 }
 
 export interface RobotInformation {
@@ -63,4 +64,10 @@ export interface EmitFeedback {
   timestamp: number,
   message: string,
   robotId: number
+}
+
+export enum HealthState {
+  HEALTHY = "healthy",
+  UNHEALTHY = "unhealthy",
+  UNKNOWN = "unknown",
 }

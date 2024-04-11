@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatIcon, MatIconModule} from "@angular/material/icon";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
@@ -10,7 +10,7 @@ import {MissionService} from "@app/services/mission/mission.service";
 import {LogsService} from "@app/services/logs/logs.service";
 import {MapService} from "@app/services/map/map.service";
 import {BehaviorSubject} from "rxjs";
-import {EmitFeedback, Logs, MissionState, MissionStatus, RobotInformation} from "@common";
+import {EmitFeedback, HealthState, Logs, MissionState, MissionStatus, RobotInformation} from "@common";
 import {LogsComponent} from "@app/components/logs/logs.component";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
 import {
@@ -66,7 +66,7 @@ import {RobotsViewComponent} from "@app/components/robots-view/robots-view.compo
   templateUrl: './mission-view.component.html',
   styleUrl: './mission-view.component.scss'
 })
-export class MissionViewComponent implements OnInit, OnDestroy {
+export class MissionViewComponent implements OnInit {
   missionId: number = 0;
   isTimeMachine: boolean = false;
 
@@ -115,16 +115,23 @@ export class MissionViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    /*if (!this.healthService.check.getValue()) {
-      this.router.navigate(['/error']).then(() => {});
-    }*/
+    this.isLoading = true;
+    this.healthService.check.subscribe((status: HealthState) => {
+      if (status === HealthState.UNHEALTHY) {
+        this.router.navigate(['/error'], {state: {errorMessage: 'Serveur inaccessible!'}}).then(() => {});
+       } else if (status === HealthState.UNKNOWN) {
+        this.isLoading = true;
+      } else {
+        this.isLoading = false;
+      }
+    });
 
     this.missionId = Number(this.route.snapshot.paramMap.get("id")) || 0;
     let historyData = undefined;
     this.historyService.getMissions().subscribe((missions) =>{
       historyData = missions.find(mission => mission.missionId === this.missionId);
       if(historyData === undefined && this.missionId !== 0) {
-        const errorMessage = "Mission non trouvée."
+        const errorMessage = "Mission non trouvée!"
         this.openSnackBar(errorMessage)
         this.router.navigate(['/error'], {state: {errorMessage: errorMessage}}).then(() => {});
         return;
@@ -157,9 +164,5 @@ export class MissionViewComponent implements OnInit, OnDestroy {
 
   openDialog() {
     return this.dialog.open(ConfirmationDialogComponent).afterClosed();
-  }
-
-  ngOnDestroy() {
-    this.missionService.disconnect();
   }
 }

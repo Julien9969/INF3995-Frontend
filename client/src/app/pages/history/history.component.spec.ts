@@ -4,7 +4,7 @@ import {HistoryComponent} from './history.component';
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpClientModule} from "@angular/common/http";
 import { MatTableModule} from "@angular/material/table";
-import {MissionState} from "@common";
+import {MissionState, MissionStatus} from "@common";
 import {HistoryService} from "@app/services/history/history.service";
 import {Router} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
@@ -43,7 +43,7 @@ describe('HistoryComponent', () => {
   });
 
   it("should parse data", () => {
-    const data = [
+    const data: MissionStatus[] = [
       {
         missionId: 1,
         robotCount: 1,
@@ -51,6 +51,7 @@ describe('HistoryComponent', () => {
         elapsedTime: 1,
         missionState: MissionState.ONGOING,
         isSimulation: false,
+        distance: 1,
       }
     ];
     component.parseData(data);

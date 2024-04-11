@@ -3,15 +3,22 @@ import {TestBed} from '@angular/core/testing';
 import {HealthService} from './health.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {environment} from '@environment';
-
-const LOCAL_URL = `${environment.serverUrl}api/ping/`;
+import {SocketService} from "@app/services/socket/socket.service";
+import {WebsocketsEvents} from "@common";
 
 describe('HealthService', () => {
   let service: HealthService;
   let httpMock: HttpTestingController;
+  let socketServiceSpyObj: jasmine.SpyObj<SocketService>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({imports: [HttpClientTestingModule]});
+    socketServiceSpyObj = jasmine.createSpyObj('SocketService', ['send', 'on']);
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        {provide: SocketService, useValue: socketServiceSpyObj},
+      ]
+    });
     service = TestBed.inject(HealthService);
     httpMock = TestBed.inject(HttpTestingController);
   });
@@ -22,9 +29,7 @@ describe('HealthService', () => {
 
   it('should be ok', (done) => {
     setInterval(() => {
-      service.configureTimer();
-      const request = httpMock.expectOne(LOCAL_URL);
-      request.flush(JSON.stringify('pong'));
+      expect(socketServiceSpyObj.send).toHaveBeenCalledWith(WebsocketsEvents.PING)
     }, 1001);
     done();
   });

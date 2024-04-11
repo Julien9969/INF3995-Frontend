@@ -1,4 +1,4 @@
-<mat-toolbar class="white-toolbar">
+<mat-toolbar *ngIf="this.dataSource.data.length > 0" class="white-toolbar">
   HISTORIQUE
 </mat-toolbar>
 <div *ngIf="this.dataSource.data.length > 0">
@@ -15,12 +15,12 @@
 
     <ng-container matColumnDef="duration">
       <th *matHeaderCellDef mat-header-cell mat-sort-header> Durée </th>
-      <td *matCellDef="let element" mat-cell> {{formatTime(element.duration)}}s </td>
+      <td *matCellDef="let element" mat-cell> {{formatTime(element.duration)}} </td>
     </ng-container>
 
     <ng-container matColumnDef="distance">
       <th *matHeaderCellDef mat-header-cell mat-sort-header> Distance parcourue totale </th>
-      <td *matCellDef="let element" mat-cell> {{element.distance}}m </td>
+      <td *matCellDef="let element" mat-cell> {{element.distance}} </td>
     </ng-container>
 
     <ng-container matColumnDef="robots">
@@ -49,7 +49,7 @@
 </div>
 
 <!-- If there's no current mission -->
-<div *ngIf="this.dataSource.data.length === 0" class="no-mission-container">
+<div *ngIf="this.dataSource.data.length === 0" class="no-mission-container centered">
   <span class="material-symbols-outlined">
     history
   </span>

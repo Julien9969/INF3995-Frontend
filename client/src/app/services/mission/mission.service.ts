@@ -51,12 +51,4 @@ export class MissionService {
       this.socketService.send(WebsocketsEvents.MISSION_START);
     }
   }
-
-  disconnect() {
-    this.shouldDisconnect = true;
-    const state = this._status.getValue().missionState;
-    if(state == MissionState.ONGOING){
-      this.socketService.send(WebsocketsEvents.MISSION_END);
-    }
-  }
 }

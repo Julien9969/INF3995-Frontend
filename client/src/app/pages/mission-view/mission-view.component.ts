@@ -66,7 +66,7 @@ import {RobotsViewComponent} from "@app/components/robots-view/robots-view.compo
   templateUrl: './mission-view.component.html',
   styleUrl: './mission-view.component.scss'
 })
-export class MissionViewComponent implements OnInit, OnDestroy {
+export class MissionViewComponent implements OnInit {
   missionId: number = 0;
   isTimeMachine: boolean = false;
 
@@ -164,9 +164,5 @@ export class MissionViewComponent implements OnInit, OnDestroy {
 
   openDialog() {
     return this.dialog.open(ConfirmationDialogComponent).afterClosed();
-  }
-
-  ngOnDestroy() {
-    this.missionService.disconnect();
   }
 }

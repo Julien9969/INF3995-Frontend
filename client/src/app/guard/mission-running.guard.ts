@@ -19,8 +19,7 @@ export const missionRunningGuard = (missionViewComponent: MissionViewComponent, 
     }
 
     if(missionService.shouldDisconnect) {
-      missionService.shouldDisconnect = false;
-      resolve(true);
+      resolve(false);
       return;
     }
     // else confirm with user

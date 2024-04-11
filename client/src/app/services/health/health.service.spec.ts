@@ -6,8 +6,6 @@ import {environment} from '@environment';
 import {SocketService} from "@app/services/socket/socket.service";
 import {WebsocketsEvents} from "@common";
 
-const LOCAL_URL = `${environment.serverUrl}api/ping/`;
-
 describe('HealthService', () => {
   let service: HealthService;
   let httpMock: HttpTestingController;

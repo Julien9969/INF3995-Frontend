@@ -13,7 +13,7 @@ export class HealthService {
   constructor(private socketClient: SocketService) {
     setInterval(() => {
       this.socketClient.send(WebsocketsEvents.PING, {});
-      if(Date.now() - this.lastPing > 5000) {
+      if(Date.now() - this.lastPing > 7000) {
         this._healthObservable.next(HealthState.UNHEALTHY);
       }
     }, 1000);

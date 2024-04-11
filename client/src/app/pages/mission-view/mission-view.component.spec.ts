@@ -123,4 +123,10 @@ describe('MissionViewComponent', () => {
     component.toggleHeadBackBase();
     expect(robotsServiceSpyObj.headBackBase).toHaveBeenCalled();
   });
+
+
+  it("should call openSnackBar", () => {
+    component.openSnackBar("test");
+    expect(matSnackBarObj.open).toHaveBeenCalled();
+  });
 });

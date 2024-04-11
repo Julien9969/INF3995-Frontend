@@ -1,6 +1,6 @@
 import {MissionService} from "@app/services/mission/mission.service";
 import {inject} from "@angular/core";
-import {MissionState} from "../../common/backend-interfaces";
+import {MissionState} from "@common";
 import {MissionViewComponent} from "@app/pages/mission-view/mission-view.component";
 import {ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router";
 
@@ -14,6 +14,12 @@ export const missionRunningGuard = (missionViewComponent: MissionViewComponent, 
     }
     // If mission-view is not ongoing, we don't care
     if (missionService.status.getValue().missionState != MissionState.ONGOING) {
+      resolve(true);
+      return;
+    }
+
+    if(missionService.shouldDisconnect) {
+      missionService.shouldDisconnect = false;
       resolve(true);
       return;
     }

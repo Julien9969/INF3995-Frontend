@@ -58,13 +58,9 @@ export class HistoryComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    if (this.historyService.getMissions().getValue().length !== 0) {
-      this.parseData(this.historyService.getMissions().getValue());
-    } else {
-      this.historyService.getMissions().subscribe((data: MissionStatus[]) => {
-        this.parseData(data);
-      });
-    }
+    this.historyService.getMissions().subscribe((data: MissionStatus[]) => {
+      this.parseData(data);
+    });
   }
 
   parseData(data: MissionStatus[]) {
@@ -79,6 +75,7 @@ export class HistoryComponent implements AfterViewInit, OnInit {
         isSimulation: mission.isSimulation,
       });
     }
+    console.log(historyData)
     this.dataSource.data = historyData;
   }
 

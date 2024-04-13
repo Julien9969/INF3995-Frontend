@@ -41,15 +41,6 @@ export class RobotsService {
     this._robots.next(update);
   }
 
-  parseEmitFeedback(rawUpdate: string) {
-    const jsonUpdate = JSON.parse(rawUpdate);
-    const update: EmitFeedback = {
-      timestamp: jsonUpdate.timestamp,
-      message: jsonUpdate.message,
-      robotId: jsonUpdate.robotId
-    }
-    this._headBackBase.next(update);
-  }
 
   identify(robotId: number) {
     this.httpClient.get(localUrl(`${robotId}`)).subscribe((response) => {
@@ -59,7 +50,9 @@ export class RobotsService {
   }
 
   headBackBase() {
-    this.socketService.send(WebsocketsEvents.HEADBACKBASE_REQUEST);
+    this.httpClient.get(localUrl(`identify`)).subscribe((response) => {
+      this._headBackBase.next(response as EmitFeedback);
+    });
     return this._headBackBase.asObservable()
   }
 

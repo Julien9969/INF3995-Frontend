@@ -8,7 +8,7 @@ import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatMenuModule, MatMenuTrigger} from "@angular/material/menu";
 import {MatAccordion, MatExpansionModule, MatExpansionPanel} from "@angular/material/expansion";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, formatDate, NgForOf, NgIf} from "@angular/common";
 import {MatPaginator} from "@angular/material/paginator";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
 import {MissionState, MissionStatus} from '@common';
@@ -101,7 +101,7 @@ export class MissionComponent implements OnChanges {
 
   formatTimestamp(timestamp: number) {
     if (timestamp !== 0) {
-      return new Date(timestamp).toLocaleString();
+      return formatDate(timestamp, "short", "fr-CA");
     } else {
       return "";
     }

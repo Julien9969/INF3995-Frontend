@@ -104,4 +104,11 @@ export class RobotsViewComponent implements OnChanges {
     }
     this.robotsService.identify(robotId).subscribe(() => this.openSnackBar(`Robot ${robotId} s'est identifié!`));
   }
+
+  toggleHeadBack() {
+    this.openSnackBar(`Requête de retour à la base envoyée aux robots!`);
+    this.robotsService.headBackBase().subscribe((result) => this.openSnackBar(result.message));
+  }
+
+  protected readonly MissionState = MissionState;
 }

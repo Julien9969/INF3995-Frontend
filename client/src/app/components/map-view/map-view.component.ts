@@ -27,6 +27,7 @@ export class MapViewComponent implements AfterViewInit {
   width: number = this.ratio * this.height;
   private drawActualPosition: boolean = false;
   private drawInitialPosition: boolean = false;
+  private last_bitmap?: HTMLImageElement;
   private robot_positions: {x: number, y: number}[] = [];
   private resizeRatios : {x: number, y: number} = {x: 1, y: 1};
 
@@ -43,6 +44,7 @@ export class MapViewComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.map.subscribe((bitmap: HTMLImageElement) => {
+      this.last_bitmap = bitmap;
       this.context.drawImage(bitmap, 0, 0, this.width, this.height);
       this.resizeRatios.x = this.width / bitmap.width;
       this.resizeRatios.y = this.height / bitmap.height;
@@ -54,6 +56,7 @@ export class MapViewComponent implements AfterViewInit {
     });
 
     this.robots.subscribe((robots: RobotInformation[]) => {
+      if(this.last_bitmap) this.context.drawImage(this.last_bitmap, 0, 0, this.width, this.height);
       robots.forEach((robot: RobotInformation, index) => {
         console.log(robot); // to simply avoid linting error
         if (this.drawActualPosition) {

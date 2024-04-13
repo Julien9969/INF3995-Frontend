@@ -27,6 +27,7 @@ export class MapViewComponent implements AfterViewInit {
   width: number = this.ratio * this.height;
   private drawActualPosition: boolean = false;
   private drawInitialPosition: boolean = false;
+  private robot_positions: {x: number, y: number}[] = [];
 
   constructor() {
   }
@@ -42,22 +43,28 @@ export class MapViewComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.map.subscribe((bitmap: HTMLImageElement) => {
       this.context.drawImage(bitmap, 0, 0, this.width, this.height);
+      this.robot_positions.forEach((pos: {x: number, y: number}, index) => {
+        if(this.drawActualPosition && pos) {
+          this.drawPositionIndicator(pos.x, pos.y, 'green', index)
+        }
+      })
     });
 
     this.robots.subscribe((robots: RobotInformation[]) => {
-      robots.forEach((robot: RobotInformation) => {
+      robots.forEach((robot: RobotInformation, index) => {
         console.log(robot); // to simply avoid linting error
-        /*if (this.drawActualPosition) {
-          this.drawPositionIndicator(robot.position.x, robot.position.y, 'green')
+        if (this.drawActualPosition) {
+          this.drawPositionIndicator(robot.position.x, robot.position.y, 'green', index)
         }
         if (this.drawInitialPosition) {
-          this.drawPositionIndicator(robot.initialPosition.x, robot.initialPosition.y, 'blue')
-        }*/
+          this.drawPositionIndicator(robot.initialPosition.x, robot.initialPosition.y, 'blue', index)
+        }
       });
     });
   }
 
-  drawPositionIndicator(x: number, y: number, color: string) {
+  drawPositionIndicator(x: number, y: number, color: string, robot_idx: number) {
+    this.robot_positions[robot_idx] = { x, y }
     this.context.beginPath();
     this.context.arc(x, y, 10, 0, 2 * Math.PI);
     this.context.fillStyle = color;

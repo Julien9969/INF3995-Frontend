@@ -28,6 +28,7 @@ export class MapViewComponent implements AfterViewInit {
   private drawActualPosition: boolean = false;
   private drawInitialPosition: boolean = false;
   private robot_positions: {x: number, y: number}[] = [];
+  private resizeRatios : {x: number, y: number} = {x: 1, y: 1};
 
   constructor() {
   }
@@ -43,6 +44,8 @@ export class MapViewComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.map.subscribe((bitmap: HTMLImageElement) => {
       this.context.drawImage(bitmap, 0, 0, this.width, this.height);
+      this.resizeRatios.x = this.width / bitmap.width;
+      this.resizeRatios.y = this.height / bitmap.height;
       this.robot_positions.forEach((pos: {x: number, y: number}, index) => {
         if(this.drawActualPosition && pos) {
           this.drawPositionIndicator(pos.x, pos.y, 'green', index)
@@ -66,10 +69,13 @@ export class MapViewComponent implements AfterViewInit {
   drawPositionIndicator(x: number, y: number, color: string, robot_idx: number) {
     this.robot_positions[robot_idx] = { x, y }
     this.context.beginPath();
-    this.context.arc(x, y, 10, 0, 2 * Math.PI);
+    this.context.arc(x * this.resizeRatios.x, y * this.resizeRatios.y, 10, 0, 2 * Math.PI);
     this.context.fillStyle = color;
     this.context.fill();
     this.context.stroke();
+    this.context.fillStyle = 'white';
+    this.context.font = "bold 18px sans-serif";
+    this.context.fillText((robot_idx+1).toString(), x * this.resizeRatios.x - 5, y * this.resizeRatios.y + 5)
     // Draw image as well
   }
 

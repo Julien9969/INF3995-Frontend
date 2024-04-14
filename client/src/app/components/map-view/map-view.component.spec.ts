@@ -70,7 +70,6 @@ describe('MapViewComponent', () => {
 
   it('should toggle', () => {
     expect(component.toggleActualPosition()).toBeTrue();
-    expect(component.toggleInitialPosition()).toBeTrue();
   });
 
   it('should draw', () => {

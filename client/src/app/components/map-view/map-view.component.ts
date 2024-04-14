@@ -26,7 +26,6 @@ export class MapViewComponent implements AfterViewInit {
   private ratio: number = 1 / 1;
   width: number = this.ratio * this.height;
   private drawActualPosition: boolean = true;
-  private drawInitialPosition: boolean = false;
   private last_bitmap?: HTMLImageElement;
   private robot_positions: {x: number, y: number}[] = [];
   private resizeRatios : {x: number, y: number} = {x: 1, y: 1};
@@ -62,9 +61,6 @@ export class MapViewComponent implements AfterViewInit {
         if (this.drawActualPosition) {
           this.drawPositionIndicator(robot.position.x, robot.position.y, 'green', index)
         }
-        if (this.drawInitialPosition) {
-          this.drawPositionIndicator(robot.initialPosition.x, robot.initialPosition.y, 'blue', index)
-        }
       });
     });
   }
@@ -85,10 +81,5 @@ export class MapViewComponent implements AfterViewInit {
   toggleActualPosition() {
     this.drawActualPosition = !this.drawActualPosition;
     return this.drawActualPosition;
-  }
-
-  toggleInitialPosition() {
-    this.drawInitialPosition = !this.drawInitialPosition;
-    return this.drawInitialPosition;
   }
 }

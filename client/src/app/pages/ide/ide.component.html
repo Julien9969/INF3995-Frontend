@@ -1,14 +1,18 @@
 <mat-toolbar class="white-toolbar">
   ÉDITEUR DE CODE
-  <span class="bar-spacer"></span>
-  <button mat-icon-button [disabled]="!wasRobotChose" class="toolbar-button" color="primary" (click)="refresh()">
-    <mat-icon fontIcon="list"></mat-icon>
+  <button mat-icon-button *ngIf="wasRobotChose" class="toolbar-button" color="primary" (click)="refresh()" matTooltip="Retour à la sélection des robots">
+    <mat-icon fontIcon="arrow_back"></mat-icon>
   </button>
-  <button mat-icon-button [disabled]="!wasRobotChose" class="toolbar-button" color="primary" (click)="saveFile()">
+  <span class="bar-spacer"></span>
+  <button mat-icon-button [disabled]="!wasRobotChose" class="toolbar-button" color="primary" (click)="cancel()" matTooltip="Annuler les changements au fichier">
+    <mat-icon fontIcon="undo"></mat-icon>
+  </button>
+  <button mat-icon-button [disabled]="!wasRobotChose" class="toolbar-button" color="primary" (click)="saveFile()" matTooltip="Sauvegarder ce fichier">
     <mat-icon fontIcon="save"></mat-icon>
   </button>
-  <button mat-icon-button [disabled]="!wasRobotChose" class="toolbar-button" color="primary" (click)="updateRobot()">
-    <mat-icon fontIcon="upload_file"></mat-icon>
+  <mat-divider vertical style="height:30px"></mat-divider>
+  <button mat-icon-button [disabled]="!wasRobotChose" class="toolbar-button" color="primary" (click)="updateRobot()" matTooltip="Mettre à jour le code sur le robot">
+    <mat-icon fontIcon="cloud_upload"></mat-icon>
   </button>
 </mat-toolbar>
 

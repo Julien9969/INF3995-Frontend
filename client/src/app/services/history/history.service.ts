@@ -21,17 +21,15 @@ export class HistoryService {
   constructor(private healthCheck: HealthService,
               public router: Router,
               private httpClient: HttpClient) {
-    this.healthCheck.check.subscribe((status) => {
-      if (!status) {
-        this.router.navigate(['/error'], { state: { errorMessage: 'Backend is not reachable' }} );
-      }
-    });
   }
 
   getMissions() {
-    if (this._missions.getValue().length === 0) {
-      this.queryHistory()
-    }
+    this.httpClient.get(localUrl(""), {responseType: 'json'}).subscribe((data) => {
+      if (data) {
+        const missions = JSON.parse(data as string) as MissionStatus[];
+        this._missions.next(missions);
+      }
+    });
     return this._missions;
   }
 
@@ -76,14 +74,5 @@ export class HistoryService {
       }
     });
     return this._robots;
-  }
-
-  private queryHistory(): void {
-    this.httpClient.get(localUrl(""), {responseType: 'json'}).subscribe((data) => {
-      if (data) {
-        const missions = JSON.parse(data as string) as MissionStatus[];
-        this._missions.next(missions);
-      }
-    });
   }
 }

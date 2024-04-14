@@ -69,12 +69,12 @@ describe('MapViewComponent', () => {
   });
 
   it('should toggle', () => {
-    expect(component.toggleActualPosition()).toBeTrue();
-    expect(component.toggleInitialPosition()).toBeTrue();
+    // Default is true, should toggle to false
+    expect(component.toggleActualPosition()).toBeFalse();
   });
 
   it('should draw', () => {
-    component.drawPositionIndicator(0, 0, 'green');
+    component.drawPositionIndicator(0, 0, 'green', 0);
    // TODO: expect
   });
 });

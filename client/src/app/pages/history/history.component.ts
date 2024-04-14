@@ -49,7 +49,6 @@ export interface HistoryData {
 })
 export class HistoryComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource: MatTableDataSource<HistoryData> = new MatTableDataSource<HistoryData>(initialData);
   displayedColumns: string[] = ['id', 'timestamp', 'duration', 'distance', 'robots', 'simulation', 'identify'];
 
@@ -58,13 +57,9 @@ export class HistoryComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    if (this.historyService.getMissions().getValue().length !== 0) {
-      this.parseData(this.historyService.getMissions().getValue());
-    } else {
-      this.historyService.getMissions().subscribe((data: MissionStatus[]) => {
-        this.parseData(data);
-      });
-    }
+    this.historyService.getMissions().subscribe((data: MissionStatus[]) => {
+      this.parseData(data);
+    });
   }
 
   parseData(data: MissionStatus[]) {
@@ -79,6 +74,7 @@ export class HistoryComponent implements AfterViewInit, OnInit {
         isSimulation: mission.isSimulation,
       });
     }
+    console.log(historyData)
     this.dataSource.data = historyData;
   }
 
@@ -94,7 +90,6 @@ export class HistoryComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     if (this.sort) {
       this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
     }
   }
 }

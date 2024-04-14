@@ -1,4 +1,6 @@
-<table *ngIf="this.robots.getValue().length > 0" [dataSource]="robotDataSource" mat-table>
+<div class="info-container"
+  *ngIf="this.robots.getValue().length > 0">
+<table [dataSource]="robotDataSource" mat-table>
   <ng-container matColumnDef="id">
     <th *matHeaderCellDef mat-header-cell> Robot ID</th>
     <td *matCellDef="let element" mat-cell> {{element.id}} </td>
@@ -11,12 +13,12 @@
 
   <ng-container matColumnDef="distance">
     <th *matHeaderCellDef mat-header-cell> Distance parcourue</th>
-    <td *matCellDef="let element" mat-cell> {{element.distance}}m</td>
+    <td *matCellDef="let element" mat-cell> {{element.distance | number: '1.0-2'}}m</td>
   </ng-container>
 
   <ng-container matColumnDef="battery">
     <th *matHeaderCellDef mat-header-cell> Batterie</th>
-    <td *matCellDef="let element" mat-cell> {{element.battery}}%</td>
+    <td *matCellDef="let element" mat-cell> {{element.battery | number: '1.0-2'}}%</td>
   </ng-container>
 
   <ng-container matColumnDef="identify">
@@ -32,6 +34,13 @@
   <tr *matHeaderRowDef="robotDisplayedColumns" mat-header-row></tr>
   <tr *matRowDef="let row; columns: robotDisplayedColumns;" mat-row></tr>
 </table>
+  <button (click)="toggleHeadBack()"
+          mat-raised-button
+          [disabled]="missionState === MissionState.NOT_STARTED">
+    Retourner à la base
+    <mat-icon fontSet="material-symbols-sharp">family_home</mat-icon>
+  </button>
+</div>
 <div *ngIf="this.robots.getValue().length === 0" class="no-mission-container">
   <span class="material-symbols-outlined">
     rocket_launch

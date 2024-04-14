@@ -34,8 +34,20 @@ describe('RobotsService', () => {
         }
       }
     ];
+    const receivedRobots = [
+      {
+        id: 1,
+        name: "Robot 1",
+        battery: 100,
+        state: "Idle",
+        lastUpdate: 0,
+        distance: 0,
+        initialPosition: "{\'x\': 0, \'y\': 0}",
+        position: "{\'x\': 0, \'y\': 0}",
+      }
+    ];
     const callback = (event: string, action: (Param: any) => void) => {
-      action(JSON.stringify(robots));
+      action(JSON.stringify(receivedRobots));
     }
     socketServiceObj.on.and.callFake(callback);
     TestBed.configureTestingModule({

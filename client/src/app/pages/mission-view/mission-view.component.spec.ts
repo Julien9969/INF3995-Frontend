@@ -42,7 +42,7 @@ describe('MissionViewComponent', () => {
     historyServiceSpyObj = jasmine.createSpyObj('HistoryService', ['getMissions', 'getStatus', 'getRobots', 'getMap', 'getLogs'], {});
     logsServiceSpyObj = jasmine.createSpyObj('LogsService', [], {logs: new BehaviorSubject([])});
     mapServiceSpyObj = jasmine.createSpyObj('MapService', [], {map: new BehaviorSubject(new Image())});
-    robotsServiceSpyObj = jasmine.createSpyObj('RobotsService', ['headBackBase'], {robots: new BehaviorSubject([])});
+    robotsServiceSpyObj = jasmine.createSpyObj('RobotsService', ['headBackBase', 'checkConnection'], {robots: new BehaviorSubject([])});
     socketServiceObj = jasmine.createSpyObj('SocketService', ['send', 'on'], {socketClient: {}});
     matSnackBarObj = jasmine.createSpyObj('MatSnackBar', ['open']);
     paramObservable = new BehaviorSubject({get: () => "1"})
@@ -116,6 +116,11 @@ describe('MissionViewComponent', () => {
     expect(component.missionState).toEqual(MissionState.ONGOING);
     component.toggleMission();
     expect(component.missionState).toEqual(MissionState.ENDED);
+  });
+
+  it("should call checkConnectedRobots", () => {
+    component.ngOnInit();
+    expect(robotsServiceSpyObj.checkConnection).toHaveBeenCalled();
   });
 
 

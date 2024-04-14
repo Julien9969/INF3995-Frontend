@@ -46,7 +46,7 @@ export class LogsComponent implements AfterViewInit, OnInit, OnDestroy {
   displayedColumns: string[] = ['eventType', 'robotId', 'message', 'timestamp']
   dataSource = new MatTableDataSource()
   @Input() logs!: BehaviorSubject<Logs[]>;
-  availableFilters: string[] = ['log', 'senseurs', 'commandes'];
+  availableFilters: string[] = ['log', 'sensor', 'command'];
   activeFilters: Set<string> = new Set();
   private logSubscription: Subscription | undefined;
 

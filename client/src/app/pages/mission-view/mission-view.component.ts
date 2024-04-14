@@ -26,7 +26,6 @@ import {MissionComponent} from "@app/components/mission/mission.component";
 import {MatTooltip} from "@angular/material/tooltip";
 import {HealthService} from "@app/services/health/health.service";
 import {MatDialog} from "@angular/material/dialog";
-import {ConfirmationDialogComponent} from "@app/components/confirmation-dialog/confirmation-dialog.component";
 import {RobotsService} from "@app/services/robots/robots.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {RobotsViewComponent} from "@app/components/robots-view/robots-view.component";
@@ -91,7 +90,8 @@ export class MissionViewComponent implements OnInit {
               private router: Router,
               public matSnackBar: MatSnackBar,
               public dialog: MatDialog
-  ) {}
+  ) {
+  }
 
   openSnackBar(message: string) {
     this.matSnackBar.open(message, 'Fermer', {
@@ -106,7 +106,7 @@ export class MissionViewComponent implements OnInit {
   }
 
   toggleHeadBackBase() {
-    if(this.missionState === MissionState.ONGOING) {
+    if (this.missionState === MissionState.ONGOING) {
       this.openSnackBar("Requête de ramener les robots à la base envoyée")
     } else {
       this.openSnackBar('La mission doit être en cours pour pouvoir renvoyer les robots à la base.')
@@ -119,8 +119,9 @@ export class MissionViewComponent implements OnInit {
     this.robotsService.checkConnection();
     this.healthService.check.subscribe((status: HealthState) => {
       if (status === HealthState.UNHEALTHY) {
-        this.router.navigate(['/error'], {state: {errorMessage: 'Serveur inaccessible!'}}).then(() => {});
-       } else if (status === HealthState.UNKNOWN) {
+        this.isLoading = false;
+        this.openSnackBar("Serveur non disponible!");
+      } else if (status === HealthState.UNKNOWN) {
         this.isLoading = true;
       } else {
         this.isLoading = false;
@@ -128,17 +129,19 @@ export class MissionViewComponent implements OnInit {
     });
 
     this.missionId = Number(this.route.snapshot.paramMap.get("id")) || 0;
-    let historyData = undefined;
-    this.historyService.getMissions().subscribe((missions) =>{
-      historyData = missions.find(mission => mission.missionId === this.missionId);
-      if(historyData === undefined && this.missionId !== 0) {
-        const errorMessage = "Mission non trouvée!"
-        this.openSnackBar(errorMessage)
-        this.router.navigate(['/error'], {state: {errorMessage: errorMessage}}).then(() => {});
-        return;
-      }
-    });
-
+    if (this.missionId !== 0) {
+      let historyData = undefined;
+      this.historyService.getMissions().subscribe((missions) => {
+        historyData = missions.find(mission => mission.missionId === this.missionId);
+        if (historyData === undefined) {
+          const errorMessage = "Mission non trouvée!"
+          this.openSnackBar(errorMessage)
+          this.router.navigate(['/error'], {state: {errorMessage: errorMessage}}).then(() => {
+          });
+          return;
+        }
+      });
+    }
     this.isTimeMachine = this.missionId !== 0;
 
     if (this.isTimeMachine) {
@@ -152,7 +155,7 @@ export class MissionViewComponent implements OnInit {
       this.logs = this.logsService.logs;
       this.map = this.mapService.image;
       this.map.subscribe(() => {
-        this.mapInitialized = !this.mapService.isDefaultMap; // TODO: confirm if this actually works
+        this.mapInitialized = !this.mapService.isDefaultMap;
       })
       this.robots = this.robotsService.robots
       this.status = this.missionService.status;
@@ -161,9 +164,5 @@ export class MissionViewComponent implements OnInit {
         this.isLoading = updatedStatus.missionState !== this.missionState;
       });
     }
-  }
-
-  openDialog() {
-    return this.dialog.open(ConfirmationDialogComponent).afterClosed();
   }
 }

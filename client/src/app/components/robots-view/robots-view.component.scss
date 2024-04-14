@@ -64,13 +64,6 @@ mat-card-title > mat-icon {
   color: lightgray;
 }
 
-.sticky-toolbar {
-  position: -webkit-sticky; /* For Safari */
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
 map-view {
   height: 80%;
   width: 80%;
@@ -140,4 +133,8 @@ ul > li {
   align-items: center;
   justify-content: center;
   align-content: center;
+}
+
+.centered-button {
+  margin: 8px;
 }

@@ -18,9 +18,9 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatToolbar} from "@angular/material/toolbar";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
-import {ConfirmationDialogComponent} from "@app/components/confirmation-dialog/confirmation-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {MatCard, MatCardContent, MatCardHeader, MatCardModule} from "@angular/material/card";
+import {MatDivider} from "@angular/material/divider";
 
 @Component({
   selector: 'app-ide',
@@ -40,7 +40,8 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardModule} from "@angular/ma
     MatCard,
     MatCardHeader,
     MatCardContent,
-    MatCardModule
+    MatCardModule,
+    MatDivider
   ],
   templateUrl: './ide.component.html',
   styleUrl: './ide.component.scss'
@@ -184,7 +185,7 @@ export class IdeComponent {
     this.wasRobotChose = false;
   }
 
-  openDialog() {
-    return this.dialog.open(ConfirmationDialogComponent).afterClosed();
+  cancel() {
+
   }
 }

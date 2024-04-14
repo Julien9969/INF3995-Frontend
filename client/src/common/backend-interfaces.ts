@@ -60,6 +60,18 @@ export interface RobotInformation {
   }
 }
 
+export interface ReceivedRobotInformation {
+  id: number,
+  name: string,
+  battery: number,
+  state: RobotState,
+  lastUpdate: number,
+  distance: number,
+  // When received by backend, format of positions is: "{'x': 0, 'y': 0}",
+  position: string,
+  initialPosition: string
+}
+
 export interface EmitFeedback {
   timestamp: number,
   message: string,

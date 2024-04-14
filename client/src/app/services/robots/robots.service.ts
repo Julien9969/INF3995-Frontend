@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject} from "rxjs";
 import {SocketService} from '@app/services/socket/socket.service';
-import {EmitFeedback, RobotInformation, WebsocketsEvents} from '@common';
+import {EmitFeedback, ReceivedRobotInformation, RobotInformation, WebsocketsEvents} from '@common';
 import {HttpClient} from "@angular/common/http";
 import {environmentExt} from "@environment-ext";
 
@@ -26,30 +26,18 @@ export class RobotsService {
 
   private parseRobots(rawUpdate: string) {
     const jsonUpdate = JSON.parse(rawUpdate);
-    const update: RobotInformation[] = jsonUpdate.map((robot: RobotInformation) => ({
+    const update: RobotInformation[] = jsonUpdate.map((robot: ReceivedRobotInformation) => ({
       id: robot.id,
       name: robot.name,
       battery: robot.battery,
       state: robot.state,
       lastUpdate: robot.lastUpdate,
       distance: robot.distance,
-      position: {
-        x: robot.position.x,
-        y: robot.position.y
-      }
+      position: JSON.parse(robot.position.replaceAll('\'', '"')),
     }));
     this._robots.next(update);
   }
 
-  parseEmitFeedback(rawUpdate: string) {
-    const jsonUpdate = JSON.parse(rawUpdate);
-    const update: EmitFeedback = {
-      timestamp: jsonUpdate.timestamp,
-      message: jsonUpdate.message,
-      robotId: jsonUpdate.robotId
-    }
-    this._headBackBase.next(update);
-  }
 
   identify(robotId: number) {
     this.httpClient.get(localUrl(`${robotId}`)).subscribe((response) => {
@@ -63,7 +51,9 @@ export class RobotsService {
   }
 
   headBackBase() {
-    this.socketService.send(WebsocketsEvents.HEADBACKBASE_REQUEST);
+    this.httpClient.get(localUrl(`identify`)).subscribe((response) => {
+      this._headBackBase.next(response as EmitFeedback);
+    });
     return this._headBackBase.asObservable()
   }
 

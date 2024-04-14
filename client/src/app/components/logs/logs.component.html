@@ -4,7 +4,7 @@
       {{ filter }}
     </mat-chip-option>
   </mat-chip-listbox>
-  <table [dataSource]="dataSource" mat-table matSort>
+  <table [dataSource]="dataSource" mat-table matSort class="overflow-control">
     <ng-container matColumnDef="eventType">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>Type</th>
       <td *matCellDef="let element" mat-cell> {{element.eventType}} </td>
@@ -21,8 +21,8 @@
     </ng-container>
 
     <ng-container matColumnDef="timestamp">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header> Timestamp</th>
-      <td *matCellDef="let element" mat-cell> {{element.timestamp * 1000 | date: 'medium'}} </td>
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Horodatage </th>
+      <td *matCellDef="let element" mat-cell> {{element.timestamp * 1000 | date: 'short'}} </td>
     </ng-container>
 
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>

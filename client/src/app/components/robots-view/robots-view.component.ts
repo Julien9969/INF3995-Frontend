@@ -8,7 +8,7 @@ import {MatGridList, MatGridTile} from "@angular/material/grid-list";
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatMenuModule, MatMenuTrigger} from "@angular/material/menu";
 import {MatAccordion, MatExpansionModule, MatExpansionPanel} from "@angular/material/expansion";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import {MatPaginator} from "@angular/material/paginator";
 import {MapViewComponent} from "@app/components/map-view/map-view.component";
 import {MissionState, RobotInformation} from '@common';
@@ -66,7 +66,7 @@ import {RobotsService} from "@app/services/robots/robots.service";
     MatHeaderCellDef,
     MatRow,
     MatRowDef,
-    MatTable, MatDialogTitle,
+    MatTable, MatDialogTitle, DecimalPipe,
   ],
   selector: 'app-robots-view',
   standalone: true,

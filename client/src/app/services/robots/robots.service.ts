@@ -33,7 +33,7 @@ export class RobotsService {
       state: robot.state,
       lastUpdate: robot.lastUpdate,
       distance: robot.distance,
-      position: JSON.parse(robot.position.replaceAll('\'', '\"')),
+      position: JSON.parse(robot.position.replaceAll('\'', '"')),
     }));
     this._robots.next(update);
   }

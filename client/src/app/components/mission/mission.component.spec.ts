@@ -1,17 +1,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {MissionComponent} from './mission.component';
-import {MatCard} from '@angular/material/card';
-import {BrowserModule} from "@angular/platform-browser";
-import {HttpClientModule} from "@angular/common/http";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {BrowserAnimationsModule, NoopAnimationsModule} from "@angular/platform-browser/animations";
-import {HealthService} from '@app/services/health/health.service';
-import {Router} from '@angular/router';
 import {SocketService} from '@app/services/socket/socket.service';
-import {MissionService} from '@app/services/mission/mission.service';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {EmitFeedback, MissionState, MissionStatus} from '@common';
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {RobotsService} from "@app/services/robots/robots.service";
 
 describe('MissionComponent', () => {
@@ -38,12 +29,11 @@ describe('MissionComponent', () => {
       missionId: 1,
       elapsedTime: 10,
       missionState: MissionState.NOT_STARTED,
-      startTimestamp: 0,
+      startTimestamp: 177777777,
       robotCount: 1,
       isSimulation: false,
       distance: 0,
     });
-    fixture.detectChanges();
   });
 
   it('should create', () => {

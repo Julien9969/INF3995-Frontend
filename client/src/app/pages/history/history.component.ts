@@ -49,7 +49,6 @@ export interface HistoryData {
 })
 export class HistoryComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource: MatTableDataSource<HistoryData> = new MatTableDataSource<HistoryData>(initialData);
   displayedColumns: string[] = ['id', 'timestamp', 'duration', 'distance', 'robots', 'simulation', 'identify'];
 
@@ -91,7 +90,6 @@ export class HistoryComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     if (this.sort) {
       this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
     }
   }
 }

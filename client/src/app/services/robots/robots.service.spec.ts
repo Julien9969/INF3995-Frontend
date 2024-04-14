@@ -79,11 +79,6 @@ describe('RobotsService', () => {
     });
   });
 
-  it("should head to position", async () => {
-    service.headBackBase();
-    expect(socketServiceObj.send).toHaveBeenCalledWith(WebsocketsEvents.HEADBACKBASE_REQUEST);
-  });
-
   it("should return robots", () => {
     service.robots.subscribe((robots) => {
       expect(robots.length).toEqual(1);

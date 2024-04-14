@@ -2,11 +2,23 @@
   flex: 1 1 auto;
 }
 
+.overflow-control {
+  height: -webkit-calc(100% + 64px) !important;
+  height: -moz-calc(100% + 64px) !important;
+  height: calc(100% + 64px) !important;
+}
+
+@media (min-width: 900px) {
+  .mat-expansion-panel {
+    margin-left: 64*2px;
+    margin-right: 64*2px;
+  }
+}
+
 .mat-expansion-panel {
-  margin-left: 64*2px;
-  margin-right: 64*2px;
   margin-bottom: 16px;
 }
+
 
 .toolbar-button {
   margin: 8px;

@@ -31,4 +31,8 @@
   background-color: transparent;
 }
 
+.overflow-control {
+  overflow: hidden;
+}
+
 

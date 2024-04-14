@@ -46,6 +46,10 @@ export class RobotsService {
     return this._identify.asObservable();
   }
 
+  checkConnection() {
+    return this.httpClient.get(localUrl('connected/')).subscribe((response) => {});
+  }
+
   headBackBase() {
     this.httpClient.get(localUrl(`identify`)).subscribe((response) => {
       this._headBackBase.next(response as EmitFeedback);

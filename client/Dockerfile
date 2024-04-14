@@ -1,9 +1,9 @@
-FROM  --platform=linux/amd64 node:18.15-alpine
+FROM node:18.15 as build
 WORKDIR /usr/src/app
-COPY package.json ./
+COPY package*.json ./
+RUN npm ci
 RUN npm install -g @angular/cli
-RUN npm install
-RUN npm i @rollup/rollup-linux-x64-gnu
-# COPY . .
-# EXPOSE 4200
-
+COPY . .
+RUN npm run build --prod
+FROM nginx:1.25.4-alpine
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html

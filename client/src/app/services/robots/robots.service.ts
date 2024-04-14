@@ -58,6 +58,10 @@ export class RobotsService {
     return this._identify.asObservable();
   }
 
+  checkConnection() {
+    return this.httpClient.get(localUrl('connected/')).subscribe((response) => {});
+  }
+
   headBackBase() {
     this.socketService.send(WebsocketsEvents.HEADBACKBASE_REQUEST);
     return this._headBackBase.asObservable()

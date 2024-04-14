@@ -116,6 +116,7 @@ export class MissionViewComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
+    this.robotsService.checkConnection();
     this.healthService.check.subscribe((status: HealthState) => {
       if (status === HealthState.UNHEALTHY) {
         this.router.navigate(['/error'], {state: {errorMessage: 'Serveur inaccessible!'}}).then(() => {});

@@ -37,8 +37,6 @@ export enum WebsocketsEvents {
   MISSION_MAP = "mission-map",
   ABORT_MISSION = "abort-mission",
   ROBOT_STATUS = "robot-status",
-  HEADBACKBASE_FEEDBACK = "headbackbase-feedback",
-  HEADBACKBASE_REQUEST = "headbackbase-request",
   PING = "ping",
   PONG = "pong",
 }

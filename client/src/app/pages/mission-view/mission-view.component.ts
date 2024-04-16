@@ -134,7 +134,6 @@ export class MissionViewComponent implements OnInit {
         historyData = missions.find(mission => mission.missionId === this.missionId);
         if (historyData === undefined) {
           const errorMessage = "Mission non trouvée!"
-          this.openSnackBar(errorMessage)
           this.router.navigate(['/error'], {state: {errorMessage: errorMessage}}).then(() => {
           });
           return;

@@ -14,6 +14,7 @@ export class RobotsService {
   private _robots: BehaviorSubject<RobotInformation[]> = new BehaviorSubject([] as RobotInformation[]);
   private _identify: Subject<EmitFeedback> = new Subject();
   private _headBackBase: Subject<EmitFeedback> = new Subject();
+  private _connectedRobots: Subject<string> = new Subject();
 
   constructor(private socketService: SocketService, public httpClient: HttpClient) {
     // Every second there's an update from the backend with the status
@@ -44,6 +45,13 @@ export class RobotsService {
       this._identify.next(response as EmitFeedback);
     });
     return this._identify.asObservable();
+  }
+
+  checkConnection() {
+    this.httpClient.get<string>(localUrl('connected/')).subscribe((response) => {
+      this._connectedRobots.next(response);
+    });
+    return this._connectedRobots.asObservable();
   }
 
   headBackBase() {

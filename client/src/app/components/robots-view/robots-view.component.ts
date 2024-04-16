@@ -76,6 +76,7 @@ import {RobotsService} from "@app/services/robots/robots.service";
 export class RobotsViewComponent implements OnChanges {
   @Input() robots!: BehaviorSubject<RobotInformation[]>;
   @Input() missionState!: MissionState;
+  @Input() isTimemachine!: boolean;
   robotDisplayedColumns: string[] = ['id', 'state', 'distance', 'battery', 'identify'];
   robotDataSource = new MatTableDataSource();
 

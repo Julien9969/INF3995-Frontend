@@ -44,6 +44,7 @@ describe('MapViewComponent', () => {
     component = fixture.componentInstance;
     component.map = map;
     component.robots = robots;
+    component.isTimemachine = false;
     fixture.detectChanges();
   });
 

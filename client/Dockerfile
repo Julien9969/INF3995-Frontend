@@ -1,9 +1,8 @@
-FROM  --platform=linux/amd64 node:18.15-alpine
+FROM timbru31/node-chrome
 WORKDIR /usr/src/app
 COPY package.json ./
+ENV GENERATE_SOURCEMAP=false
+ENV NODE_OPTIONS=--max-old-space-size=16384
 RUN npm install -g @angular/cli
 RUN npm install
-RUN npm i @rollup/rollup-linux-x64-gnu
-# COPY . .
-# EXPOSE 4200
-
+# RUN npm i @rollup/rollup-linux-x64-gnu

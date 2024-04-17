@@ -14,20 +14,13 @@ import {RobotsService} from "@app/services/robots/robots.service";
 import {
   EmitFeedback,
   HealthState,
-  Logs,
   MissionState,
   MissionStatus,
-  RobotInformation,
-  WebsocketsEvents
 } from "@common";
 import {SocketService} from "@app/services/socket/socket.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {BrowserAnimationsModule, NoopAnimationsModule} from "@angular/platform-browser/animations";
-import {Component, Input, NO_ERRORS_SCHEMA} from "@angular/core";
-import {MissionComponent} from "@app/components/mission/mission.component";
-import {RobotsViewComponent} from "@app/components/robots-view/robots-view.component";
-import {MapViewComponent} from "@app/components/map-view/map-view.component";
-import {LogsComponent} from "@app/components/logs/logs.component";
+import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {HealthService} from "@app/services/health/health.service";
 
 
@@ -41,8 +34,6 @@ describe('MissionViewComponent', () => {
   let robotsServiceSpyObj: jasmine.SpyObj<RobotsService>;
   let socketServiceObj: jasmine.SpyObj<SocketService>;
   let matSnackBarObj: jasmine.SpyObj<MatSnackBar>;
-  let matDialogObj: jasmine.SpyObj<MatDialog>;
-  let activateRouterSpyObj: jasmine.SpyObj<ActivatedRoute>;
   let healthServiceSpyObj: jasmine.SpyObj<HealthService>;
   let paramObservable: BehaviorSubject<any>;
   let activateRouteObj: any;
@@ -55,6 +46,8 @@ describe('MissionViewComponent', () => {
     logsServiceSpyObj = jasmine.createSpyObj('LogsService', [], {logs: new BehaviorSubject([])});
     mapServiceSpyObj = jasmine.createSpyObj('MapService', [], {image: new BehaviorSubject(new Image())});
     robotsServiceSpyObj = jasmine.createSpyObj('RobotsService', ['headBackBase'], {robots: new BehaviorSubject([])});
+    mapServiceSpyObj = jasmine.createSpyObj('MapService', [], {map: new BehaviorSubject(new Image())});
+    robotsServiceSpyObj = jasmine.createSpyObj('RobotsService', ['headBackBase', 'checkConnection'], {robots: new BehaviorSubject([])});
     socketServiceObj = jasmine.createSpyObj('SocketService', ['send', 'on'], {socketClient: {}});
     matSnackBarObj = jasmine.createSpyObj('MatSnackBar', ['open']);
     healthServiceSpyObj = jasmine.createSpyObj('HealthService', [''], {check: checkObservable});
@@ -138,6 +131,11 @@ describe('MissionViewComponent', () => {
     expect(component.missionState).toEqual(MissionState.ONGOING);
     component.toggleMission();
     expect(component.missionState).toEqual(MissionState.ENDED);
+  });
+
+  it("should call checkConnectedRobots", () => {
+    component.ngOnInit();
+    expect(robotsServiceSpyObj.checkConnection).toHaveBeenCalled();
   });
 
 

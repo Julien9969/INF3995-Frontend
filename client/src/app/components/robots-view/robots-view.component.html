@@ -37,7 +37,7 @@
   <button (click)="toggleHeadBack()"
           *ngIf="!isTimemachine"
           mat-raised-button
-          [disabled]="missionState === MissionState.NOT_STARTED">
+          [disabled]="missionState !== MissionState.ONGOING">
     Retourner à la base
     <mat-icon fontSet="material-symbols-sharp">family_home</mat-icon>
   </button>

@@ -1,9 +1,7 @@
-FROM node:18.15 as build
+FROM timbru31/node-chrome
 WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm ci
+COPY package.json ./
+ENV GENERATE_SOURCEMAP=false
+ENV NODE_OPTIONS=--max-old-space-size=16384
 RUN npm install -g @angular/cli
-COPY . .
-RUN npm run build --prod
-FROM nginx:1.25.4-alpine
-COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+RUN npm install

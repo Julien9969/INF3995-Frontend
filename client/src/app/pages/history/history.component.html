@@ -9,29 +9,29 @@
         <td *matCellDef="let element" mat-cell> {{element.id}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="timestamp">
+      <ng-container matColumnDef="startTimestamp">
         <th *matHeaderCellDef mat-header-cell mat-sort-header> Date </th>
         <td *matCellDef="let element" mat-cell> {{ element.startTimestamp * 1000 | date: 'short'}} </td>
       </ng-container>
 
       <ng-container matColumnDef="duration">
         <th *matHeaderCellDef mat-header-cell mat-sort-header> Durée </th>
-        <td *matCellDef="let element" mat-cell> {{formatTime(element.duration)}} </td>
+        <td *matCellDef="let element" mat-cell> {{element.duration * 1000 | date: 'mm:ss'}} </td>
       </ng-container>
 
       <ng-container matColumnDef="distance">
-        <th *matHeaderCellDef mat-header-cell mat-sort-header> Distance parcourue totale </th>
-        <td *matCellDef="let element" mat-cell> {{element.distance}} </td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Distance totale parcourue (m) </th>
+        <td *matCellDef="let element" mat-cell> {{element.distance | number: '1.0-2'}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="robots">
+      <ng-container matColumnDef="nbRobots">
         <th *matHeaderCellDef mat-header-cell mat-sort-header> Nombre de robots </th>
         <td *matCellDef="let element" mat-cell> {{element.nbRobots}} </td>
       </ng-container>
 
       <ng-container matColumnDef="simulation">
         <th *matHeaderCellDef mat-header-cell mat-sort-header> Environnement simulé </th>
-        <td *matCellDef="let element" mat-cell> {{element.isSimulation ? 'Oui' : 'Non'}}</td>
+        <td *matCellDef="let element" mat-cell> {{element.simulation ? 'Oui' : 'Non'}}</td>
       </ng-container>
 
       <ng-container matColumnDef="identify">

@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, ViewChild} from '@angular/core';
 import {MatDialogClose} from "@angular/material/dialog";
 import {
   MatCellDef,
@@ -41,10 +40,10 @@ import {Logs} from "@common";
   templateUrl: './logs.component.html',
   styleUrl: './logs.component.scss'
 })
-export class LogsComponent implements AfterViewInit, OnInit, OnDestroy {
+export class LogsComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
   displayedColumns: string[] = ['eventType', 'robotId', 'message', 'timestamp']
-  dataSource = new MatTableDataSource()
+  dataSource: MatTableDataSource<Logs> = new MatTableDataSource()
   @Input() logs!: BehaviorSubject<Logs[]>;
   availableFilters: string[] = ['log', 'sensor', 'command'];
   activeFilters: Set<string> = new Set();
@@ -56,7 +55,10 @@ export class LogsComponent implements AfterViewInit, OnInit, OnDestroy {
   subscribeToLogs() {
     this.logSubscription = this.logs.subscribe(newLogs => {
       const currentLogs = this.dataSource.data;
-      this.dataSource.data = [...currentLogs, ...newLogs];
+      this.dataSource = new MatTableDataSource([...currentLogs, ...newLogs]);
+      this.dataSource.sort = this.sort;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.dataSource.filterPredicate = (data) => this.predicate(data);
     })
   }
 
@@ -66,11 +68,7 @@ export class LogsComponent implements AfterViewInit, OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
-    this.subscribeToLogs();
-    this.dataSource.filterPredicate = (data: any) => this.predicate(data);
-  }
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   predicate(data: any) {
     if (this.activeFilters.size === 0) {
       return true;
@@ -79,9 +77,7 @@ export class LogsComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (this.sort) {
-      this.dataSource.sort = this.sort;
-    }
+    this.subscribeToLogs();
   }
 
   removeFilter(filter: string) {

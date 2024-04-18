@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnDestroy, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatDialogClose} from "@angular/material/dialog";
 import {
   MatCellDef,
@@ -40,7 +40,7 @@ import {Logs} from "@common";
   templateUrl: './logs.component.html',
   styleUrl: './logs.component.scss'
 })
-export class LogsComponent implements AfterViewInit, OnDestroy {
+export class LogsComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   displayedColumns: string[] = ['eventType', 'robotId', 'message', 'timestamp']
   dataSource: MatTableDataSource<Logs> = new MatTableDataSource()
@@ -74,6 +74,10 @@ export class LogsComponent implements AfterViewInit, OnDestroy {
       return true;
     }
     return this.activeFilters.has(data.eventType);
+  }
+
+  ngOnInit() {
+    this.subscribeToLogs();
   }
 
   ngAfterViewInit() {

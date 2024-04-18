@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {LogsComponent} from "@app/components/logs/logs.component";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatCard} from "@angular/material/card";
@@ -46,8 +46,8 @@ export interface HistoryData {
   templateUrl: './history.component.html',
   styleUrl: './history.component.css'
 })
-export class HistoryComponent implements AfterViewInit {
-  @ViewChild(MatSort, {static: false }) sort!: MatSort;
+export class HistoryComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
   dataSource: MatTableDataSource<HistoryData> = new MatTableDataSource<HistoryData>([]);
   displayedColumns: string[] = ['id', 'startTimestamp', 'duration', 'distance', 'nbRobots', 'simulation', 'identify'];
 
@@ -73,6 +73,12 @@ export class HistoryComponent implements AfterViewInit {
 
   openMission(id: number) {
     this.router.navigate(['/mission', id]).then(() => {
+    });
+  }
+
+  ngOnInit() {
+    this.historyService.getMissions().subscribe((data: MissionStatus[]) => {
+      this.parseData(data);
     });
   }
 

@@ -4,24 +4,24 @@
       {{ filter }}
     </mat-chip-option>
   </mat-chip-listbox>
-  <table [dataSource]="dataSource" mat-table matSort class="overflow-control">
+  <table [dataSource]="dataSource" mat-table class="overflow-control">
     <ng-container matColumnDef="eventType">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Type</th>
+      <th *matHeaderCellDef mat-header-cell>Type</th>
       <td *matCellDef="let element" mat-cell> {{element.eventType}} </td>
     </ng-container>
 
     <ng-container matColumnDef="robotId">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header> Robot ID</th>
+      <th *matHeaderCellDef mat-header-cell> Robot ID</th>
       <td *matCellDef="let element" mat-cell> {{element.robotId}} </td>
     </ng-container>
 
     <ng-container class="log-message" matColumnDef="message">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header> Message</th>
+      <th *matHeaderCellDef mat-header-cell> Message</th>
       <td *matCellDef="let element" mat-cell> {{element.message}} </td>
     </ng-container>
 
     <ng-container matColumnDef="timestamp">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header> Horodatage </th>
+      <th *matHeaderCellDef mat-header-cell> Horodatage </th>
       <td *matCellDef="let element" mat-cell> {{element.timestamp * 1000 | date: 'short'}} </td>
     </ng-container>
 

@@ -108,7 +108,7 @@ export class RobotsViewComponent implements OnChanges {
 
   toggleHeadBack() {
     this.openSnackBar(`Requête de retour à la base envoyée aux robots!`);
-    this.robotsService.headBackBase().subscribe((result) => this.openSnackBar(result.message));
+    this.robotsService.headBackBase().subscribe(() => {});
   }
 
   protected readonly MissionState = MissionState;

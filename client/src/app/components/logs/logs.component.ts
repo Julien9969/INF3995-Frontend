@@ -41,7 +41,6 @@ import {Logs} from "@common";
   styleUrl: './logs.component.scss'
 })
 export class LogsComponent implements OnDestroy, AfterViewInit {
-  @ViewChild(MatSort) sort!: MatSort;
   displayedColumns: string[] = ['eventType', 'robotId', 'message', 'timestamp']
   dataSource: MatTableDataSource<Logs> = new MatTableDataSource()
   @Input() logs!: BehaviorSubject<Logs[]>;
@@ -56,7 +55,6 @@ export class LogsComponent implements OnDestroy, AfterViewInit {
     this.logSubscription = this.logs.subscribe(newLogs => {
       const currentLogs = this.dataSource.data;
       this.dataSource = new MatTableDataSource([...currentLogs, ...newLogs]);
-      this.dataSource.sort = this.sort;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.dataSource.filterPredicate = (data) => this.predicate(data);
     })

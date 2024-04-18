@@ -135,7 +135,6 @@ export class MissionViewComponent implements OnInit {
         historyData = missions.find(mission => mission.missionId === this.missionId);
         if (historyData === undefined) {
           const errorMessage = "Mission non trouvée!"
-          this.openSnackBar(errorMessage)
           this.router.navigate(['/error'], {state: {errorMessage: errorMessage}}).then(() => {
           });
           return;
@@ -143,8 +142,11 @@ export class MissionViewComponent implements OnInit {
       });
     }
     this.isTimeMachine = this.missionId !== 0;
+    this.loadData(this.isTimeMachine)
+  }
 
-    if (this.isTimeMachine) {
+  loadData(isTimeMachine: boolean) {
+    if (isTimeMachine) {
       this.logs = this.historyService.getLogs(this.missionId);
       this.map = this.historyService.getMap(this.missionId);
       this.mapInitialized = true;

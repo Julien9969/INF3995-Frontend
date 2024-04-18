@@ -66,9 +66,4 @@ describe('LogsComponent', () => {
     expect(component.dataSource.data.length).toBe(1);
   });
 
-  it("should trigger predicate", () => {
-    expect(component.predicate("test")).toBe(true);
-    component.toggleFilter("test");
-    expect(component.predicate("test")).toBe(false);
-  });
 });

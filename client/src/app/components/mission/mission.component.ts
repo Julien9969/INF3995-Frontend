@@ -100,7 +100,7 @@ export class MissionComponent implements OnChanges {
   }
 
   formatTimestamp(timestamp: number) {
-    if (timestamp !== 0) {
+    if (timestamp && timestamp !== 0) {
       return formatDate(timestamp, "short", "fr-CA");
     } else {
       return "";

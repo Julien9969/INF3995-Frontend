@@ -1,17 +1,16 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {LogsComponent} from "@app/components/logs/logs.component";
-import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
+import {MatPaginator} from "@angular/material/paginator";
 import {MatCard} from "@angular/material/card";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {Router} from "@angular/router";
 import {HistoryService} from "@app/services/history/history.service";
-import {DatePipe, NgIf} from "@angular/common";
+import {DatePipe, DecimalPipe, NgIf} from "@angular/common";
 import {MatToolbar} from "@angular/material/toolbar";
 import {MatSort, MatSortHeader, MatSortModule} from "@angular/material/sort";
 import {MatDivider} from "@angular/material/divider";
-import {initialData} from "@common/dummy-data";
 import {MissionStatus} from "@common";
 
 
@@ -19,9 +18,9 @@ export interface HistoryData {
   id: number,
   startTimestamp: number,
   duration: number,
-  nbRobots: number,
   distance: number,
-  isSimulation: boolean,
+  nbRobots: number,
+  simulation: boolean,
 }
 
 @Component({
@@ -41,25 +40,19 @@ export interface HistoryData {
     MatSort,
     MatSortModule,
     MatSortHeader,
-    MatPaginatorModule,
     MatDivider,
+    DecimalPipe,
   ],
   templateUrl: './history.component.html',
   styleUrl: './history.component.css'
 })
-export class HistoryComponent implements AfterViewInit, OnInit {
-  @ViewChild(MatSort) sort!: MatSort;
-  dataSource: MatTableDataSource<HistoryData> = new MatTableDataSource<HistoryData>(initialData);
-  displayedColumns: string[] = ['id', 'timestamp', 'duration', 'distance', 'robots', 'simulation', 'identify'];
+export class HistoryComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatSort, {static: false}) sort!: MatSort;
+  dataSource: MatTableDataSource<HistoryData> = new MatTableDataSource<HistoryData>([]);
+  displayedColumns: string[] = ['id', 'startTimestamp', 'duration', 'distance', 'nbRobots', 'simulation', 'identify'];
 
   constructor(public router: Router,
               public historyService: HistoryService) {
-  }
-
-  ngOnInit() {
-    this.historyService.getMissions().subscribe((data: MissionStatus[]) => {
-      this.parseData(data);
-    });
   }
 
   parseData(data: MissionStatus[]) {
@@ -71,11 +64,11 @@ export class HistoryComponent implements AfterViewInit, OnInit {
         duration: mission.elapsedTime,
         nbRobots: mission.robotCount,
         distance: mission.distance,
-        isSimulation: mission.isSimulation,
+        simulation: mission.isSimulation,
       });
     }
-    console.log(historyData)
-    this.dataSource.data = historyData;
+    this.dataSource = new MatTableDataSource(historyData);
+    this.dataSource.sort = this.sort;
   }
 
   openMission(id: number) {
@@ -83,13 +76,15 @@ export class HistoryComponent implements AfterViewInit, OnInit {
     });
   }
 
-  formatTime(timestamp: number): string {
-    return new DatePipe('en-US').transform(timestamp * 1000, 'mm:ss') || '00:00'
+  ngOnInit() {
+    this.historyService.getMissions().subscribe((data: MissionStatus[]) => {
+      this.parseData(data);
+    });
   }
 
   ngAfterViewInit() {
-    if (this.sort) {
-      this.dataSource.sort = this.sort;
-    }
+    this.historyService.getMissions().subscribe((data: MissionStatus[]) => {
+      this.parseData(data);
+    });
   }
 }

@@ -19,6 +19,7 @@ import {RobotInformation} from "@common";
   styleUrl: './map-view.component.css'
 })
 export class MapViewComponent implements AfterViewInit {
+  @Input() isTimemachine!: boolean;
   @Input() map!: BehaviorSubject<HTMLImageElement>;
   @Input() robots!: BehaviorSubject<RobotInformation[]>;
   height: number = 300;
@@ -57,7 +58,6 @@ export class MapViewComponent implements AfterViewInit {
     this.robots.subscribe((robots: RobotInformation[]) => {
       if(this.last_bitmap) this.context.drawImage(this.last_bitmap, 0, 0, this.width, this.height);
       robots.forEach((robot: RobotInformation, index) => {
-        console.log(robot); // to simply avoid linting error
         if (this.drawActualPosition) {
           this.drawPositionIndicator(robot.position.x, robot.position.y, 'green', index)
         }

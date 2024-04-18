@@ -81,7 +81,7 @@ mat-card-title > mat-icon {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5); /* Optional: Add a semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1001;
 }
 
@@ -97,4 +97,10 @@ button {
 
 .white-toolbar {
   background-color: transparent;
+}
+
+centered-map-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

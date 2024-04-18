@@ -31,6 +31,7 @@ import {
 import {BehaviorSubject} from "rxjs";
 import {MatDialogTitle} from "@angular/material/dialog";
 import {RobotsService} from "@app/services/robots/robots.service";
+import { RobotState } from '@common';
 
 
 @Component({
@@ -76,8 +77,10 @@ import {RobotsService} from "@app/services/robots/robots.service";
 export class RobotsViewComponent implements OnChanges {
   @Input() robots!: BehaviorSubject<RobotInformation[]>;
   @Input() missionState!: MissionState;
+  @Input() isTimemachine!: boolean;
   robotDisplayedColumns: string[] = ['id', 'state', 'distance', 'battery', 'identify'];
   robotDataSource = new MatTableDataSource();
+  protected readonly RobotState = RobotState ;
 
   constructor(private matSnackBar: MatSnackBar,
               private robotsService: RobotsService) {
@@ -107,7 +110,7 @@ export class RobotsViewComponent implements OnChanges {
 
   toggleHeadBack() {
     this.openSnackBar(`Requête de retour à la base envoyée aux robots!`);
-    this.robotsService.headBackBase().subscribe((result) => this.openSnackBar(result.message));
+    this.robotsService.headBackBase().subscribe(() => {});
   }
 
   protected readonly MissionState = MissionState;

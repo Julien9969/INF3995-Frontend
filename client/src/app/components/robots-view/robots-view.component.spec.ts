@@ -58,6 +58,7 @@ describe('RobotsViewComponent', () => {
     component = fixture.componentInstance;
     component.missionState = MissionState.NOT_STARTED;
     component.robots = new BehaviorSubject([] as RobotInformation[]);
+    component.isTimemachine = false;
     fixture.detectChanges();
   });
 

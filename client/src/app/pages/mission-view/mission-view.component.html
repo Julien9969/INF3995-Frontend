@@ -49,7 +49,8 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <ng-template matExpansionPanelContent>
-        <app-robots-view [robots]="robots" [missionState]="missionState"></app-robots-view>
+        <app-robots-view [robots]="robots" [isTimemachine]="isTimeMachine"
+                         [missionState]="missionState"></app-robots-view>
       </ng-template>
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="false">
@@ -67,7 +68,13 @@
           <span class="material-symbols-outlined">map</span>
           <h2><b>La carte n'est pas encore disponible...</b></h2>
         </div>
-        <app-map-view *ngIf="mapInitialized" [map]="map" [robots]="robots"></app-map-view>
+        <div class="centered-map-container">
+          <app-map-view *ngIf="mapInitialized"
+                        [isTimemachine]="isTimeMachine"
+                        [map]="map"
+                        [robots]="robots">
+          </app-map-view>
+        </div>
       </ng-template>
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="false"

@@ -8,7 +8,7 @@ export enum RobotState {
   IDLE = "idle",
   MOVING = "running",
   DISCONNECTED = "disconnected",
-  HEAD_BACK_BASE = "heading-base",
+  HEAD_BACK_BASE = "heading-back",
   IDENTIFYING = "identifying",
 }
 

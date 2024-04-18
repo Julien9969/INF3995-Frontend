@@ -1,36 +1,54 @@
 import {Injectable} from '@angular/core';
-import {Observable} from "rxjs";
-import { map } from 'rxjs/operators';
-import {HttpClient} from "@angular/common/http";
-import {environmentExt} from "@environment-ext";
+import {BehaviorSubject} from "rxjs";
+import {SocketService} from '@app/services/socket/socket.service';
+import {MissionState, MissionStatus, WebsocketsEvents} from '@common';
 
-const localUrl = (call: string) => `${environmentExt.apiUrl}${call}`;
 
 @Injectable({
   providedIn: 'root'
 })
 export class MissionService {
-  constructor(private http: HttpClient) {
+  defaultStatus: MissionStatus = {
+    missionState: MissionState.NOT_STARTED,
+    missionId: 0,
+    startTimestamp: 0,
+    elapsedTime: 0,
+    robotCount: 0,
+    isSimulation: false,
+    distance: 0,
+  }
+  constructor(private socketService: SocketService) {
+    // Every second there's an update from the backend with the status
+    this.socketService.on(WebsocketsEvents.MISSION_STATUS, (update: string) => this.updateMission(update));
   }
 
-  identify(robotId: number): Observable<string> {
-    return this.http.get(localUrl(`identify/id/${robotId}`), { responseType: 'text' })
-      .pipe(
-        map(response => response.toString())
-      );
+  private _status: BehaviorSubject<MissionStatus> = new BehaviorSubject(this.defaultStatus);
+
+  get status(): BehaviorSubject<MissionStatus> {
+    return this._status;
   }
 
-  startMission(): Observable<string> {
-    return this.http.post(localUrl(`mission/start`), { responseType: 'text' })
-      .pipe(
-        map(response => response.toString())
-      );
+  private updateMission(rawUpdate: string) {
+    const jsonUpdate = JSON.parse(rawUpdate);
+    const update: MissionStatus = {
+      missionState: jsonUpdate.missionState as MissionState || MissionState.NOT_STARTED,
+      missionId: jsonUpdate.missionId || 0,
+      startTimestamp: jsonUpdate.startTimestamp || 0,
+      elapsedTime: jsonUpdate.elapsedTime || 0,
+      robotCount: jsonUpdate.count || 0,
+      isSimulation: jsonUpdate.isSimulation || false,
+      distance: jsonUpdate.distance || 0,
+    }
+    this._status.next(update);
   }
 
-  stopMission(): Observable<string> {
-    return this.http.post(localUrl(`mission/stop`), { responseType: 'text' })
-      .pipe(
-        map(response => response.toString())
-      );
+  toggleMission() {
+    const state = this._status.getValue().missionState;
+    if (state == MissionState.ONGOING) {
+      this.socketService.send(WebsocketsEvents.MISSION_END);
+    } else {
+      this.socketService.send(WebsocketsEvents.MISSION_START);
+      this.socketService.send(WebsocketsEvents.MISSION_MAP);
+    }
   }
 }

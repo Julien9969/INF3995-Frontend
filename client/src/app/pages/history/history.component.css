@@ -3,8 +3,36 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  height: 100%;
-  width: 100%;
-  margin: 0px;
+  height: calc(100vh - 64*2px);
 }
+
+
+.no-mission-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.material-symbols-outlined {
+  font-size: 300px;
+  color: lightgray;
+}
+
+.no-mission-container h2 {
+  color: lightgray;
+}
+
+.no-mission-container p {
+  color: lightgray;
+}
+
+.white-toolbar {
+  background-color: transparent;
+}
+
+.overflow-control {
+  overflow: hidden;
+}
+
 

@@ -1,0 +1,18 @@
+<div class="map-container">
+  <canvas
+    class="map-display"
+    id="map-canvas"
+    [width]="width"
+    [height]="height"
+    #mapCanvas
+  ></canvas>
+  <div *ngIf="isTimemachine" class="vertical-menu">
+    <div class="icon-text">
+      <mat-icon class="v-align-middle">location_on</mat-icon>
+      <mat-slide-toggle color="primary" class="v-align-middle" (click)="toggleActualPosition()" [checked]="true">
+        Position actuelle
+      </mat-slide-toggle>
+    </div>
+  </div>
+</div>
+

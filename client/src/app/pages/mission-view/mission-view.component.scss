@@ -1,0 +1,106 @@
+.bar-spacer {
+  flex: 1 1 auto;
+}
+
+.overflow-control {
+  height: -webkit-calc(100% + 64px) !important;
+  height: -moz-calc(100% + 64px) !important;
+  height: calc(100% + 64px) !important;
+}
+
+@media (min-width: 900px) {
+  .mat-expansion-panel {
+    margin-left: 64*2px;
+    margin-right: 64*2px;
+  }
+}
+
+.mat-expansion-panel {
+  margin-bottom: 16px;
+}
+
+
+.toolbar-button {
+  margin: 8px;
+  text-transform: uppercase;
+}
+
+.accordion-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
+  margin-left: 8px;
+}
+
+mat-card-title > mat-icon {
+  margin-top: 4px;
+  margin-right: 4px;
+}
+
+.no-mission-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.material-symbols-outlined {
+  font-size: 25vh;
+  color: lightgray;
+}
+
+.no-mission-container h2 {
+  color: lightgray;
+}
+
+.no-mission-container p {
+  color: lightgray;
+}
+
+.robot-detail {
+  margin: 8px;
+  display: inline-block;
+}
+
+.robot-detail-container {
+  overflow-x: auto;
+  display: inline-grid;
+  grid-template-columns: repeat(auto-fill, minmax(1fr, 1fr));
+  grid-auto-rows: 1fr;
+  grid-auto-flow: column;
+}
+
+.spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+}
+
+.toolbar-no-overflow {
+  overflow: hidden;
+}
+
+button {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+.white-toolbar {
+  background-color: transparent;
+}
+
+centered-map-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

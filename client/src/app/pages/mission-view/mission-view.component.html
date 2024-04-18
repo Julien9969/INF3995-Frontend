@@ -1,0 +1,101 @@
+<div class="overflow-control">
+  <mat-toolbar class="sticky-toolbar toolbar-no-overflow white-toolbar">
+    <span>MISSION</span>
+    <span class="bar-spacer"></span>
+    <div *ngIf="!isTimeMachine">
+      <button (click)="this.toggleMission()"
+              [disabled]="missionState === MissionState.ONGOING"
+              class="toolbar-button"
+              color="primary"
+              matTooltip="{{missionState === MissionState.ENDED ? 'Redémarrer mission' : 'Lancer mission'}}"
+              mat-icon-button>
+        <mat-icon>{{this.missionState === MissionState.ENDED ? 'refresh' : 'play_arrow'}}</mat-icon>
+      </button>
+      <button (click)="this.toggleMission()"
+              [disabled]="missionState !== MissionState.ONGOING"
+              class="toolbar-button"
+              color="accent"
+              matTooltip="Arrêter mission"
+              mat-icon-button>
+        <mat-icon>stop</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+
+  <div class="accordion-headers-align">
+    <mat-expansion-panel class="" [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Paramètres
+        </mat-panel-title>
+        <mat-panel-description>
+          <span></span>
+          <mat-icon>settings</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <app-mission [status]="status"></app-mission>
+      </ng-template>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Information système
+        </mat-panel-title>
+        <mat-panel-description>
+          <span></span>
+          <mat-icon>smart_toy</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <app-robots-view [robots]="robots" [isTimemachine]="isTimeMachine"
+                         [missionState]="missionState"></app-robots-view>
+      </ng-template>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Carte d'exploration
+        </mat-panel-title>
+        <mat-panel-description>
+          <span></span>
+          <mat-icon>map</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <div *ngIf="!mapInitialized" class="no-mission-container">
+          <span class="material-symbols-outlined">map</span>
+          <h2><b>La carte n'est pas encore disponible...</b></h2>
+        </div>
+        <div class="centered-map-container">
+          <app-map-view *ngIf="mapInitialized"
+                        [isTimemachine]="isTimeMachine"
+                        [map]="map"
+                        [robots]="robots">
+          </app-map-view>
+        </div>
+      </ng-template>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="!(this.missionState === MissionState.NOT_STARTED)" [expanded]="false"
+                         class="last-expansion-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Journaux des robots
+        </mat-panel-title>
+        <mat-panel-description>
+          <span></span>
+          <mat-icon>feed</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+        <app-logs [logs]="logs"></app-logs>
+      </ng-template>
+    </mat-expansion-panel>
+  </div>
+
+  <div *ngIf="isLoading" class="spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+
+</div>

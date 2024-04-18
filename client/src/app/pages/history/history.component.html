@@ -1,20 +1,42 @@
-<div class="centered">
-  <div class="mat-elevation-z8">
-    <table [dataSource]="data" class="mat-elevation-z8" mat-table>
-
+<div class="overflow-control">
+  <mat-toolbar *ngIf="this.dataSource.data.length > 0" class="white-toolbar">
+    HISTORIQUE
+  </mat-toolbar>
+  <div *ngIf="this.dataSource.data.length > 0">
+    <table [dataSource]="dataSource" mat-table matSort>
       <ng-container matColumnDef="id">
-        <th *matHeaderCellDef mat-header-cell> Robot ID</th>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Mission </th>
         <td *matCellDef="let element" mat-cell> {{element.id}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="name">
-        <th *matHeaderCellDef mat-header-cell> Module</th>
-        <td *matCellDef="let element" mat-cell> {{element.name}} </td>
+      <ng-container matColumnDef="startTimestamp">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Date </th>
+        <td *matCellDef="let element" mat-cell> {{ element.startTimestamp * 1000 | date: 'short'}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="age">
-        <th *matHeaderCellDef mat-header-cell> Horodatage</th>
-        <td *matCellDef="let element" mat-cell> {{element.age}} </td>
+      <ng-container matColumnDef="duration">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Durée </th>
+        <td *matCellDef="let element" mat-cell> {{element.duration * 1000 | date: 'mm:ss'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="distance">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Distance totale parcourue (m) </th>
+        <td *matCellDef="let element" mat-cell> {{element.distance | number: '1.0-2'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nbRobots">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Nombre de robots </th>
+        <td *matCellDef="let element" mat-cell> {{element.nbRobots}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="simulation">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Environnement simulé </th>
+        <td *matCellDef="let element" mat-cell> {{element.simulation ? 'Oui' : 'Non'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="identify">
+        <th *matHeaderCellDef mat-header-cell></th>
+        <td *matCellDef="let element" mat-cell><button (click)="openMission(element.id)" mat-icon-button><mat-icon>arrow_forward</mat-icon></button></td>
       </ng-container>
 
       <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
@@ -22,5 +44,11 @@
     </table>
   </div>
 
-  <mat-paginator></mat-paginator>
+  <!-- If there's no current mission -->
+  <div *ngIf="this.dataSource.data.length === 0" class="no-mission-container centered">
+  <span class="material-symbols-outlined">
+    history
+  </span>
+    <h2><b>L'historique des missions est vide...</b></h2>
+  </div>
 </div>

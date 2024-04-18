@@ -6,3 +6,17 @@
   text-transform: uppercase;
 }
 
+.toolbar-no-overflow {
+  overflow: hidden;
+}
+
+.nav-button {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+.clean-link {
+  text-decoration: none;
+  color: inherit;
+}

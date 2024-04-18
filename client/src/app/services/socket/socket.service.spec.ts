@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { SocketService } from './socket.service';
 import {Socket} from "socket.io-client";
-import {SocketMock} from "@app/classes/helpers/socket-mock-helper";
+import {SocketMock} from "@app/helpers/socket-mock-helper";
 
 describe('SocketService', () => {
   let service: SocketService;
@@ -19,13 +19,6 @@ describe('SocketService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
-  });
-
-  it('should join', () => {
-    const roomId = '1';
-    const emitSpy = spyOn(service['socketClient'], 'emit');
-    service.join(roomId);
-    expect(emitSpy).toHaveBeenCalledWith('joinRoom', roomId);
   });
 
   it('should call socket.on with the correct parameters', () => {

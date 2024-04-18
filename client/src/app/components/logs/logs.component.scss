@@ -6,18 +6,38 @@
   align-items: center;
 }
 
-table {
-  height: 100%;
-  width: 100%;
-}
-
-
 .mat-header-cell {
   font-size: large;
+}
+
+.mat-table-wrapper {
+  overflow-y: auto;
+  max-height: 400px;
 }
 
 .mat-mdc-cell.mat-column-message {
   font-family: monospace;
   font-size: smaller;
   padding: 4px;
+}
+
+.no-mission-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 25vh;
+}
+
+.material-symbols-outlined {
+  font-size: 20vh;
+  color: lightgray;
+}
+
+.no-mission-container h2 {
+  color: lightgray;
+}
+
+.overflow-control {
+  overflow: scroll;
 }

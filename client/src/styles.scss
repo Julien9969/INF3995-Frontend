@@ -1,4 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+// @import 'codemirror/lib/codemirror.css';
+// @import 'codemirror/addon/lint/lint.css';
+// @import 'codemirror/addon/hint/show-hint.css';
+
+@import 'codemirror/lib/codemirror.css';
+@import 'codemirror/addon/lint/lint.css';
+@import 'codemirror/addon/hint/show-hint.css';
+@import 'material-symbols/index.css';
+
+
 
 html, body {
   height: 100%;
@@ -7,4 +17,11 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  min-height: 100%;
+  background: linear-gradient(356deg, rgba(9, 9, 121, 0) 35%, rgba(190, 190, 190, 0.35) 100%) no-repeat fixed;
+}
+
+.CodeMirror {
+    border: 1px solid #eee !important;
+    height: 100% !important;
 }

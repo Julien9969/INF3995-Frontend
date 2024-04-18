@@ -1,15 +1,6 @@
 <div class="centered">
   <img alt="LIMO Robot" src="assets/limo.png"/>
-  <h2>Bienvenue sur le tableau de bord de notre programme robotique d'exploration marsienne!</h2>
+  <h2>Bienvenue sur la station au sol du programme robotique d'exploration marsienne!</h2>
   <h4>Rendez-vous sur la barre de menu pour lancer une nouvelle mission</h4>
-</div>
-<div class="identify"> 
-  <div *ngFor="let robot of robots" class="identify">
-      <button (click)="identifyRobots(robot.id)" mat-button>
-        <mat-icon>smart_toy</mat-icon>
-        Robot #{{robot.id}}<mat-icon>notifications_active</mat-icon> Identifier
-        <div>{{idResponses[robot.id-1]}}</div>
-      </button>
-  </div>
 </div>
 

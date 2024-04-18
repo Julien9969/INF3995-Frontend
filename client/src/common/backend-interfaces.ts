@@ -6,9 +6,10 @@ export enum MissionState {
 
 export enum RobotState {
   IDLE = "idle",
-  MOVING = "moving",
+  MOVING = "running",
   DISCONNECTED = "disconnected",
-  HEAD_BACK_BASE = "head-back-base",
+  HEAD_BACK_BASE = "heading-base",
+  IDENTIFYING = "identifying",
 }
 
 export interface MissionStatus {

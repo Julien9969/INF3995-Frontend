@@ -31,6 +31,7 @@ import {
 import {BehaviorSubject} from "rxjs";
 import {MatDialogTitle} from "@angular/material/dialog";
 import {RobotsService} from "@app/services/robots/robots.service";
+import { RobotState } from '@common';
 
 
 @Component({
@@ -79,6 +80,7 @@ export class RobotsViewComponent implements OnChanges {
   @Input() isTimemachine!: boolean;
   robotDisplayedColumns: string[] = ['id', 'state', 'distance', 'battery', 'identify'];
   robotDataSource = new MatTableDataSource();
+  protected readonly RobotState = RobotState ;
 
   constructor(private matSnackBar: MatSnackBar,
               private robotsService: RobotsService) {

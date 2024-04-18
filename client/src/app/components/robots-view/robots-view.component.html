@@ -6,10 +6,16 @@
       <td *matCellDef="let element" mat-cell> {{element.id}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="state">
-      <th *matHeaderCellDef mat-header-cell> État du robot</th>
-      <td *matCellDef="let element" mat-cell> {{element.state === "idle" ? "En veille" : "En déplacement" }}</td>
-    </ng-container>
+  <ng-container matColumnDef="state">
+    <th *matHeaderCellDef mat-header-cell> État du robot</th>
+    <td *matCellDef="let element" mat-cell>
+      {{element.state === RobotState.MOVING ? "En déplacement" : 
+        element.state === RobotState.HEAD_BACK_BASE ? "En retour à la base" : 
+        element.state === RobotState.IDLE ? "En veille" : 
+        element.state === RobotState.IDENTIFYING ? "En cours d'identification" : 
+        ""}}
+    </td>
+  </ng-container>
 
     <ng-container matColumnDef="distance">
       <th *matHeaderCellDef mat-header-cell> Distance parcourue</th>
